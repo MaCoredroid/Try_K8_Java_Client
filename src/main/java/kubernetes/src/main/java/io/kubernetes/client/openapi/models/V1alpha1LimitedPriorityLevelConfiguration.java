@@ -29,7 +29,7 @@ import java.io.IOException;
  * LimitedPriorityLevelConfiguration specifies how to handle requests that are subject to limits. It addresses two issues:  * How are requests for this priority level limited?  * What should be done with requests that exceed the limit?
  */
 @ApiModel(description = "LimitedPriorityLevelConfiguration specifies how to handle requests that are subject to limits. It addresses two issues:  * How are requests for this priority level limited?  * What should be done with requests that exceed the limit?")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1alpha1LimitedPriorityLevelConfiguration {
   public static final String SERIALIZED_NAME_ASSURED_CONCURRENCY_SHARES = "assuredConcurrencyShares";
   @SerializedName(SERIALIZED_NAME_ASSURED_CONCURRENCY_SHARES)

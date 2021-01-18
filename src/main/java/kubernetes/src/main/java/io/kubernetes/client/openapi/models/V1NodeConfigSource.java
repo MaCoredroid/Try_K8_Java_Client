@@ -29,7 +29,7 @@ import java.io.IOException;
  * NodeConfigSource specifies a source of node configuration. Exactly one subfield (excluding metadata) must be non-nil.
  */
 @ApiModel(description = "NodeConfigSource specifies a source of node configuration. Exactly one subfield (excluding metadata) must be non-nil.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1NodeConfigSource {
   public static final String SERIALIZED_NAME_CONFIG_MAP = "configMap";
   @SerializedName(SERIALIZED_NAME_CONFIG_MAP)

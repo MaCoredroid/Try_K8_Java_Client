@@ -32,7 +32,7 @@ import java.util.List;
  * MutatingWebhookConfiguration describes the configuration of and admission webhook that accept or reject and may change the object.
  */
 @ApiModel(description = "MutatingWebhookConfiguration describes the configuration of and admission webhook that accept or reject and may change the object.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1MutatingWebhookConfiguration implements io.kubernetes.client.common.KubernetesObject {
   public static final String SERIALIZED_NAME_API_VERSION = "apiVersion";
   @SerializedName(SERIALIZED_NAME_API_VERSION)

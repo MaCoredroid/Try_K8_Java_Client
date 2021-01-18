@@ -56,7 +56,7 @@ import java.io.IOException;
  * Volume represents a named volume in a pod that may be accessed by any container in the pod.
  */
 @ApiModel(description = "Volume represents a named volume in a pod that may be accessed by any container in the pod.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1Volume {
   public static final String SERIALIZED_NAME_AWS_ELASTIC_BLOCK_STORE = "awsElasticBlockStore";
   @SerializedName(SERIALIZED_NAME_AWS_ELASTIC_BLOCK_STORE)

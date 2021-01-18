@@ -31,7 +31,7 @@ import java.util.List;
  * ReplicaSetStatus represents the current status of a ReplicaSet.
  */
 @ApiModel(description = "ReplicaSetStatus represents the current status of a ReplicaSet.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1ReplicaSetStatus {
   public static final String SERIALIZED_NAME_AVAILABLE_REPLICAS = "availableReplicas";
   @SerializedName(SERIALIZED_NAME_AVAILABLE_REPLICAS)

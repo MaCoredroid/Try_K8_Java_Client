@@ -35,7 +35,7 @@ import java.util.List;
  * PodPresetSpec is a description of a pod preset.
  */
 @ApiModel(description = "PodPresetSpec is a description of a pod preset.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1alpha1PodPresetSpec {
   public static final String SERIALIZED_NAME_ENV = "env";
   @SerializedName(SERIALIZED_NAME_ENV)

@@ -30,7 +30,7 @@ import java.util.List;
  * NamespaceSpec describes the attributes on a Namespace.
  */
 @ApiModel(description = "NamespaceSpec describes the attributes on a Namespace.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1NamespaceSpec {
   public static final String SERIALIZED_NAME_FINALIZERS = "finalizers";
   @SerializedName(SERIALIZED_NAME_FINALIZERS)

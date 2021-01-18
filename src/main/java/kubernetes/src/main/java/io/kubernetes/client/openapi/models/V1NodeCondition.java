@@ -29,7 +29,7 @@ import java.time.OffsetDateTime;
  * NodeCondition contains condition information for a node.
  */
 @ApiModel(description = "NodeCondition contains condition information for a node.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1NodeCondition {
   public static final String SERIALIZED_NAME_LAST_HEARTBEAT_TIME = "lastHeartbeatTime";
   @SerializedName(SERIALIZED_NAME_LAST_HEARTBEAT_TIME)

@@ -29,7 +29,7 @@ import java.io.IOException;
  * CustomResourceValidation is a list of validation methods for CustomResources.
  */
 @ApiModel(description = "CustomResourceValidation is a list of validation methods for CustomResources.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1CustomResourceValidation {
   public static final String SERIALIZED_NAME_OPEN_A_P_I_V3_SCHEMA = "openAPIV3Schema";
   @SerializedName(SERIALIZED_NAME_OPEN_A_P_I_V3_SCHEMA)

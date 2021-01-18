@@ -36,7 +36,7 @@ import java.util.List;
  * CustomResourceDefinitionSpec describes how a user wants their resource to appear
  */
 @ApiModel(description = "CustomResourceDefinitionSpec describes how a user wants their resource to appear")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1beta1CustomResourceDefinitionSpec {
   public static final String SERIALIZED_NAME_ADDITIONAL_PRINTER_COLUMNS = "additionalPrinterColumns";
   @SerializedName(SERIALIZED_NAME_ADDITIONAL_PRINTER_COLUMNS)

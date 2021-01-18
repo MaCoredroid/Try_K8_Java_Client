@@ -29,7 +29,7 @@ import java.io.IOException;
  * ContainerStatus contains details for the current status of this container.
  */
 @ApiModel(description = "ContainerStatus contains details for the current status of this container.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1ContainerStatus {
   public static final String SERIALIZED_NAME_CONTAINER_I_D = "containerID";
   @SerializedName(SERIALIZED_NAME_CONTAINER_I_D)

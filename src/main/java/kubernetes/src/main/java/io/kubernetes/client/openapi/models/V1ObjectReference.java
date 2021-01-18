@@ -28,7 +28,7 @@ import java.io.IOException;
  * ObjectReference contains enough information to let you inspect or modify the referred object.
  */
 @ApiModel(description = "ObjectReference contains enough information to let you inspect or modify the referred object.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1ObjectReference {
   public static final String SERIALIZED_NAME_API_VERSION = "apiVersion";
   @SerializedName(SERIALIZED_NAME_API_VERSION)
