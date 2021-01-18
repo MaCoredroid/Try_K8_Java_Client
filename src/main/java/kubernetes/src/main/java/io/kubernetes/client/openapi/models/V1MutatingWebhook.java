@@ -33,7 +33,7 @@ import java.util.List;
  * MutatingWebhook describes an admission webhook and the resources and operations it applies to.
  */
 @ApiModel(description = "MutatingWebhook describes an admission webhook and the resources and operations it applies to.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1MutatingWebhook {
   public static final String SERIALIZED_NAME_ADMISSION_REVIEW_VERSIONS = "admissionReviewVersions";
   @SerializedName(SERIALIZED_NAME_ADMISSION_REVIEW_VERSIONS)

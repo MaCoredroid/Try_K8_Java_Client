@@ -29,7 +29,7 @@ import java.time.OffsetDateTime;
  * ContainerStateRunning is a running state of a container.
  */
 @ApiModel(description = "ContainerStateRunning is a running state of a container.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1ContainerStateRunning {
   public static final String SERIALIZED_NAME_STARTED_AT = "startedAt";
   @SerializedName(SERIALIZED_NAME_STARTED_AT)

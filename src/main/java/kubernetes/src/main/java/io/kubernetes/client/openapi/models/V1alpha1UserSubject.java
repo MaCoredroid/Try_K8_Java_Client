@@ -28,7 +28,7 @@ import java.io.IOException;
  * UserSubject holds detailed information for user-kind subject.
  */
 @ApiModel(description = "UserSubject holds detailed information for user-kind subject.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1alpha1UserSubject {
   public static final String SERIALIZED_NAME_NAME = "name";
   @SerializedName(SERIALIZED_NAME_NAME)

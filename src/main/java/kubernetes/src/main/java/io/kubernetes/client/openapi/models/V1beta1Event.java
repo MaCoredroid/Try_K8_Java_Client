@@ -33,7 +33,7 @@ import java.time.OffsetDateTime;
  * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system.
  */
 @ApiModel(description = "Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1beta1Event implements io.kubernetes.client.common.KubernetesObject {
   public static final String SERIALIZED_NAME_ACTION = "action";
   @SerializedName(SERIALIZED_NAME_ACTION)
