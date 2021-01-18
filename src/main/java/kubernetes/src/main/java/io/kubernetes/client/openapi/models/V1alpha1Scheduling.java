@@ -33,7 +33,7 @@ import java.util.Map;
  * Scheduling specifies the scheduling constraints for nodes supporting a RuntimeClass.
  */
 @ApiModel(description = "Scheduling specifies the scheduling constraints for nodes supporting a RuntimeClass.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1alpha1Scheduling {
   public static final String SERIALIZED_NAME_NODE_SELECTOR = "nodeSelector";
   @SerializedName(SERIALIZED_NAME_NODE_SELECTOR)

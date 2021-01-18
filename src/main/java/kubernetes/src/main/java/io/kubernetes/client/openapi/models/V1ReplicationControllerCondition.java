@@ -29,7 +29,7 @@ import java.time.OffsetDateTime;
  * ReplicationControllerCondition describes the state of a replication controller at a certain point.
  */
 @ApiModel(description = "ReplicationControllerCondition describes the state of a replication controller at a certain point.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1ReplicationControllerCondition {
   public static final String SERIALIZED_NAME_LAST_TRANSITION_TIME = "lastTransitionTime";
   @SerializedName(SERIALIZED_NAME_LAST_TRANSITION_TIME)

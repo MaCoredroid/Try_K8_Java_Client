@@ -32,7 +32,7 @@ import java.util.Map;
  * Represents storage that is managed by an external CSI volume driver (Beta feature)
  */
 @ApiModel(description = "Represents storage that is managed by an external CSI volume driver (Beta feature)")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1CSIPersistentVolumeSource {
   public static final String SERIALIZED_NAME_CONTROLLER_EXPAND_SECRET_REF = "controllerExpandSecretRef";
   @SerializedName(SERIALIZED_NAME_CONTROLLER_EXPAND_SECRET_REF)

@@ -31,7 +31,7 @@ import java.util.List;
  * APIGroupList is a list of APIGroup, to allow clients to discover the API at /apis.
  */
 @ApiModel(description = "APIGroupList is a list of APIGroup, to allow clients to discover the API at /apis.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1APIGroupList {
   public static final String SERIALIZED_NAME_API_VERSION = "apiVersion";
   @SerializedName(SERIALIZED_NAME_API_VERSION)

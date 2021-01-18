@@ -29,7 +29,7 @@ import java.io.IOException;
  * MetricIdentifier defines the name and optionally selector for a metric
  */
 @ApiModel(description = "MetricIdentifier defines the name and optionally selector for a metric")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V2beta2MetricIdentifier {
   public static final String SERIALIZED_NAME_NAME = "name";
   @SerializedName(SERIALIZED_NAME_NAME)

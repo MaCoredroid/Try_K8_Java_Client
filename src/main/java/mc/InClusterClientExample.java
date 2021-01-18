@@ -18,6 +18,9 @@ import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Pod;
 import io.kubernetes.client.openapi.models.V1PodList;
 import io.kubernetes.client.util.ClientBuilder;
+import io.kubernetes.client.util.KubeConfig;
+
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -37,7 +40,9 @@ public class InClusterClientExample {
     //   2. service-account bearer-token
     //   3. service-account namespace
     //   4. master endpoints(ip, port) from pre-set environment variables
-    ApiClient client = ClientBuilder.cluster().build();
+    String kubeConfigPath = "~/.kube/config";
+    ApiClient client =
+            ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
 
     // if you prefer not to refresh service account token, please use:
     // ApiClient client = ClientBuilder.oldCluster().build();

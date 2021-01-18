@@ -28,7 +28,7 @@ import java.io.IOException;
  * SecretReference represents a Secret Reference. It has enough information to retrieve secret in any namespace
  */
 @ApiModel(description = "SecretReference represents a Secret Reference. It has enough information to retrieve secret in any namespace")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1SecretReference {
   public static final String SERIALIZED_NAME_NAME = "name";
   @SerializedName(SERIALIZED_NAME_NAME)

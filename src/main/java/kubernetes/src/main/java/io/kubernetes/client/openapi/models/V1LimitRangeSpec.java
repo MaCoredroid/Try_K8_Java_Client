@@ -31,7 +31,7 @@ import java.util.List;
  * LimitRangeSpec defines a min/max usage limit for resources that match on kind.
  */
 @ApiModel(description = "LimitRangeSpec defines a min/max usage limit for resources that match on kind.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1LimitRangeSpec {
   public static final String SERIALIZED_NAME_LIMITS = "limits";
   @SerializedName(SERIALIZED_NAME_LIMITS)
