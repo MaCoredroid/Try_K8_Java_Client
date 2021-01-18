@@ -1,4 +1,4 @@
-/*
+package mc;/*
 Copyright 2020 The Kubernetes Authors.
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import java.util.Objects;
  * A simple example of how to use the Java API inside a kubernetes cluster
  *
  * <p>Easiest way to run this: mvn exec:java
- * -Dexec.mainClass="io.kubernetes.client.examples.InClusterClientExample"
+ * -Dexec.mainClass="io.kubernetes.client.examples.mc.InClusterClientExample"
  *
  * <p>From inside $REPO_DIR/examples
  */
