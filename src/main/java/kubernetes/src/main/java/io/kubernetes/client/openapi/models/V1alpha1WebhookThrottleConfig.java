@@ -28,7 +28,7 @@ import java.io.IOException;
  * WebhookThrottleConfig holds the configuration for throttling events
  */
 @ApiModel(description = "WebhookThrottleConfig holds the configuration for throttling events")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1alpha1WebhookThrottleConfig {
   public static final String SERIALIZED_NAME_BURST = "burst";
   @SerializedName(SERIALIZED_NAME_BURST)

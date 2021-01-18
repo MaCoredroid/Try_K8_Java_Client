@@ -28,7 +28,7 @@ import java.io.IOException;
  * AzureDisk represents an Azure Data Disk mount on the host and bind mount to the pod.
  */
 @ApiModel(description = "AzureDisk represents an Azure Data Disk mount on the host and bind mount to the pod.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1AzureDiskVolumeSource {
   public static final String SERIALIZED_NAME_CACHING_MODE = "cachingMode";
   @SerializedName(SERIALIZED_NAME_CACHING_MODE)

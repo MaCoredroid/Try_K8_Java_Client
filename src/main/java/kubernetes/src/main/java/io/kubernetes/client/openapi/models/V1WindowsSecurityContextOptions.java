@@ -28,7 +28,7 @@ import java.io.IOException;
  * WindowsSecurityContextOptions contain Windows-specific options and credentials.
  */
 @ApiModel(description = "WindowsSecurityContextOptions contain Windows-specific options and credentials.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1WindowsSecurityContextOptions {
   public static final String SERIALIZED_NAME_GMSA_CREDENTIAL_SPEC = "gmsaCredentialSpec";
   @SerializedName(SERIALIZED_NAME_GMSA_CREDENTIAL_SPEC)

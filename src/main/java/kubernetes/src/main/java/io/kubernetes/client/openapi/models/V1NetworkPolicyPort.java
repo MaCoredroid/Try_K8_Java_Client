@@ -29,7 +29,7 @@ import java.io.IOException;
  * NetworkPolicyPort describes a port to allow traffic on
  */
 @ApiModel(description = "NetworkPolicyPort describes a port to allow traffic on")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1NetworkPolicyPort {
   public static final String SERIALIZED_NAME_PORT = "port";
   @SerializedName(SERIALIZED_NAME_PORT)
