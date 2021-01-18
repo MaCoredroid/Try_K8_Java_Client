@@ -28,7 +28,7 @@ import java.io.IOException;
  * ExternalDocumentation allows referencing an external resource for extended documentation.
  */
 @ApiModel(description = "ExternalDocumentation allows referencing an external resource for extended documentation.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1ExternalDocumentation {
   public static final String SERIALIZED_NAME_DESCRIPTION = "description";
   @SerializedName(SERIALIZED_NAME_DESCRIPTION)

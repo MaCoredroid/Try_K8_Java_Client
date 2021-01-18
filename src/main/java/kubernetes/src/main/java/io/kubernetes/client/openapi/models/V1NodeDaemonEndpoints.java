@@ -29,7 +29,7 @@ import java.io.IOException;
  * NodeDaemonEndpoints lists ports opened by daemons running on the Node.
  */
 @ApiModel(description = "NodeDaemonEndpoints lists ports opened by daemons running on the Node.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1NodeDaemonEndpoints {
   public static final String SERIALIZED_NAME_KUBELET_ENDPOINT = "kubeletEndpoint";
   @SerializedName(SERIALIZED_NAME_KUBELET_ENDPOINT)

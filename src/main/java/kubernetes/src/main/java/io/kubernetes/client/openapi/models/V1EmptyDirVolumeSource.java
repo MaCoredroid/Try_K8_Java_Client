@@ -29,7 +29,7 @@ import java.io.IOException;
  * Represents an empty directory for a pod. Empty directory volumes support ownership management and SELinux relabeling.
  */
 @ApiModel(description = "Represents an empty directory for a pod. Empty directory volumes support ownership management and SELinux relabeling.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1EmptyDirVolumeSource {
   public static final String SERIALIZED_NAME_MEDIUM = "medium";
   @SerializedName(SERIALIZED_NAME_MEDIUM)

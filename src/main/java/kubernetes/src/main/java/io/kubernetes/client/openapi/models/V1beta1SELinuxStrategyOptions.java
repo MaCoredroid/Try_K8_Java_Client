@@ -29,7 +29,7 @@ import java.io.IOException;
  * SELinuxStrategyOptions defines the strategy type and any options used to create the strategy.
  */
 @ApiModel(description = "SELinuxStrategyOptions defines the strategy type and any options used to create the strategy.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1beta1SELinuxStrategyOptions {
   public static final String SERIALIZED_NAME_RULE = "rule";
   @SerializedName(SERIALIZED_NAME_RULE)

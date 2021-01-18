@@ -31,7 +31,7 @@ import java.util.List;
  * CSINodeSpec holds information about the specification of all CSI drivers installed on a node
  */
 @ApiModel(description = "CSINodeSpec holds information about the specification of all CSI drivers installed on a node")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1beta1CSINodeSpec {
   public static final String SERIALIZED_NAME_DRIVERS = "drivers";
   @SerializedName(SERIALIZED_NAME_DRIVERS)

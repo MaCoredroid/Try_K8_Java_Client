@@ -30,7 +30,7 @@ import java.io.IOException;
  * IngressBackend describes all endpoints for a given service and port.
  */
 @ApiModel(description = "IngressBackend describes all endpoints for a given service and port.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class NetworkingV1beta1IngressBackend {
   public static final String SERIALIZED_NAME_RESOURCE = "resource";
   @SerializedName(SERIALIZED_NAME_RESOURCE)

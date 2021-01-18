@@ -30,7 +30,7 @@ import java.io.IOException;
  * JobTemplateSpec describes the data a Job should have when created from a template
  */
 @ApiModel(description = "JobTemplateSpec describes the data a Job should have when created from a template")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1beta1JobTemplateSpec {
   public static final String SERIALIZED_NAME_METADATA = "metadata";
   @SerializedName(SERIALIZED_NAME_METADATA)

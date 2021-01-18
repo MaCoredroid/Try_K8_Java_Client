@@ -28,7 +28,7 @@ import java.io.IOException;
  * ContainerStateWaiting is a waiting state of a container.
  */
 @ApiModel(description = "ContainerStateWaiting is a waiting state of a container.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T06:56:30.422Z[Etc/UTC]")
 public class V1ContainerStateWaiting {
   public static final String SERIALIZED_NAME_MESSAGE = "message";
   @SerializedName(SERIALIZED_NAME_MESSAGE)
