@@ -31,7 +31,7 @@ import java.util.List;
  * FlowSchemaStatus represents the current state of a FlowSchema.
  */
 @ApiModel(description = "FlowSchemaStatus represents the current state of a FlowSchema.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1alpha1FlowSchemaStatus {
   public static final String SERIALIZED_NAME_CONDITIONS = "conditions";
   @SerializedName(SERIALIZED_NAME_CONDITIONS)

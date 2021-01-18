@@ -29,7 +29,7 @@ import java.time.OffsetDateTime;
  * FlowSchemaCondition describes conditions for a FlowSchema.
  */
 @ApiModel(description = "FlowSchemaCondition describes conditions for a FlowSchema.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1alpha1FlowSchemaCondition {
   public static final String SERIALIZED_NAME_LAST_TRANSITION_TIME = "lastTransitionTime";
   @SerializedName(SERIALIZED_NAME_LAST_TRANSITION_TIME)

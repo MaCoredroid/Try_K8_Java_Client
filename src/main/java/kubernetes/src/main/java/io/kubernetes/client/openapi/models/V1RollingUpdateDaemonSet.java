@@ -29,7 +29,7 @@ import java.io.IOException;
  * Spec to control the desired behavior of daemon set rolling update.
  */
 @ApiModel(description = "Spec to control the desired behavior of daemon set rolling update.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1RollingUpdateDaemonSet {
   public static final String SERIALIZED_NAME_MAX_UNAVAILABLE = "maxUnavailable";
   @SerializedName(SERIALIZED_NAME_MAX_UNAVAILABLE)

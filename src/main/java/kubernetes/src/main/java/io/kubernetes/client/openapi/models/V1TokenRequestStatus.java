@@ -29,7 +29,7 @@ import java.time.OffsetDateTime;
  * TokenRequestStatus is the result of a token request.
  */
 @ApiModel(description = "TokenRequestStatus is the result of a token request.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1TokenRequestStatus {
   public static final String SERIALIZED_NAME_EXPIRATION_TIMESTAMP = "expirationTimestamp";
   @SerializedName(SERIALIZED_NAME_EXPIRATION_TIMESTAMP)

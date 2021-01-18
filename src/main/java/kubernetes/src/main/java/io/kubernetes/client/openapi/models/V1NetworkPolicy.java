@@ -30,7 +30,7 @@ import java.io.IOException;
  * NetworkPolicy describes what network traffic is allowed for a set of Pods
  */
 @ApiModel(description = "NetworkPolicy describes what network traffic is allowed for a set of Pods")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1NetworkPolicy implements io.kubernetes.client.common.KubernetesObject {
   public static final String SERIALIZED_NAME_API_VERSION = "apiVersion";
   @SerializedName(SERIALIZED_NAME_API_VERSION)

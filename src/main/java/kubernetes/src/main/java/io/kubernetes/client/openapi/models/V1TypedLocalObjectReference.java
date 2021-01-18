@@ -28,7 +28,7 @@ import java.io.IOException;
  * TypedLocalObjectReference contains enough information to let you locate the typed referenced object inside the same namespace.
  */
 @ApiModel(description = "TypedLocalObjectReference contains enough information to let you locate the typed referenced object inside the same namespace.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1TypedLocalObjectReference {
   public static final String SERIALIZED_NAME_API_GROUP = "apiGroup";
   @SerializedName(SERIALIZED_NAME_API_GROUP)

@@ -33,7 +33,7 @@ import java.util.List;
  * CustomResourceDefinitionSpec describes how a user wants their resource to appear
  */
 @ApiModel(description = "CustomResourceDefinitionSpec describes how a user wants their resource to appear")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1CustomResourceDefinitionSpec {
   public static final String SERIALIZED_NAME_CONVERSION = "conversion";
   @SerializedName(SERIALIZED_NAME_CONVERSION)

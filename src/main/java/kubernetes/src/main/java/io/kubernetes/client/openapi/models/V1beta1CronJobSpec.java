@@ -29,7 +29,7 @@ import java.io.IOException;
  * CronJobSpec describes how the job execution will look like and when it will actually run.
  */
 @ApiModel(description = "CronJobSpec describes how the job execution will look like and when it will actually run.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1beta1CronJobSpec {
   public static final String SERIALIZED_NAME_CONCURRENCY_POLICY = "concurrencyPolicy";
   @SerializedName(SERIALIZED_NAME_CONCURRENCY_POLICY)

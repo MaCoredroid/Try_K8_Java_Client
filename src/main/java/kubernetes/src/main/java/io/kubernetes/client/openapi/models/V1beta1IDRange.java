@@ -28,7 +28,7 @@ import java.io.IOException;
  * IDRange provides a min/max of an allowed range of IDs.
  */
 @ApiModel(description = "IDRange provides a min/max of an allowed range of IDs.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1beta1IDRange {
   public static final String SERIALIZED_NAME_MAX = "max";
   @SerializedName(SERIALIZED_NAME_MAX)

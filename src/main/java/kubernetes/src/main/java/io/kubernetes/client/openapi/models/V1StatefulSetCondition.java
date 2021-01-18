@@ -29,7 +29,7 @@ import java.time.OffsetDateTime;
  * StatefulSetCondition describes the state of a statefulset at a certain point.
  */
 @ApiModel(description = "StatefulSetCondition describes the state of a statefulset at a certain point.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T03:08:54.156Z[Etc/UTC]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2021-01-18T05:41:11.202Z[Etc/UTC]")
 public class V1StatefulSetCondition {
   public static final String SERIALIZED_NAME_LAST_TRANSITION_TIME = "lastTransitionTime";
   @SerializedName(SERIALIZED_NAME_LAST_TRANSITION_TIME)
