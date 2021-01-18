@@ -10,7 +10,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package mc;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.Configuration;
@@ -40,7 +39,7 @@ public class InClusterClientExample {
     //   2. service-account bearer-token
     //   3. service-account namespace
     //   4. master endpoints(ip, port) from pre-set environment variables
-    String kubeConfigPath = "~/.kube/config";
+    String kubeConfigPath = System.getProperty("user.home") + "/.kube/config";
     ApiClient client =
             ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
 
@@ -55,7 +54,7 @@ public class InClusterClientExample {
 
     // invokes the CoreV1Api client
     V1PodList list =
-        api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null, null);
+        api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
     for (V1Pod item : list.getItems()) {
       System.out.println(Objects.requireNonNull(item.getMetadata()).getName());
     }
