@@ -65,7 +65,7 @@ public class InClusterClientExample {
      V1ServiceList serviceList=api.listServiceForAllNamespaces(null,null,null,null,null,null,null,null,null);
     for (V1Service item : serviceList.getItems()) {
       System.out.println(Objects.requireNonNull(item.getMetadata()).getName());
-      System.out.println(Objects.requireNonNull(item));
+      System.out.println(Objects.requireNonNull(item.getSpec()).getClusterIP());
 
 
     }
