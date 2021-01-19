@@ -97,8 +97,11 @@ public class InClusterClientExample {
                 String line = null;
 
                 try {
-                    while ((line = input.readLine()) != null)
+                    while ((line = input.readLine()) != null) {
                         System.out.println(line);
+                        break;
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
