@@ -23,6 +23,9 @@ import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
 import mc.DTO.PodInfo;
 import mc.DTO.ServiceInfo;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -81,6 +84,15 @@ public class InClusterClientExample {
 
         }
         System.out.println(serviceNameMap);
+
+
+
+        Request request = new Request.Builder()
+                .url("http://10.97.27.171:9100/metrics")
+                .build(); // defaults to GET
+
+        Response response = new OkHttpClient().newCall(request).execute();
+        System.out.println(Objects.requireNonNull(response.body()).string());
 
     }
 }
