@@ -27,8 +27,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 /**
@@ -87,12 +89,28 @@ public class InClusterClientExample {
 
 
 
-        Request request = new Request.Builder()
-                .url("http://10.97.27.171:9100/metrics")
-                .build(); // defaults to GET
+        final Process p = Runtime.getRuntime().exec("curl http://10.97.27.171:9100/metrics | grep \"nodename\"");
 
-        Response response = new OkHttpClient().newCall(request).execute();
-        System.out.println(Objects.requireNonNull(response.body()).string());
+        new Thread(new Runnable() {
+            public void run() {
+                BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                String line = null;
+
+                try {
+                    while ((line = input.readLine()) != null)
+                        System.out.println(line);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+        try {
+            p.waitFor();
+        }catch (Exception ignored)
+        {
+
+        }
 
     }
 }
