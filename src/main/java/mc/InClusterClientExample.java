@@ -10,6 +10,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.Configuration;
@@ -23,7 +24,10 @@ import io.kubernetes.client.util.KubeConfig;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A simple example of how to use the Java API inside a kubernetes cluster
@@ -34,45 +38,47 @@ import java.util.Objects;
  * <p>From inside $REPO_DIR/examples
  */
 public class InClusterClientExample {
-  public static void main(String[] args) throws IOException, ApiException {
+    public static void main(String[] args) throws IOException, ApiException {
 
-    // loading the in-cluster config, including:
-    //   1. service-account CA
-    //   2. service-account bearer-token
-    //   3. service-account namespace
-    //   4. master endpoints(ip, port) from pre-set environment variables
-    String kubeConfigPath = System.getProperty("user.home") + "/.kube/config";
-    ApiClient client =
-            ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
+        // loading the in-cluster config, including:
+        //   1. service-account CA
+        //   2. service-account bearer-token
+        //   3. service-account namespace
+        //   4. master endpoints(ip, port) from pre-set environment variables
+        String kubeConfigPath = System.getProperty("user.home") + "/.kube/config";
+        ApiClient client =
+                ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
 
-    // if you prefer not to refresh service account token, please use:
-    // ApiClient client = ClientBuilder.oldCluster().build();
+        // if you prefer not to refresh service account token, please use:
+        // ApiClient client = ClientBuilder.oldCluster().build();
 
-    // set the global default api-client to the in-cluster one from above
-    Configuration.setDefaultApiClient(client);
+        // set the global default api-client to the in-cluster one from above
+        Configuration.setDefaultApiClient(client);
 
-    // the CoreV1Api loads default api-client from global configuration.
-    CoreV1Api api = new CoreV1Api();
+        // the CoreV1Api loads default api-client from global configuration.
+        CoreV1Api api = new CoreV1Api();
 
-    // invokes the CoreV1Api client
-    V1PodList list =
-        api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
-    for (V1Pod item : list.getItems()) {
-      if(Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
-        System.out.println(Objects.requireNonNull(item.getMetadata()).getName());
-        System.out.println(Objects.requireNonNull(item.getStatus()).getHostIP());
-        System.out.println(Objects.requireNonNull(item.getStatus()).getPodIP());
-      }
+        Set<String> serviceNameSet = new HashSet<>();
+        // invokes the CoreV1Api client
+        V1ServiceList serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null);
+        for (V1Service item : serviceList.getItems()) {
+            if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
+                serviceNameSet.add(item.getMetadata().getName());
+//                System.out.println(Objects.requireNonNull(item.getSpec()).getClusterIP());
+            }
+
+
+        }
+        System.out.println(serviceNameSet);
+        V1PodList list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
+        for (V1Pod item : list.getItems()) {
+            if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
+                System.out.println(Objects.requireNonNull(item.getMetadata()).getName());
+                System.out.println(Objects.requireNonNull(item.getStatus()).getHostIP());
+                System.out.println(Objects.requireNonNull(item.getStatus()).getPodIP());
+            }
+
+        }
 
     }
-     V1ServiceList serviceList=api.listServiceForAllNamespaces(null,null,null,null,null,null,null,null,null);
-    for (V1Service item : serviceList.getItems()) {
-      if(Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
-        System.out.println(Objects.requireNonNull(item.getMetadata()).getName());
-        System.out.println(Objects.requireNonNull(item.getSpec()).getClusterIP());
-      }
-
-
-    }
-  }
 }
