@@ -21,6 +21,7 @@ import io.kubernetes.client.openapi.models.V1Service;
 import io.kubernetes.client.openapi.models.V1ServiceList;
 import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
+import mc.DTO.PodInfo;
 import mc.DTO.ServiceInfo;
 
 import java.io.FileReader;
@@ -66,18 +67,20 @@ public class InClusterClientExample {
 
 
         }
-        System.out.println(serviceNameMap);
         V1PodList list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
         for (V1Pod item : list.getItems()) {
             if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
                 String[] arrOfStr = Objects.requireNonNull(Objects.requireNonNull(item.getMetadata()).getName()).split("-", 2);
-                System.out.println(arrOfStr[0]);
-//                System.out.println(Objects.requireNonNull(item.getMetadata()).getName());
-//                System.out.println(Objects.requireNonNull(item.getStatus()).getHostIP());
-//                System.out.println(Objects.requireNonNull(item.getStatus()).getPodIP());
+                String serviceName=arrOfStr[0];
+                if(!serviceNameMap.containsKey(serviceName))
+                {
+                    continue;
+                }
+                serviceNameMap.get(serviceName).getPodInfos().add(new PodInfo(Objects.requireNonNull(item.getMetadata()).getName(),Objects.requireNonNull(item.getStatus()).getPodIP()));
             }
 
         }
+        System.out.println(serviceNameMap);
 
     }
 }
