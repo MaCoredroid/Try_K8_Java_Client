@@ -89,7 +89,7 @@ public class InClusterClientExample {
 
 
 
-        final Process p = Runtime.getRuntime().exec("curl http://10.97.27.171:9100/metrics | grep \"nodename\"");
+        final Process p = Runtime.getRuntime().exec("curl http://10.97.27.171:9100/metrics | grep 'nodename'");
 
         new Thread(new Runnable() {
             public void run() {
