@@ -21,13 +21,11 @@ import io.kubernetes.client.openapi.models.V1Service;
 import io.kubernetes.client.openapi.models.V1ServiceList;
 import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
+import mc.DTO.ServiceInfo;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A simple example of how to use the Java API inside a kubernetes cluster
@@ -58,24 +56,25 @@ public class InClusterClientExample {
         // the CoreV1Api loads default api-client from global configuration.
         CoreV1Api api = new CoreV1Api();
 
-        Set<String> serviceNameSet = new HashSet<>();
+        HashMap<String,ServiceInfo> serviceNameMap = new HashMap<>();
         // invokes the CoreV1Api client
         V1ServiceList serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null);
         for (V1Service item : serviceList.getItems()) {
             if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
-                serviceNameSet.add(item.getMetadata().getName());
-//                System.out.println(Objects.requireNonNull(item.getSpec()).getClusterIP());
+                serviceNameMap.put(item.getMetadata().getName(),new ServiceInfo(item.getMetadata().getName(), Objects.requireNonNull(item.getSpec()).getClusterIP(),new ArrayList<>()));
             }
 
 
         }
-        System.out.println(serviceNameSet);
+        System.out.println(serviceNameMap);
         V1PodList list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
         for (V1Pod item : list.getItems()) {
             if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
-                System.out.println(Objects.requireNonNull(item.getMetadata()).getName());
-                System.out.println(Objects.requireNonNull(item.getStatus()).getHostIP());
-                System.out.println(Objects.requireNonNull(item.getStatus()).getPodIP());
+                String[] arrOfStr = Objects.requireNonNull(Objects.requireNonNull(item.getMetadata()).getName()).split("-", 2);
+                System.out.println(arrOfStr[0]);
+//                System.out.println(Objects.requireNonNull(item.getMetadata()).getName());
+//                System.out.println(Objects.requireNonNull(item.getStatus()).getHostIP());
+//                System.out.println(Objects.requireNonNull(item.getStatus()).getPodIP());
             }
 
         }
