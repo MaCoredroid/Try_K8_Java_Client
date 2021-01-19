@@ -58,14 +58,19 @@ public class InClusterClientExample {
     V1PodList list =
         api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
     for (V1Pod item : list.getItems()) {
-      System.out.println(Objects.requireNonNull(item.getStatus()).getHostIP());
-      System.out.println(Objects.requireNonNull(item.getStatus()).getPodIP());
+      if(Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
+        System.out.println(Objects.requireNonNull(item.getMetadata()).getName());
+        System.out.println(Objects.requireNonNull(item.getStatus()).getHostIP());
+        System.out.println(Objects.requireNonNull(item.getStatus()).getPodIP());
+      }
 
     }
      V1ServiceList serviceList=api.listServiceForAllNamespaces(null,null,null,null,null,null,null,null,null);
     for (V1Service item : serviceList.getItems()) {
-      System.out.println(Objects.requireNonNull(item.getMetadata()).getName());
-      System.out.println(Objects.requireNonNull(item.getSpec()).getClusterIP());
+      if(Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
+        System.out.println(Objects.requireNonNull(item.getMetadata()).getName());
+        System.out.println(Objects.requireNonNull(item.getSpec()).getClusterIP());
+      }
 
 
     }
