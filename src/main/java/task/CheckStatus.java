@@ -28,7 +28,13 @@ public class CheckStatus extends TimerTask {
     }
     @Override
     public void run() {
-        V1PodList list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
+        V1PodList list = null;
+        try {
+             list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         for (V1Pod item : list.getItems()) {
             if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
                 String[] arrOfStr = Objects.requireNonNull(Objects.requireNonNull(item.getMetadata()).getName()).split("-", 2);
@@ -54,20 +60,20 @@ public class CheckStatus extends TimerTask {
                 try {
                     while ((line = input.readLine()) != null) {
                         if(!line.startsWith("#")) {
-                            if(line.startsWith("node_memory_MemTotal_bytes"))
+                            try {
+                                if (line.startsWith("node_memory_MemTotal_bytes")) {
+                                    Double value = Double.parseDouble(line.replace("node_memory_MemTotal_bytes", "").trim());
+                                    nodeInfo.setNode_memory_MemTotal_bytes(value);
+                                } else if (line.startsWith("node_memory_MemAvailable_bytes")) {
+                                    Double value = Double.parseDouble(line.replace("node_memory_MemAvailable_bytes", "").trim());
+                                    nodeInfo.setNode_memory_MemAvailable_bytes(value);
+                                } else if (line.startsWith("node_load1") && !line.startsWith("node_load15")) {
+                                    Double value = Double.parseDouble(line.replace("node_load1", "").trim());
+                                    nodeInfo.setNode_load_1m(value);
+                                }
+                            }catch (Exception e)
                             {
-                                Double value= Double.parseDouble(line.replace("node_memory_MemTotal_bytes","").trim());
-                                nodeInfo.setNode_memory_MemTotal_bytes(value);
-                            }
-                            else if(line.startsWith("node_memory_MemAvailable_bytes"))
-                            {
-                                Double value= Double.parseDouble(line.replace("node_memory_MemAvailable_bytes","").trim());
-                                nodeInfo.setNode_memory_MemAvailable_bytes(value);
-                            }
-                            else if(line.startsWith("node_load1")&&!line.startsWith("node_load15"))
-                            {
-                                Double value= Double.parseDouble(line.replace("node_load1","").trim());
-                                nodeInfo.setNode_load_1m(value);
+                                e.printStackTrace();
                             }
                         }
                     }
