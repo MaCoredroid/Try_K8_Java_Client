@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CheckStatus extends TimerTask {
     CoreV1Api api = new CoreV1Api();
@@ -50,14 +51,13 @@ public class CheckStatus extends TimerTask {
 
         }
         for(Map.Entry<String, NodeInfo> entry : nodeMap.entrySet()) {
-            NodeInfo old=entry.getValue();
-            NodeInfo nodeInfo=new NodeInfo();
+            NodeInfo nodeInfo=entry.getValue();
             String nodeIP=entry.getKey();
-            nodeInfo.setNodeIP(nodeIP);
             String command="curl http://"+nodeIP+":9100/metrics | grep 'node_memory_MemTotal_bytes\\|node_memory_MemAvailable_bytes\\|node_load1'";
 
             final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});
 
+            AtomicBoolean flag= new AtomicBoolean(false);
             new Thread(() -> {
                 BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
                 String line;
@@ -67,14 +67,23 @@ public class CheckStatus extends TimerTask {
                         if(!line.startsWith("#")) {
                             try {
                                 if (line.startsWith("node_memory_MemTotal_bytes")) {
-                                    Double value = Double.parseDouble(line.replace("node_memory_MemTotal_bytes", "").trim());
-                                    nodeInfo.setNode_memory_MemTotal_bytes(value);
+                                    double value = Double.parseDouble(line.replace("node_memory_MemTotal_bytes", "").trim());
+                                    if(value!=0.0) {
+                                        flag.set(true);
+                                        nodeInfo.setNode_memory_MemTotal_bytes(value);
+                                    }
                                 } else if (line.startsWith("node_memory_MemAvailable_bytes")) {
-                                    Double value = Double.parseDouble(line.replace("node_memory_MemAvailable_bytes", "").trim());
-                                    nodeInfo.setNode_memory_MemAvailable_bytes(value);
+                                    double value = Double.parseDouble(line.replace("node_memory_MemAvailable_bytes", "").trim());
+                                    if(value!=0.0) {
+                                        flag.set(true);
+                                        nodeInfo.setNode_memory_MemAvailable_bytes(value);
+                                    }
                                 } else if (line.startsWith("node_load1") && !line.startsWith("node_load15")) {
-                                    Double value = Double.parseDouble(line.replace("node_load1", "").trim());
-                                    nodeInfo.setNode_load_1m(value);
+                                    double value = Double.parseDouble(line.replace("node_load1", "").trim());
+                                    if(value!=0.0) {
+                                        flag.set(true);
+                                        nodeInfo.setNode_load_1m(value);
+                                    }
                                 }
                             }catch (Exception e)
                             {
@@ -91,10 +100,9 @@ public class CheckStatus extends TimerTask {
             } catch (Exception ignored) {
 
             }
-            if(!nodeInfo.getNode_load_1m().equals(old.getNode_load_1m()))
+            if(flag.equals(new AtomicBoolean(true)))
             {
                 System.out.println(nodeInfo);
-                System.out.println("\n");
             }
             nodeMap.put(nodeIP,nodeInfo);
         }
