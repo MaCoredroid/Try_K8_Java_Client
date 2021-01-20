@@ -80,7 +80,7 @@ public class CheckNodeStatus extends TimerTask {
             }
             if(flag.get())
             {
-                System.out.println(nodeInfo);
+//                System.out.println(nodeInfo);
             }
             nodeMap.put(nodeIP,nodeInfo);
         }
