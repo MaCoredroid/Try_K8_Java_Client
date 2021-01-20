@@ -15,10 +15,7 @@ import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.Configuration;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
-import io.kubernetes.client.openapi.models.V1Pod;
-import io.kubernetes.client.openapi.models.V1PodList;
-import io.kubernetes.client.openapi.models.V1Service;
-import io.kubernetes.client.openapi.models.V1ServiceList;
+import io.kubernetes.client.openapi.models.*;
 import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
 import mc.DTO.NodeInfo;
@@ -74,6 +71,11 @@ public class InClusterClientExample {
             }
 
 
+        }
+        V1NodeList nodeList=api.listNode(null,null,null,null,null,null,null,null,null);
+        for(V1Node node:nodeList.getItems())
+        {
+            System.out.println(node);
         }
         V1PodList list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
         for (V1Pod item : list.getItems()) {
