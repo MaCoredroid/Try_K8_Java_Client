@@ -65,7 +65,7 @@ public class InClusterClientExample {
         CoreV1Api api = new CoreV1Api();
 
         HashMap<String,ServiceInfo> serviceNameMap = new HashMap<>();
-        HashMap<String, NodeInfo> podMap=new HashMap<>();
+        HashMap<String, NodeInfo> nodeMap=new HashMap<>();
         // invokes the CoreV1Api client
         V1ServiceList serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null);
         for (V1Service item : serviceList.getItems()) {
@@ -94,7 +94,9 @@ public class InClusterClientExample {
 
 
         for(PodInfo podInfo:pods) {
+            NodeInfo nodeInfo=new NodeInfo();
             String nodeIP=podInfo.getNodeIP();
+            nodeInfo.setNodeIP(nodeIP);
             String command="curl http://"+nodeIP+":9100/metrics | grep 'node_memory_MemTotal_bytes\\|node_memory_MemAvailable_bytes'";
             final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});
             new Thread(() -> {
@@ -107,28 +109,28 @@ public class InClusterClientExample {
                             if(line.startsWith("node_memory_MemTotal_bytes"))
                             {
                                 Double value= Double.parseDouble(line.replace("node_memory_MemTotal_bytes","").trim());
-                                System.out.println(value);
+                                nodeInfo.setNode_memory_MemTotal_bytes(value);
                             }
                             else if(line.startsWith("node_memory_MemAvailable_bytes"))
                             {
                                 Double value= Double.parseDouble(line.replace("node_memory_MemAvailable_bytes","").trim());
-                                System.out.println(value);
+                                nodeInfo.setNode_memory_MemAvailable_bytes(value);
                             }
-
                         }
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }).start();
 
+            nodeMap.put(nodeIP,nodeInfo);
             try {
                 p.waitFor();
             } catch (Exception ignored) {
 
             }
         }
+        System.out.println(nodeMap);
 
         
     }
