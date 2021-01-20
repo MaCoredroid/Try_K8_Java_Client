@@ -50,8 +50,10 @@ public class CheckStatus extends TimerTask {
 
         }
         for(Map.Entry<String, NodeInfo> entry : nodeMap.entrySet()) {
-            NodeInfo nodeInfo=entry.getValue();
+            NodeInfo old=entry.getValue();
+            NodeInfo nodeInfo=new NodeInfo();
             String nodeIP=entry.getKey();
+            nodeInfo.setNodeIP(nodeIP);
             String command="curl http://"+nodeIP+":9100/metrics | grep 'node_memory_MemTotal_bytes\\|node_memory_MemAvailable_bytes\\|node_load1'";
 
             final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});
@@ -89,9 +91,12 @@ public class CheckStatus extends TimerTask {
             } catch (Exception ignored) {
 
             }
+            if(!nodeInfo.getNode_load_1m().equals(old.getNode_load_1m()))
+            {
+                System.out.println(nodeInfo);
+                System.out.println("\n");
+            }
             nodeMap.put(nodeIP,nodeInfo);
         }
-        System.out.println(nodeMap);
-        System.out.println("\n");
     }
 }
