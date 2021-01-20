@@ -52,7 +52,12 @@ public class CheckStatus extends TimerTask {
             NodeInfo nodeInfo=entry.getValue();
             String nodeIP=entry.getKey();
             String command="curl http://"+nodeIP+":9100/metrics | grep 'node_memory_MemTotal_bytes\\|node_memory_MemAvailable_bytes\\|node_load1'";
-            final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});
+            try {
+                final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
             new Thread(() -> {
                 BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
                 String line;
