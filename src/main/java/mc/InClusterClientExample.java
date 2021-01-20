@@ -81,7 +81,7 @@ public class InClusterClientExample {
             nodeInfo.setNode_cpu_total(Objects.requireNonNull(Objects.requireNonNull(node.getStatus()).getCapacity()).get("cpu").getNumber().doubleValue());
             nodeMap.put(nodeIP,nodeInfo);
         }
-        while(true) {
+        do {
             V1PodList list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
             for (V1Pod item : list.getItems()) {
                 if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
@@ -131,7 +131,7 @@ public class InClusterClientExample {
                 nodeMap.put(nodeIP, nodeInfo);
             }
             System.out.println(nodeMap);
-        }
+        } while (true);
 
         
     }
