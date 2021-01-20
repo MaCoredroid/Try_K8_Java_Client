@@ -21,6 +21,7 @@ import io.kubernetes.client.openapi.models.V1Service;
 import io.kubernetes.client.openapi.models.V1ServiceList;
 import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
+import mc.DTO.NodeInfo;
 import mc.DTO.PodInfo;
 import mc.DTO.ServiceInfo;
 import okhttp3.OkHttpClient;
@@ -63,10 +64,11 @@ public class InClusterClientExample {
         CoreV1Api api = new CoreV1Api();
 
         HashMap<String,ServiceInfo> serviceNameMap = new HashMap<>();
+        HashMap<String, NodeInfo> podMap=new HashMap<>();
         // invokes the CoreV1Api client
         V1ServiceList serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null);
         for (V1Service item : serviceList.getItems()) {
-            if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
+            if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")&&Objects.equals(Objects.requireNonNull(item.getMetadata()).getName(), "application")) {
                 serviceNameMap.put(item.getMetadata().getName(),new ServiceInfo(item.getMetadata().getName(), Objects.requireNonNull(item.getSpec()).getClusterIP(),new ArrayList<>()));
             }
 
