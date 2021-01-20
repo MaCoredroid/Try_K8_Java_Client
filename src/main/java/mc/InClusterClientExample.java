@@ -99,10 +99,10 @@ public class InClusterClientExample {
 
             new Thread(() -> {
                 BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                String line = null;
+                String line;
 
                 try {
-                    if ((line = input.readLine()) != null) {
+                    while ((line = input.readLine()) != null) {
                         System.out.println(line);
                     }
 
