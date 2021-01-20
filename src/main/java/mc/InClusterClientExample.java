@@ -97,7 +97,7 @@ public class InClusterClientExample {
             NodeInfo nodeInfo=new NodeInfo();
             String nodeIP=podInfo.getNodeIP();
             nodeInfo.setNodeIP(nodeIP);
-            String command="curl http://"+nodeIP+":9100/metrics | grep 'node_memory_MemTotal_bytes\\|node_memory_MemAvailable_bytes'";
+            String command="curl http://"+nodeIP+":9100/metrics | grep 'node_memory_MemTotal_bytes\\|node_memory_MemAvailable_bytes\\|node_load1'";
             final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});
             new Thread(() -> {
                 BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -115,6 +115,11 @@ public class InClusterClientExample {
                             {
                                 Double value= Double.parseDouble(line.replace("node_memory_MemAvailable_bytes","").trim());
                                 nodeInfo.setNode_memory_MemAvailable_bytes(value);
+                            }
+                            else if(line.startsWith("node_load1")&&!line.startsWith("node_load15"))
+                            {
+                                Double value= Double.parseDouble(line.replace("node_load1","").trim());
+                                nodeInfo.setNode_load_1m(value);
                             }
                         }
                     }
