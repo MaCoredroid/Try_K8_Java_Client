@@ -32,6 +32,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -103,7 +104,13 @@ public class InClusterClientExample {
                 try {
                     while ((line = input.readLine()) != null) {
                         if(!line.startsWith("#")) {
-                            System.out.println(line);
+                            if(line.startsWith("node_memory_MemTotal_bytes"))
+                            {
+                                String memTotal=line.replace("node_memory_MemTotal_bytes","");
+                                Double menTotal= new BigDecimal(memTotal).doubleValue();
+                                System.out.println(memTotal);
+                            }
+
                         }
                     }
 
