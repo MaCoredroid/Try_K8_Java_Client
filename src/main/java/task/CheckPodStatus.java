@@ -12,7 +12,7 @@ import java.util.TimerTask;
 
 public class CheckPodStatus extends TimerTask {
     CoreV1Api api = new CoreV1Api();
-    HashMap<String, ServiceInfo> serviceNameMap = new HashMap<>()
+    HashMap<String, ServiceInfo> serviceNameMap = new HashMap<>();
     public CheckPodStatus(CoreV1Api api, HashMap<String, ServiceInfo> serviceNameMap){
         this.api=api;
         this.serviceNameMap=serviceNameMap;
