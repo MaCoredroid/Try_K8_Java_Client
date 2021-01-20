@@ -94,7 +94,7 @@ public class InClusterClientExample {
 
         for(PodInfo podInfo:pods) {
             String nodeIP=podInfo.getNodeIP();
-            String command="curl http://"+nodeIP+":9100/metrics | grep \\\"node_memory_MemTotal_bytes\"";
+            String command="curl http://"+nodeIP+":9100/metrics | grep \"node_memory_MemTotal_bytes\"";
             final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});
 
             new Thread(() -> {
@@ -111,11 +111,11 @@ public class InClusterClientExample {
                 }
             }).start();
 
-//            try {
-//                p.waitFor();
-//            } catch (Exception ignored) {
-//
-//            }
+            try {
+                p.waitFor();
+            } catch (Exception ignored) {
+
+            }
         }
 
         
