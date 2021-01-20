@@ -49,7 +49,6 @@ public class CheckStatus extends TimerTask {
             }
 
         }
-        System.out.println(serviceNameMap);
         for(Map.Entry<String, NodeInfo> entry : nodeMap.entrySet()) {
             NodeInfo nodeInfo=entry.getValue();
             String nodeIP=entry.getKey();
@@ -93,5 +92,6 @@ public class CheckStatus extends TimerTask {
             nodeMap.put(nodeIP,nodeInfo);
         }
         System.out.println(nodeMap);
+        System.out.println("\n");
     }
 }
