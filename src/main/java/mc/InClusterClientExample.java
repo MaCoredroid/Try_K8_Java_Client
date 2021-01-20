@@ -19,18 +19,13 @@ import io.kubernetes.client.openapi.models.*;
 import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
 import mc.DTO.NodeInfo;
-import mc.DTO.PodInfo;
 import mc.DTO.ServiceInfo;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import task.CheckStatus;
+import task.CheckNodeList;
+import task.CheckNodeStatus;
+import task.CheckPodStatus;
 
-import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -65,26 +60,13 @@ public class InClusterClientExample {
         HashMap<String,ServiceInfo> serviceNameMap = new HashMap<>();
         HashMap<String, NodeInfo> nodeMap=new HashMap<>();
         // invokes the CoreV1Api client
-        V1ServiceList serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null);
-        for (V1Service item : serviceList.getItems()) {
-            if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")&&Objects.equals(Objects.requireNonNull(item.getMetadata()).getName(), "application")) {
-                serviceNameMap.put(item.getMetadata().getName(),new ServiceInfo(item.getMetadata().getName(), Objects.requireNonNull(item.getSpec()).getClusterIP(),new ArrayList<>()));
-            }
-
-
-        }
-        V1NodeList nodeList=api.listNode(null,null,null,null,null,null,null,null,null);
-        for(V1Node node:nodeList.getItems())
-        {
-            String nodeIP= Objects.requireNonNull(Objects.requireNonNull(node.getStatus()).getAddresses()).get(0).getAddress();
-            NodeInfo nodeInfo=new NodeInfo();
-            nodeInfo.setNodeIP(nodeIP);
-            nodeInfo.setNode_cpu_total(Objects.requireNonNull(Objects.requireNonNull(node.getStatus()).getCapacity()).get("cpu").getNumber().doubleValue());
-            nodeMap.put(nodeIP,nodeInfo);
-        }
         Timer t = new Timer();
-        CheckStatus checkStatus=new CheckStatus(api,serviceNameMap,nodeMap);
-        t.scheduleAtFixedRate(checkStatus, 0, 500);
+        CheckNodeStatus checkNodeStatus =new CheckNodeStatus(api,nodeMap);
+        CheckNodeList checkNodeList=new CheckNodeList(api,nodeMap);
+        CheckPodStatus checkPodStatus=new CheckPodStatus(api,serviceNameMap);
+        t.scheduleAtFixedRate(checkNodeStatus, 0, 500);
+        t.scheduleAtFixedRate(checkNodeList, 0, 5000);
+        t.scheduleAtFixedRate(checkPodStatus, 0, 3000);
 
 
         

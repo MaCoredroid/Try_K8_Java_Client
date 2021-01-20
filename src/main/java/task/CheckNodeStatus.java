@@ -17,39 +17,17 @@ import java.util.Objects;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class CheckStatus extends TimerTask {
+public class CheckNodeStatus extends TimerTask {
     CoreV1Api api = new CoreV1Api();
-
-    HashMap<String, ServiceInfo> serviceNameMap = new HashMap<>();
     HashMap<String, NodeInfo> nodeMap=new HashMap<>();
-    public CheckStatus(CoreV1Api api,HashMap<String, ServiceInfo> serviceNameMap,HashMap<String, NodeInfo> nodeMap)
+    public CheckNodeStatus(CoreV1Api api, HashMap<String, NodeInfo> nodeMap)
     {
         this.api=api;
-        this.serviceNameMap=serviceNameMap;
         this.nodeMap=nodeMap;
     }
     @SneakyThrows
     @Override
     public void run() {
-        V1PodList list = null;
-        try {
-             list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
-        }catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        for (V1Pod item : list.getItems()) {
-            if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
-                String[] arrOfStr = Objects.requireNonNull(Objects.requireNonNull(item.getMetadata()).getName()).split("-", 2);
-                String serviceName=arrOfStr[0];
-                if(!serviceNameMap.containsKey(serviceName))
-                {
-                    continue;
-                }
-                serviceNameMap.get(serviceName).getPodInfos().add(new PodInfo(Objects.requireNonNull(item.getMetadata()).getName(),Objects.requireNonNull(item.getStatus()).getPodIP(),Objects.requireNonNull(item.getStatus()).getHostIP()));
-            }
-
-        }
         for(Map.Entry<String, NodeInfo> entry : nodeMap.entrySet()) {
             NodeInfo nodeInfo=entry.getValue();
             String nodeIP=entry.getKey();

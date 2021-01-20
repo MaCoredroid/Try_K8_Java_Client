@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -13,6 +12,5 @@ import java.util.List;
 public class ServiceInfo {
     private String serviceName="";
     private String clusterIP="";
-    private List<PodInfo> podInfos=new ArrayList<>();
-
+    private HashMap<String,PodInfo> pods=new HashMap<>();
 }
