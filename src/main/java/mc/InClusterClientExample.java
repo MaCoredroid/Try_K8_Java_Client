@@ -84,7 +84,7 @@ public class InClusterClientExample {
         }
         Timer t = new Timer();
         CheckStatus checkStatus=new CheckStatus(api,serviceNameMap,nodeMap);
-        t.scheduleAtFixedRate(checkStatus, 0, 100);
+        t.scheduleAtFixedRate(checkStatus, 0, 500);
 
 
         
