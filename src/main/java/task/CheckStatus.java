@@ -100,7 +100,7 @@ public class CheckStatus extends TimerTask {
             } catch (Exception ignored) {
 
             }
-            if(flag.equals(new AtomicBoolean(true)))
+            if(flag.get())
             {
                 System.out.println(nodeInfo);
             }
