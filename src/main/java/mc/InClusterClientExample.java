@@ -127,6 +127,7 @@ public class InClusterClientExample {
             } catch (Exception ignored) {
 
             }
+            nodeInfo.setMemoryPercents(nodeInfo.getNode_memory_MemAvailable_bytes()/nodeInfo.getNode_memory_MemTotal_bytes());
             nodeMap.put(nodeIP,nodeInfo);
         }
         System.out.println(nodeMap);
