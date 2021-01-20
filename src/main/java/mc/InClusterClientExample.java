@@ -89,29 +89,34 @@ public class InClusterClientExample {
         }
         System.out.println(serviceNameMap);
 
-        final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c","curl http://10.97.27.171:9100/metrics | grep 'nodename'"});
+        List<PodInfo> pods=serviceNameMap.getOrDefault("application",new ServiceInfo()).getPodInfos();
 
-        new Thread(new Runnable() {
-            public void run() {
-                BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                String line = null;
+        for(PodInfo podInfo:pods) {
+            String nodeIP=podInfo.getNodeIP();
+            String command="curl http://"+nodeIP+":9100/metrics | grep \\\"node_memory_MemTotal_bytes\"";
+            final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});
 
-                try {
-                    if ((line = input.readLine()) != null) {
-                        System.out.println(line);
+            new Thread(new Runnable() {
+                public void run() {
+                    BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                    String line = null;
+
+                    try {
+                        if ((line = input.readLine()) != null) {
+                            System.out.println(line);
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+            }).start();
+
+            try {
+                p.waitFor();
+            } catch (Exception ignored) {
+
             }
-        }).start();
-
-        try {
-            p.waitFor();
-        }catch (Exception ignored)
-        {
-
         }
 
         
