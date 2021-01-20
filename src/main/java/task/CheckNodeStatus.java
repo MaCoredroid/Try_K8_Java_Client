@@ -34,8 +34,6 @@ public class CheckNodeStatus extends TimerTask {
             String command="curl http://"+nodeIP+":9100/metrics | grep 'node_memory_MemTotal_bytes\\|node_memory_MemAvailable_bytes\\|node_load1'";
 
             final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});
-
-            AtomicBoolean flag= new AtomicBoolean(false);
             new Thread(() -> {
                 BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
                 String line;
@@ -47,19 +45,16 @@ public class CheckNodeStatus extends TimerTask {
                                 if (line.startsWith("node_memory_MemTotal_bytes")) {
                                     double value = Double.parseDouble(line.replace("node_memory_MemTotal_bytes", "").trim());
                                     if(value!=0.0) {
-                                        flag.set(true);
                                         nodeInfo.setNode_memory_MemTotal_bytes(value);
                                     }
                                 } else if (line.startsWith("node_memory_MemAvailable_bytes")) {
                                     double value = Double.parseDouble(line.replace("node_memory_MemAvailable_bytes", "").trim());
                                     if(value!=0.0) {
-                                        flag.set(true);
                                         nodeInfo.setNode_memory_MemAvailable_bytes(value);
                                     }
                                 } else if (line.startsWith("node_load1") && !line.startsWith("node_load15")) {
                                     double value = Double.parseDouble(line.replace("node_load1", "").trim());
                                     if(value!=0.0) {
-                                        flag.set(true);
                                         nodeInfo.setNode_load_1m(value);
                                     }
                                 }
@@ -77,10 +72,6 @@ public class CheckNodeStatus extends TimerTask {
                 p.waitFor();
             } catch (Exception ignored) {
 
-            }
-            if(flag.get())
-            {
-//                System.out.println(nodeInfo);
             }
             nodeMap.put(nodeIP,nodeInfo);
         }

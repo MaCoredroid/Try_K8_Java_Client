@@ -29,7 +29,7 @@ public class CheckNodeList extends TimerTask {
         for(V1Node node: Objects.requireNonNull(nodeList).getItems())
         {
             String nodeIP= Objects.requireNonNull(Objects.requireNonNull(node.getStatus()).getAddresses()).get(0).getAddress();
-            NodeInfo nodeInfo=new NodeInfo();
+            NodeInfo nodeInfo=nodeMap.getOrDefault(nodeIP, new NodeInfo());
             nodeInfo.setNodeIP(nodeIP);
             nodeInfo.setNode_cpu_total(Objects.requireNonNull(Objects.requireNonNull(node.getStatus()).getCapacity()).get("cpu").getNumber().doubleValue());
             nodeMap.put(nodeIP,nodeInfo);
