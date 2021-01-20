@@ -103,7 +103,9 @@ public class InClusterClientExample {
 
                 try {
                     while ((line = input.readLine()) != null) {
-                        System.out.println(line);
+                        if(!line.startsWith("#")) {
+                            System.out.println(line);
+                        }
                     }
 
                 } catch (IOException e) {
