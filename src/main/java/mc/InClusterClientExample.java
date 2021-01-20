@@ -107,7 +107,7 @@ public class InClusterClientExample {
                             if(line.startsWith("node_memory_MemTotal_bytes"))
                             {
                                 String memTotal=line.replace("node_memory_MemTotal_bytes","");
-//                                Double menTotal= new BigDecimal(memTotal).doubleValue();
+                                Double menTotal= Double.parseDouble(memTotal.trim());
                                 System.out.println(memTotal);
                             }
 
