@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class PodInfo {
     private String PodName="";
     private String PodIP="";
+    private String nodeIP="";
 }

@@ -81,7 +81,7 @@ public class InClusterClientExample {
                 {
                     continue;
                 }
-                serviceNameMap.get(serviceName).getPodInfos().add(new PodInfo(Objects.requireNonNull(item.getMetadata()).getName(),Objects.requireNonNull(item.getStatus()).getPodIP()));
+                serviceNameMap.get(serviceName).getPodInfos().add(new PodInfo(Objects.requireNonNull(item.getMetadata()).getName(),Objects.requireNonNull(item.getStatus()).getPodIP(),Objects.requireNonNull(item.getStatus()).getHostIP()));
             }
 
         }
@@ -95,9 +95,8 @@ public class InClusterClientExample {
                 String line = null;
 
                 try {
-                    while ((line = input.readLine()) != null) {
+                    if ((line = input.readLine()) != null) {
                         System.out.println(line);
-                        break;
                     }
 
                 } catch (IOException e) {
@@ -113,5 +112,6 @@ public class InClusterClientExample {
 
         }
 
+        
     }
 }
