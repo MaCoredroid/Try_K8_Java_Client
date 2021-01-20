@@ -122,13 +122,12 @@ public class InClusterClientExample {
                     e.printStackTrace();
                 }
             }).start();
-
-            nodeMap.put(nodeIP,nodeInfo);
             try {
                 p.waitFor();
             } catch (Exception ignored) {
 
             }
+            nodeMap.put(nodeIP,nodeInfo);
         }
         System.out.println(nodeMap);
 
