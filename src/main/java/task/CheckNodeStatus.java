@@ -57,9 +57,8 @@ public class CheckNodeStatus extends TimerTask {
                                         nodeInfo.setNode_load_cpu_percents(value/nodeInfo.getNode_cpu_total());
                                     }
                                 } else if(line.startsWith("node_cpu_seconds_total")){
-                                    System.out.println(line);
-                                    System.out.println(line.trim().split(" ", 2)[1]);
                                     count+=Double.parseDouble(line.trim().split(" ", 2)[1]);
+                                    System.out.println(count);
                                 } else if(line.startsWith("node_time_seconds")){
                                     time=Double.parseDouble(line.trim().split(" ", 2)[1]);
                                 }
@@ -72,6 +71,7 @@ public class CheckNodeStatus extends TimerTask {
                         double idleDiff=count-nodeInfo.getCpu_idle_time();
                         idleDiff=idleDiff/nodeInfo.getNode_cpu_total();
                         nodeInfo.setCpu_idle_percent(1-idleDiff/timeDiff);
+                        System.out.println(count);
                         nodeInfo.setCpu_idle_time(count);
                         nodeInfo.setTotal_time(time);
                     }
