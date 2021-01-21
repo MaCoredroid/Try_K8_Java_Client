@@ -57,9 +57,9 @@ public class InClusterClientExample {
         // set the global default api-client to the in-cluster one from above
         Configuration.setDefaultApiClient(client);
 
+
         // the CoreV1Api loads default api-client from global configuration.
         CoreV1Api api = new CoreV1Api();
-
         HashMap<String,ServiceInfo> serviceNameMap = new HashMap<>();
         HashMap<String, NodeInfo> nodeMap=new HashMap<>();
         // invokes the CoreV1Api client
@@ -67,7 +67,7 @@ public class InClusterClientExample {
         CheckNodeStatus checkNodeStatus =new CheckNodeStatus(api,nodeMap);
         CheckNodeList checkNodeList=new CheckNodeList(api,nodeMap);
         CheckPodStatus checkPodStatus=new CheckPodStatus(api,serviceNameMap);
-        CheckPodUsage checkPodUsage=new CheckPodUsage();
+        CheckPodUsage checkPodUsage=new CheckPodUsage(client);
         V1ServiceList serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null);
         for (V1Service item : serviceList.getItems()) {
             if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")&&Objects.equals(Objects.requireNonNull(item.getMetadata()).getName(), "application")) {

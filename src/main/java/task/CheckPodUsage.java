@@ -1,39 +1,26 @@
 package task;
 
+import io.kubernetes.client.custom.NodeMetrics;
+import io.kubernetes.client.openapi.ApiClient;
+import io.kubernetes.client.openapi.models.V1Node;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.tuple.Pair;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.List;
 import java.util.TimerTask;
 
+import static io.kubernetes.client.extended.kubectl.Kubectl.top;
+;
 public class CheckPodUsage extends TimerTask {
-    public CheckPodUsage()
+    private final ApiClient client;
+    public CheckPodUsage(ApiClient client)
     {
-
+        this.client=client;
     }
     @SneakyThrows
     @Override
     public void run() {
-        String command="kubectl top pods";
-
-        final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});
-        new Thread(() -> {
-            BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line;
-
-            try {
-                while ((line = input.readLine()) != null) {
-                    System.out.println(line);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-        try {
-            p.waitFor();
-        } catch (Exception ignored) {
-
-        }
+        List<Pair<V1Node, NodeMetrics>> nodesMetrics = top(V1Node.class, NodeMetrics.class).apiClient(client).metric("cpu").execute();
+        System.out.println(nodesMetrics);
     }
 }
