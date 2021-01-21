@@ -13,4 +13,6 @@ public class PodInfo {
     private String PodName="";
     private String PodIP="";
     private String nodeIP="";
+    private Double cpu=0.0;
+    private Double memory=0.0;
 }
