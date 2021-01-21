@@ -24,7 +24,7 @@ public class CheckNodeStatus extends TimerTask {
     public void run() {
         for(Map.Entry<String, NodeInfo> entry : nodeMap.entrySet()) {
             NodeInfo nodeInfo=entry.getValue();
-            String nodeIP=entry.getValue().getNodeIP();
+            String nodeIP=entry.getKey();
             String command="curl http://"+nodeIP+":9100/metrics | grep 'node_memory_MemTotal_bytes\\|node_memory_MemAvailable_bytes\\|node_load1'";
 
             final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});

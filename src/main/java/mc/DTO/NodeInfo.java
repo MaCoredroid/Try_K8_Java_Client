@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NodeInfo {
-    String nodeIP="";
+    String nodeName="";
     Double node_memory_MemTotal_bytes=0.0;
     Double node_memory_MemAvailable_bytes=0.0;
     Double node_memory_percents=0.0;

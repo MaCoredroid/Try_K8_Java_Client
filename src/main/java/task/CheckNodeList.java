@@ -30,10 +30,10 @@ public class CheckNodeList extends TimerTask {
         {
             String nodeIP= Objects.requireNonNull(Objects.requireNonNull(node.getStatus()).getAddresses()).get(0).getAddress();
             String nodeName= Objects.requireNonNull(node.getMetadata()).getName();
-            NodeInfo nodeInfo=nodeMap.getOrDefault(nodeName, new NodeInfo());
-            nodeInfo.setNodeIP(nodeIP);
+            NodeInfo nodeInfo=nodeMap.getOrDefault(nodeIP, new NodeInfo());
+            nodeInfo.setNodeName(nodeName);
             nodeInfo.setNode_cpu_total(Objects.requireNonNull(Objects.requireNonNull(node.getStatus()).getCapacity()).get("cpu").getNumber().doubleValue());
-            nodeMap.put(nodeName,nodeInfo);
+            nodeMap.put(nodeIP,nodeInfo);
         }
     }
 }

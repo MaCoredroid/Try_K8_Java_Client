@@ -20,10 +20,7 @@ import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
 import mc.DTO.NodeInfo;
 import mc.DTO.ServiceInfo;
-import task.CheckNodeList;
-import task.CheckNodeStatus;
-import task.CheckPodStatus;
-import task.CheckPodAndNodeUsage;
+import task.*;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -66,6 +63,7 @@ public class InClusterClientExample {
         CheckNodeList checkNodeList=new CheckNodeList(api,nodeMap);
         CheckPodStatus checkPodStatus=new CheckPodStatus(api,serviceNameMap);
         CheckPodAndNodeUsage checkPodAndNodeUsage =new CheckPodAndNodeUsage(client,nodeMap,serviceNameMap);
+        Calculate calculate=new Calculate(serviceNameMap, nodeMap);
         V1ServiceList serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null);
         for (V1Service item : serviceList.getItems()) {
             if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")&&Objects.equals(Objects.requireNonNull(item.getMetadata()).getName(), "application")) {
@@ -76,6 +74,7 @@ public class InClusterClientExample {
         t.scheduleAtFixedRate(checkPodAndNodeUsage, 0, 500);
         t.scheduleAtFixedRate(checkNodeList, 0, 5000);
         t.scheduleAtFixedRate(checkPodStatus, 0, 5000);
+        t.scheduleAtFixedRate(calculate, 0, 1000);
 
 
 

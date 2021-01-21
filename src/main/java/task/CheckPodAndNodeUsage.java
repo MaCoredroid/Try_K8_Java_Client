@@ -35,11 +35,11 @@ public class CheckPodAndNodeUsage extends TimerTask {
     public void run() {
         List<Pair<V1Node, NodeMetrics>> nodesMetrics = top(V1Node.class, NodeMetrics.class).apiClient(client).execute();
         for(Pair<V1Node, NodeMetrics> nodeMetricsPair:nodesMetrics) {
-            String nodeName=nodeMetricsPair.getRight().getMetadata().getName();
-            NodeInfo nodeInfo=nodeMap.getOrDefault(nodeName,new NodeInfo());
+            String nodeIP= Objects.requireNonNull(Objects.requireNonNull(nodeMetricsPair.getLeft().getStatus()).getAddresses()).get(0).getAddress();
+            NodeInfo nodeInfo=nodeMap.getOrDefault(nodeIP,new NodeInfo());
             nodeInfo.setNode_top_cpu_value(nodeMetricsPair.getRight().getUsage().get("cpu").getNumber().doubleValue());
             nodeInfo.setNode_top_cpu_percents(nodeMetricsPair.getRight().getUsage().get("cpu").getNumber().doubleValue()/nodeInfo.getNode_cpu_total());
-            nodeMap.put(nodeName,nodeInfo);
+            nodeMap.put(nodeIP,nodeInfo);
         }
         List<Pair<V1Pod, PodMetrics>> podsMetrics = top(V1Pod.class, PodMetrics.class).apiClient(client).namespace("default").execute();
         for(Pair<V1Pod, PodMetrics> podMetricsPair:podsMetrics) {
@@ -53,7 +53,5 @@ public class CheckPodAndNodeUsage extends TimerTask {
             }
 
         }
-        System.out.println(serviceNameMap);
-
     }
 }
