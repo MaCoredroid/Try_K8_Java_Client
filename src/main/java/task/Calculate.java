@@ -26,9 +26,9 @@ public class Calculate extends TimerTask {
             if(nodeMap.containsKey(nodeIP))
             {
                 NodeInfo nodeInfo=nodeMap.get(nodeIP);
-                System.out.println("Percents  "+entry.getValue().getCpu()/nodeInfo.getNode_cpu_total()+"\n");
-                System.out.println("Estimate  "+(1-nodeInfo.getNode_top_cpu_value())/entry.getValue().getCpu()+"\n");
-                System.out.println("NowNode  "+nodeInfo.getNode_top_cpu_percents()+"\n");
+                System.out.println("Percents  "+entry.getValue().getCpu()/nodeInfo.getNode_cpu_total()+"  ");
+                System.out.println("Estimate  "+(1-nodeInfo.getNode_top_cpu_value())/entry.getValue().getCpu()+"  ");
+                System.out.println("NowNode  "+nodeInfo.getNode_top_cpu_percents()+"  ");
                 System.out.println("NowNode  "+nodeInfo.getNode_load_cpu_percents()+"\n");
             }
         }
