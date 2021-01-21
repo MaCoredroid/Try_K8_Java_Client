@@ -36,6 +36,7 @@ public class CheckNodeStatus extends TimerTask {
                     while ((line = input.readLine()) != null) {
                         double time=0.0;
                         double count=0.0;
+                        System.out.println(line);
                         if(!line.startsWith("#")) {
 
                             try {
@@ -84,6 +85,6 @@ public class CheckNodeStatus extends TimerTask {
             }
             nodeMap.put(entry.getKey(),nodeInfo);
         }
-        System.out.println(nodeMap);
+//        System.out.println(nodeMap);
     }
 }
