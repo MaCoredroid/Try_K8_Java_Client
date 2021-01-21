@@ -34,7 +34,12 @@ public class CheckPodStatus extends TimerTask {
                 {
                     continue;
                 }
-                serviceNameMap.get(serviceName).getPods().put(Objects.requireNonNull(item.getMetadata()).getName(),new PodInfo(Objects.requireNonNull(item.getMetadata()).getName(),Objects.requireNonNull(item.getStatus()).getPodIP(),Objects.requireNonNull(item.getStatus()).getHostIP()));
+                String podName=Objects.requireNonNull(item.getMetadata()).getName();
+                PodInfo podInfo=serviceNameMap.get(serviceName).getPods().getOrDefault(podName, new PodInfo());
+                podInfo.setPodName(podName);
+                podInfo.setNodeIP(Objects.requireNonNull(item.getStatus()).getHostIP());
+                podInfo.setPodIP(Objects.requireNonNull(item.getStatus()).getPodIP());
+                serviceNameMap.get(serviceName).getPods().put(podName,podInfo);
             }
 
         }

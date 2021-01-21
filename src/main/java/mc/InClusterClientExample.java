@@ -65,7 +65,7 @@ public class InClusterClientExample {
         CheckNodeStatus checkNodeStatus =new CheckNodeStatus(api,nodeMap);
         CheckNodeList checkNodeList=new CheckNodeList(api,nodeMap);
         CheckPodStatus checkPodStatus=new CheckPodStatus(api,serviceNameMap);
-        CheckPodAndNodeUsage checkPodAndNodeUsage =new CheckPodAndNodeUsage(client,nodeMap);
+        CheckPodAndNodeUsage checkPodAndNodeUsage =new CheckPodAndNodeUsage(client,nodeMap,serviceNameMap);
         V1ServiceList serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null);
         for (V1Service item : serviceList.getItems()) {
             if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")&&Objects.equals(Objects.requireNonNull(item.getMetadata()).getName(), "application")) {

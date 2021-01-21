@@ -7,11 +7,14 @@ import io.kubernetes.client.openapi.models.V1Node;
 import io.kubernetes.client.openapi.models.V1Pod;
 import lombok.SneakyThrows;
 import mc.DTO.NodeInfo;
+import mc.DTO.PodInfo;
+import mc.DTO.ServiceInfo;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jose4j.json.internal.json_simple.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.TimerTask;
 
 import static io.kubernetes.client.extended.kubectl.Kubectl.top;
@@ -19,10 +22,12 @@ import static io.kubernetes.client.extended.kubectl.Kubectl.top;
 public class CheckPodAndNodeUsage extends TimerTask {
     private final ApiClient client;
     HashMap<String, NodeInfo> nodeMap=new HashMap<>();
-    public CheckPodAndNodeUsage(ApiClient client,HashMap<String, NodeInfo> nodeMap)
+    HashMap<String, ServiceInfo> serviceNameMap = new HashMap<>();
+    public CheckPodAndNodeUsage(ApiClient client,HashMap<String, NodeInfo> nodeMap,HashMap<String, ServiceInfo> serviceNameMap)
     {
         this.client=client;
         this.nodeMap=nodeMap;
+        this.serviceNameMap=serviceNameMap;
     }
     @SneakyThrows
     @Override
@@ -35,8 +40,16 @@ public class CheckPodAndNodeUsage extends TimerTask {
             nodeInfo.setNode_top_cpu_percents(nodeMetricsPair.getRight().getUsage().get("cpu").getNumber().doubleValue()/nodeInfo.getNode_cpu_total());
             nodeMap.put(nodeName,nodeInfo);
         }
-        System.out.println(nodeMap);
         List<Pair<V1Pod, PodMetrics>> podsMetrics = top(V1Pod.class, PodMetrics.class).apiClient(client).namespace("default").execute();
-        System.out.println(podsMetrics);
+        for(Pair<V1Pod, PodMetrics> podMetricsPair:podsMetrics) {
+            String podName=podMetricsPair.getRight().getMetadata().getName();
+            String[] arrOfStr = Objects.requireNonNull(Objects.requireNonNull(podName).split("-", 2));
+            String serviceName=arrOfStr[0];
+            System.out.println(podMetricsPair.getRight());
+//            PodInfo podInfo=serviceNameMap.get(serviceName).getPods().getOrDefault(podName, new PodInfo());
+
+
+        }
+
     }
 }
