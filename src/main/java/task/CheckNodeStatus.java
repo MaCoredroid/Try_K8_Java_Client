@@ -49,7 +49,7 @@ public class CheckNodeStatus extends TimerTask {
                                 } else if (line.startsWith("node_load1") && !line.startsWith("node_load15")) {
                                     double value = Double.parseDouble(line.replace("node_load1", "").trim());
                                     if(value!=0.0) {
-                                        nodeInfo.setNode_load_1m(value);
+                                        nodeInfo.setNode_load_cpu_1m(value);
                                         nodeInfo.setNode_load_cpu_percents(value/nodeInfo.getNode_cpu_total());
                                     }
                                 }
