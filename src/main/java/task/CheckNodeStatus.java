@@ -85,6 +85,6 @@ public class CheckNodeStatus extends TimerTask {
             }
             nodeMap.put(entry.getKey(),nodeInfo);
         }
-        System.out.println(nodeMap);
+//        System.out.println(nodeMap);
     }
 }
