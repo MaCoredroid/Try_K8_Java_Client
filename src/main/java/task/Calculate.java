@@ -17,8 +17,8 @@ public class Calculate extends TimerTask {
     @Override
     public void run() {
         System.out.println(serviceNameMap);
-        System.out.println("/n");
+        System.out.println("%n");
         System.out.println(nodeMap);
-        System.out.println("/n");
+        System.out.println("%n");
     }
 }
