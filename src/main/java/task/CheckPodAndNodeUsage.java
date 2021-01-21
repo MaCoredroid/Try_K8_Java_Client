@@ -6,6 +6,7 @@ import io.kubernetes.client.openapi.models.V1Node;
 import lombok.SneakyThrows;
 import mc.DTO.NodeInfo;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jose4j.json.internal.json_simple.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,9 +30,9 @@ public class CheckPodAndNodeUsage extends TimerTask {
             String nodeName=nodeMetricsPair.getRight().getMetadata().getName();
             NodeInfo nodeInfo=nodeMap.getOrDefault(nodeName,new NodeInfo());
             nodeInfo.setNode_top_cpu_value(nodeMetricsPair.getRight().getUsage().get("cpu").getNumber().doubleValue());
-            nodeInfo.setNode_load_cpu_percents(nodeMetricsPair.getRight().getUsage().get("cpu").getNumber().doubleValue()/nodeInfo.getNode_cpu_total());
+            nodeInfo.setNode_top_cpu_percents(nodeMetricsPair.getRight().getUsage().get("cpu").getNumber().doubleValue()/nodeInfo.getNode_cpu_total());
             nodeMap.put(nodeName,nodeInfo);
         }
-        System.out.println(nodeMap);
+        System.out.println(new JSONObject(nodeMap).toJSONString());
     }
 }
