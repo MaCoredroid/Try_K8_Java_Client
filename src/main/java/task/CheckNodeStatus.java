@@ -45,6 +45,7 @@ public class CheckNodeStatus extends TimerTask {
                                     double value = Double.parseDouble(line.replace("node_memory_MemAvailable_bytes", "").trim());
                                     if(value!=0.0) {
                                         nodeInfo.setNode_memory_MemAvailable_bytes(value);
+                                        nodeInfo.setNode_memory_percents(1-value/nodeInfo.getNode_memory_MemTotal_bytes());
                                     }
                                 } else if (line.startsWith("node_load1") && !line.startsWith("node_load15")) {
                                     double value = Double.parseDouble(line.replace("node_load1", "").trim());
