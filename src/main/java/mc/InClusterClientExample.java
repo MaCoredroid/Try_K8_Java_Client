@@ -11,8 +11,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import io.kubernetes.client.custom.NodeMetrics;
-import io.kubernetes.client.custom.NodeMetricsList;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.Configuration;
@@ -25,7 +23,7 @@ import mc.DTO.ServiceInfo;
 import task.CheckNodeList;
 import task.CheckNodeStatus;
 import task.CheckPodStatus;
-import task.CheckPodUsage;
+import task.CheckPodAndNodeUsage;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -67,7 +65,7 @@ public class InClusterClientExample {
         CheckNodeStatus checkNodeStatus =new CheckNodeStatus(api,nodeMap);
         CheckNodeList checkNodeList=new CheckNodeList(api,nodeMap);
         CheckPodStatus checkPodStatus=new CheckPodStatus(api,serviceNameMap);
-        CheckPodUsage checkPodUsage=new CheckPodUsage(client);
+        CheckPodAndNodeUsage checkPodAndNodeUsage =new CheckPodAndNodeUsage(client,nodeMap);
         V1ServiceList serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null);
         for (V1Service item : serviceList.getItems()) {
             if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")&&Objects.equals(Objects.requireNonNull(item.getMetadata()).getName(), "application")) {
@@ -75,7 +73,7 @@ public class InClusterClientExample {
             }
         }
         t.scheduleAtFixedRate(checkNodeStatus, 0, 500);
-        t.scheduleAtFixedRate(checkPodUsage, 0, 500);
+        t.scheduleAtFixedRate(checkPodAndNodeUsage, 0, 500);
         t.scheduleAtFixedRate(checkNodeList, 0, 5000);
         t.scheduleAtFixedRate(checkPodStatus, 0, 5000);
 
