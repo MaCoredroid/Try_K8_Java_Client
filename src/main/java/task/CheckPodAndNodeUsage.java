@@ -43,7 +43,8 @@ public class CheckPodAndNodeUsage extends TimerTask {
         }
         List<Pair<V1Pod, PodMetrics>> podsMetrics = top(V1Pod.class, PodMetrics.class).apiClient(client).namespace("default").execute();
         for(Pair<V1Pod, PodMetrics> podMetricsPair:podsMetrics) {
-            System.out.println(podMetricsPair.getRight().getContainers().toString());
+            System.out.println(podMetricsPair.getRight().getMetadata().getName());
+            System.out.println(podMetricsPair.getRight().getContainers().get(0).getUsage().toString());
 
 
 
