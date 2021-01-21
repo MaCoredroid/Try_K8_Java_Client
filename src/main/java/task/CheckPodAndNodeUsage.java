@@ -1,8 +1,10 @@
 package task;
 
 import io.kubernetes.client.custom.NodeMetrics;
+import io.kubernetes.client.custom.PodMetrics;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.models.V1Node;
+import io.kubernetes.client.openapi.models.V1Pod;
 import lombok.SneakyThrows;
 import mc.DTO.NodeInfo;
 import org.apache.commons.lang3.tuple.Pair;
@@ -25,7 +27,8 @@ public class CheckPodAndNodeUsage extends TimerTask {
     @SneakyThrows
     @Override
     public void run() {
-        List<Pair<V1Node, NodeMetrics>> nodesMetrics = top(V1Node.class, NodeMetrics.class).apiClient(client).metric("cpu").execute();
+        List<Pair<V1Node, NodeMetrics>> nodesMetrics = top(V1Node.class, NodeMetrics.class).apiClient(client).execute();
+        System.out.println(nodesMetrics);
         for(Pair<V1Node, NodeMetrics> nodeMetricsPair:nodesMetrics) {
             String nodeName=nodeMetricsPair.getRight().getMetadata().getName();
             NodeInfo nodeInfo=nodeMap.getOrDefault(nodeName,new NodeInfo());
@@ -33,6 +36,7 @@ public class CheckPodAndNodeUsage extends TimerTask {
             nodeInfo.setNode_top_cpu_percents(nodeMetricsPair.getRight().getUsage().get("cpu").getNumber().doubleValue()/nodeInfo.getNode_cpu_total());
             nodeMap.put(nodeName,nodeInfo);
         }
-        System.out.println(new JSONObject(nodeMap));
+        List<Pair<V1Pod, PodMetrics>> podsMetrics = top(V1Pod.class, PodMetrics.class).apiClient(client).execute();
+//        System.out.println(podsMetrics);
     }
 }
