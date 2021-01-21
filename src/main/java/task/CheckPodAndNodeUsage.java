@@ -33,6 +33,6 @@ public class CheckPodAndNodeUsage extends TimerTask {
             nodeInfo.setNode_top_cpu_percents(nodeMetricsPair.getRight().getUsage().get("cpu").getNumber().doubleValue()/nodeInfo.getNode_cpu_total());
             nodeMap.put(nodeName,nodeInfo);
         }
-        System.out.println(new JSONObject(nodeMap).toJSONString());
+        System.out.println(new JSONObject(nodeMap));
     }
 }
