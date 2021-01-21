@@ -25,6 +25,7 @@ import mc.DTO.ServiceInfo;
 import task.CheckNodeList;
 import task.CheckNodeStatus;
 import task.CheckPodStatus;
+import task.CheckPodUsage;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -66,6 +67,7 @@ public class InClusterClientExample {
         CheckNodeStatus checkNodeStatus =new CheckNodeStatus(api,nodeMap);
         CheckNodeList checkNodeList=new CheckNodeList(api,nodeMap);
         CheckPodStatus checkPodStatus=new CheckPodStatus(api,serviceNameMap);
+        CheckPodUsage checkPodUsage=new CheckPodUsage();
         V1ServiceList serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null);
         for (V1Service item : serviceList.getItems()) {
             if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")&&Objects.equals(Objects.requireNonNull(item.getMetadata()).getName(), "application")) {
@@ -73,6 +75,7 @@ public class InClusterClientExample {
             }
         }
         t.scheduleAtFixedRate(checkNodeStatus, 0, 500);
+        t.scheduleAtFixedRate(checkPodUsage, 0, 500);
         t.scheduleAtFixedRate(checkNodeList, 0, 5000);
         t.scheduleAtFixedRate(checkPodStatus, 0, 5000);
 

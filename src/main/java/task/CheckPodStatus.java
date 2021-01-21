@@ -38,6 +38,6 @@ public class CheckPodStatus extends TimerTask {
             }
 
         }
-        System.out.println(serviceNameMap);
+//        System.out.println(serviceNameMap);
     }
 }
