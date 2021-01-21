@@ -36,7 +36,6 @@ public class CheckNodeStatus extends TimerTask {
                     while ((line = input.readLine()) != null) {
                         double time=0.0;
                         double count=0.0;
-                        System.out.println(line);
                         if(!line.startsWith("#")) {
 
                             try {
@@ -58,6 +57,8 @@ public class CheckNodeStatus extends TimerTask {
                                         nodeInfo.setNode_load_cpu_percents(value/nodeInfo.getNode_cpu_total());
                                     }
                                 } else if(line.startsWith("node_cpu_seconds_total")){
+                                    System.out.println(line);
+                                    System.out.println(line.trim().split(" ", 2)[1]);
                                     count+=Double.parseDouble(line.trim().split(" ", 2)[1]);
                                 } else if(line.startsWith("node_time_seconds")){
                                     time=Double.parseDouble(line.trim().split(" ", 2)[1]);

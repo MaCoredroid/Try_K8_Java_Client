@@ -22,7 +22,7 @@ public class Calculate extends TimerTask {
         for(Map.Entry<String, PodInfo> entry:serviceNameMap.getOrDefault("application", new ServiceInfo()).getPods().entrySet())
         {
             String nodeIP=entry.getValue().getNodeIP();
-            System.out.println(entry.getValue().getPodName()+"\n");
+//            System.out.println(entry.getValue().getPodName()+"\n");
             if(nodeMap.containsKey(nodeIP))
             {
 //                NodeInfo nodeInfo=nodeMap.get(nodeIP);
