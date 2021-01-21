@@ -33,9 +33,9 @@ public class CheckNodeStatus extends TimerTask {
                 String line;
 
                 try {
+                    double time=0.0;
+                    double count=0.0;
                     while ((line = input.readLine()) != null) {
-                        double time=0.0;
-                        double count=0.0;
                         if(!line.startsWith("#")) {
 
                             try {
@@ -66,15 +66,16 @@ public class CheckNodeStatus extends TimerTask {
                                 e.printStackTrace();
                             }
                         }
-                        double timeDiff=time-nodeInfo.getTotal_time();
-                        double idleDiff=count-nodeInfo.getCpu_idle_time();
-                        idleDiff=idleDiff/nodeInfo.getNode_cpu_total();
-                        nodeInfo.setCpu_idle_percent(1-idleDiff/timeDiff);
-                        System.out.println(nodeInfo.getNodeName());
-                        System.out.println(count);
-                        nodeInfo.setCpu_idle_time(count);
-                        nodeInfo.setTotal_time(time);
+
                     }
+                    double timeDiff=time-nodeInfo.getTotal_time();
+                    double idleDiff=count-nodeInfo.getCpu_idle_time();
+                    idleDiff=idleDiff/nodeInfo.getNode_cpu_total();
+                    nodeInfo.setCpu_idle_percent(1-idleDiff/timeDiff);
+                    System.out.println(nodeInfo.getNodeName());
+                    System.out.println(count);
+                    nodeInfo.setCpu_idle_time(count);
+                    nodeInfo.setTotal_time(time);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
