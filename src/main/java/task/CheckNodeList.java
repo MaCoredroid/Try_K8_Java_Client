@@ -35,6 +35,5 @@ public class CheckNodeList extends TimerTask {
             nodeInfo.setNode_cpu_total(Objects.requireNonNull(Objects.requireNonNull(node.getStatus()).getCapacity()).get("cpu").getNumber().doubleValue());
             nodeMap.put(nodeName,nodeInfo);
         }
-        System.out.println(nodeMap);
     }
 }
