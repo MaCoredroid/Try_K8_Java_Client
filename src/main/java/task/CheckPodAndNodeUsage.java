@@ -2,6 +2,7 @@ package task;
 
 import io.kubernetes.client.custom.NodeMetrics;
 import io.kubernetes.client.custom.PodMetrics;
+import io.kubernetes.client.custom.PodMetricsList;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.models.V1Node;
 import io.kubernetes.client.openapi.models.V1Pod;
@@ -18,7 +19,7 @@ import java.util.Objects;
 import java.util.TimerTask;
 
 import static io.kubernetes.client.extended.kubectl.Kubectl.top;
-;
+
 public class CheckPodAndNodeUsage extends TimerTask {
     private final ApiClient client;
     HashMap<String, NodeInfo> nodeMap=new HashMap<>();
@@ -42,11 +43,8 @@ public class CheckPodAndNodeUsage extends TimerTask {
         }
         List<Pair<V1Pod, PodMetrics>> podsMetrics = top(V1Pod.class, PodMetrics.class).apiClient(client).namespace("default").execute();
         for(Pair<V1Pod, PodMetrics> podMetricsPair:podsMetrics) {
-            String podName=podMetricsPair.getRight().getMetadata().getName();
-            String[] arrOfStr = Objects.requireNonNull(Objects.requireNonNull(podName).split("-", 2));
-            String serviceName=arrOfStr[0];
-            System.out.println(podMetricsPair.getRight());
-//            PodInfo podInfo=serviceNameMap.get(serviceName).getPods().getOrDefault(podName, new PodInfo());
+            System.out.println(podMetricsPair.getRight().getContainers());
+
 
 
         }
