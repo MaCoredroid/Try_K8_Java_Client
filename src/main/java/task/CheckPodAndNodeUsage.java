@@ -28,7 +28,6 @@ public class CheckPodAndNodeUsage extends TimerTask {
     @Override
     public void run() {
         List<Pair<V1Node, NodeMetrics>> nodesMetrics = top(V1Node.class, NodeMetrics.class).apiClient(client).execute();
-        System.out.println(nodesMetrics);
         for(Pair<V1Node, NodeMetrics> nodeMetricsPair:nodesMetrics) {
             String nodeName=nodeMetricsPair.getRight().getMetadata().getName();
             NodeInfo nodeInfo=nodeMap.getOrDefault(nodeName,new NodeInfo());
@@ -36,7 +35,8 @@ public class CheckPodAndNodeUsage extends TimerTask {
             nodeInfo.setNode_top_cpu_percents(nodeMetricsPair.getRight().getUsage().get("cpu").getNumber().doubleValue()/nodeInfo.getNode_cpu_total());
             nodeMap.put(nodeName,nodeInfo);
         }
-        List<Pair<V1Pod, PodMetrics>> podsMetrics = top(V1Pod.class, PodMetrics.class).apiClient(client).execute();
-//        System.out.println(podsMetrics);
+        System.out.println(nodeMap);
+        List<Pair<V1Pod, PodMetrics>> podsMetrics = top(V1Pod.class, PodMetrics.class).apiClient(client).namespace("default").execute();
+        System.out.println(podsMetrics);
     }
 }
