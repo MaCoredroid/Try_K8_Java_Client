@@ -21,6 +21,9 @@ public class CheckPodUsage extends TimerTask {
     @Override
     public void run() {
         List<Pair<V1Node, NodeMetrics>> nodesMetrics = top(V1Node.class, NodeMetrics.class).apiClient(client).metric("cpu").execute();
-        System.out.println(nodesMetrics);
+        for(Pair<V1Node, NodeMetrics> nodeMetricsPair:nodesMetrics) {
+            System.out.println(nodeMetricsPair.getRight().getMetadata().getName());
+            System.out.println(nodeMetricsPair.getRight().getUsage());
+        }
     }
 }
