@@ -25,7 +25,7 @@ public class CheckNodeStatus extends TimerTask {
         for(Map.Entry<String, NodeInfo> entry : nodeMap.entrySet()) {
             NodeInfo nodeInfo=entry.getValue();
             String nodeIP=entry.getKey();
-            String command="curl http://"+nodeIP+":9100/metrics | grep 'node_memory_MemTotal_bytes\\|node_memory_MemAvailable_bytes\\|node_load1'";
+            String command="curl http://"+nodeIP+":9100/metrics | grep 'node_memory_MemTotal_bytes\\|node_memory_MemAvailable_bytes\\|node_load1\\|mode=\"idle\"\\|node_time_seconds'";
 
             final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});
             new Thread(() -> {
@@ -34,7 +34,10 @@ public class CheckNodeStatus extends TimerTask {
 
                 try {
                     while ((line = input.readLine()) != null) {
+                        double time=0.0;
+                        double count=0.0;
                         if(!line.startsWith("#")) {
+
                             try {
                                 if (line.startsWith("node_memory_MemTotal_bytes")) {
                                     double value = Double.parseDouble(line.replace("node_memory_MemTotal_bytes", "").trim());
@@ -53,12 +56,22 @@ public class CheckNodeStatus extends TimerTask {
                                         nodeInfo.setNode_load_cpu_1m(value);
                                         nodeInfo.setNode_load_cpu_percents(value/nodeInfo.getNode_cpu_total());
                                     }
+                                } else if(line.startsWith("node_cpu_seconds_total")){
+                                    count+=Double.parseDouble(line.trim().split(" ", 2)[1]);
+                                } else if(line.startsWith("node_time_seconds")){
+                                    time=Double.parseDouble(line.trim().split(" ", 2)[1]);
                                 }
                             }catch (Exception e)
                             {
                                 e.printStackTrace();
                             }
                         }
+                        double timeDiff=time-nodeInfo.getTotal_time();
+                        double idleDiff=count-nodeInfo.getCpu_idle_time();
+                        idleDiff=idleDiff/nodeInfo.getNode_cpu_total();
+                        nodeInfo.setCpu_idle_percent(1-idleDiff/timeDiff);
+                        nodeInfo.setCpu_idle_time(count);
+                        nodeInfo.setTotal_time(time);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -71,5 +84,6 @@ public class CheckNodeStatus extends TimerTask {
             }
             nodeMap.put(entry.getKey(),nodeInfo);
         }
+        System.out.println(nodeMap);
     }
 }

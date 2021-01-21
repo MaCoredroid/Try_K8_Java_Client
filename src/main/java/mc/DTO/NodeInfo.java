@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,5 +19,8 @@ public class NodeInfo {
     Double node_top_cpu_value =0.0;
     Double node_top_cpu_percents =0.0;
     Double node_load_cpu_percents =0.0;
+    Double total_time=0.0;
+    Double cpu_idle_time=0.0;
+    Double cpu_idle_percent=0.0;
 }
 
