@@ -1,9 +1,12 @@
 package task;
 
 import mc.DTO.NodeInfo;
+import mc.DTO.PodInfo;
 import mc.DTO.ServiceInfo;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.TimerTask;
 
 public class Calculate extends TimerTask {
@@ -16,9 +19,18 @@ public class Calculate extends TimerTask {
     }
     @Override
     public void run() {
-        System.out.println(serviceNameMap);
-        System.out.println("%n");
-        System.out.println(nodeMap);
-        System.out.println("%n");
+        for(Map.Entry<String, PodInfo> entry:serviceNameMap.getOrDefault("application", new ServiceInfo()).getPods().entrySet())
+        {
+            String nodeIP=entry.getValue().getNodeIP();
+            System.out.println(entry.getValue().getPodName()+"\n");
+            if(nodeMap.containsKey(nodeIP))
+            {
+                NodeInfo nodeInfo=nodeMap.get(nodeIP);
+                System.out.println("Percents  "+entry.getValue().getCpu()/nodeInfo.getNode_cpu_total()+"\n");
+                System.out.println("Estimate  "+(1-nodeInfo.getNode_top_cpu_value())/entry.getValue().getCpu()+"\n");
+                System.out.println("NowNode  "+nodeInfo.getNode_top_cpu_percents()+"\n");
+                System.out.println("NowNode  "+nodeInfo.getNode_load_cpu_percents()+"\n");
+            }
+        }
     }
 }
