@@ -22,7 +22,7 @@ public class Calculate extends TimerTask {
         for(Map.Entry<String, PodInfo> entry:serviceNameMap.getOrDefault("application", new ServiceInfo()).getPods().entrySet())
         {
             String nodeIP=entry.getValue().getNodeIP();
-            System.out.println(entry.getValue().getPodName()+"\n");
+            System.out.println(entry.getValue().getPodName()+" ");
             if(nodeMap.containsKey(nodeIP))
             {
                 NodeInfo nodeInfo=nodeMap.get(nodeIP);
@@ -31,7 +31,7 @@ public class Calculate extends TimerTask {
                 System.out.println("Estimate  "+(nodeInfo.getNode_cpu_total()-nodeInfo.getNode_top_cpu_value())/entry.getValue().getCpu()+"  ");
                 System.out.println("NowNode  "+nodeInfo.getNode_top_cpu_percents()+"  ");
                 System.out.println("NowNode  "+nodeInfo.getNode_load_cpu_percents()+"  ");
-                System.out.println("NowNode  "+nodeInfo.getCpu_idle_percent()+"  ");
+                System.out.println("NowNode  "+nodeInfo.getCpu_idle_percent()+"\n");
             }
         }
     }
