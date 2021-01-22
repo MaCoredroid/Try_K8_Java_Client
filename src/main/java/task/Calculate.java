@@ -1,8 +1,6 @@
 package task;
 
-import mc.DTO.NodeInfo;
-import mc.DTO.PodInfo;
-import mc.DTO.ServiceInfo;
+import mc.DTO.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +17,9 @@ public class Calculate extends TimerTask {
     }
     @Override
     public void run() {
+        ExecutionDTO executionDTO=new ExecutionDTO();
+        executionDTO.setServiceIP(serviceNameMap.getOrDefault("application", new ServiceInfo()).getClusterIP());
+
         for(Map.Entry<String, PodInfo> entry:serviceNameMap.getOrDefault("application", new ServiceInfo()).getPods().entrySet())
         {
             String nodeIP=entry.getValue().getNodeIP();
@@ -26,13 +27,19 @@ public class Calculate extends TimerTask {
             if(nodeMap.containsKey(nodeIP))
             {
                 NodeInfo nodeInfo=nodeMap.get(nodeIP);
-                System.out.println("Node "+nodeInfo.getNodeName());
-                System.out.println("Percents  "+entry.getValue().getCpu()/nodeInfo.getNode_top_cpu_value()+"  ");
-                System.out.println("Estimate  "+(nodeInfo.getNode_cpu_total()-nodeInfo.getNode_top_cpu_value())/entry.getValue().getCpu()+"  ");
-                System.out.println("NowNode  "+nodeInfo.getNode_top_cpu_percents()+"  ");
-                System.out.println("NowNode  "+nodeInfo.getNode_load_cpu_percents()+"  ");
-                System.out.println("NowNode  "+nodeInfo.getCpu_idle_percent()+"\n");
+                executionDTO.getExecutionDetailDTOS().add(new ExecutionDetailDTO(nodeIP,0));
+//                System.out.println("Node "+nodeInfo.getNodeName());
+//                System.out.println("Percents  "+entry.getValue().getCpu()/nodeInfo.getNode_top_cpu_value()+"  ");
+//                System.out.println("Estimate  "+(nodeInfo.getNode_cpu_total()-nodeInfo.getNode_top_cpu_value())/entry.getValue().getCpu()+"  ");
+//                System.out.println("NowNode  "+nodeInfo.getNode_top_cpu_percents()+"  ");
+//                System.out.println("NowNode  "+nodeInfo.getNode_load_cpu_percents()+"  ");
+//                System.out.println("NowNode  "+nodeInfo.getCpu_idle_percent()+"\n");
             }
+
         }
+
+
+        Execution execution=new Execution(nodeMap,executionDTO);
+        execution.run();
     }
 }
