@@ -28,9 +28,9 @@ public class Execution  {
             String ServiceIP=executionDTO.getServiceIP();
             for(ExecutionDetailDTO executionDetailDTO:executionDTO.getExecutionDetailDTOS())
             {
-                command.append("sudo ipvsadm -e -t ").append(ServiceIP).append(":8080 -r ").append(executionDetailDTO.getPodIP()).append(":8080 -m -w 2 ").append(" && ");
+                command.append("sudo ipvsadm -e -t ").append(ServiceIP).append(":8080 -r ").append(executionDetailDTO.getPodIP()).append(":8080 -m -w 2").append(" && ");
             }
-            System.out.println(command.toString());
+            System.out.println(command.substring(0, command.length()-3));
 //            final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});
 //            new Thread(() -> {
 //                BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
