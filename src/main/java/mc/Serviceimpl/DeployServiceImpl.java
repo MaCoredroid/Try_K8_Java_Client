@@ -58,7 +58,6 @@ public class DeployServiceImpl implements DeployService {
             e.printStackTrace();
             return new ResponseEntity<>("DELETE POD ERROR", HttpStatus.SERVICE_UNAVAILABLE);
         }
-        System.out.println(list);
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 }
