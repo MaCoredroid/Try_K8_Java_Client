@@ -11,6 +11,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import io.kubernetes.client.custom.IntOrString;
 import io.kubernetes.client.monitoring.Monitoring;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
@@ -19,6 +20,7 @@ import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.*;
 import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
+import io.kubernetes.client.util.Yaml;
 import mc.DTO.NodeInfo;
 import mc.DTO.ServiceInfo;
 import task.*;
@@ -53,33 +55,11 @@ public class InClusterClientExample {
         // set the global default api-client to the in-cluster one from above
         Configuration.setDefaultApiClient(client);
 
-        Monitoring.installMetrics(client);
-
         // the CoreV1Api loads default api-client from global configuration.
-        CoreV1Api api = new CoreV1Api();
-        HashMap<String,ServiceInfo> serviceNameMap = new HashMap<>();
-        HashMap<String, NodeInfo> nodeMap=new HashMap<>();
-        // invokes the CoreV1Api client
-
-        while (true) {
-            // A request that should return 200
-            V1PodList list =
-                    api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
-            // A request that should return 404
-            System.out.println(list);
-            try {
-                V1Pod pod = api.readNamespacedPod("foo", "bar", null, null, null);
-            } catch (ApiException ex) {
-                if (ex.getCode() != 404) {
-                    throw ex;
-                }
-            }
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-        }
+//        CoreV1Api api = new CoreV1Api();
+//        HashMap<String,ServiceInfo> serviceNameMap = new HashMap<>();
+//        HashMap<String, NodeInfo> nodeMap=new HashMap<>();
+//        // invokes the CoreV1Api client
 //        Timer t = new Timer();
 //        CheckNodeStatus checkNodeStatus =new CheckNodeStatus(api,nodeMap);
 //        CheckNodeList checkNodeList=new CheckNodeList(api,nodeMap);
@@ -97,6 +77,41 @@ public class InClusterClientExample {
 //        t.scheduleAtFixedRate(checkNodeList, 0, 5000);
 //        t.scheduleAtFixedRate(checkPodStatus, 0, 5000);
 //        t.scheduleAtFixedRate(calculate, 0, 1000);
+        V1Pod pod =
+                new V1PodBuilder()
+                        .withNewMetadata()
+                        .withName("apod")
+                        .endMetadata()
+                        .withNewSpec()
+                        .addNewContainer()
+                        .withName("www")
+                        .withImage("nginx")
+                        .withNewResources()
+                        .withLimits(new HashMap<>())
+                        .endResources()
+                        .endContainer()
+                        .endSpec()
+                        .build();
+        System.out.println(Yaml.dump(pod));
+
+        V1Service svc =
+                new V1ServiceBuilder()
+                        .withNewMetadata()
+                        .withName("aservice")
+                        .endMetadata()
+                        .withNewSpec()
+                        .withSessionAffinity("ClientIP")
+                        .withType("NodePort")
+                        .addNewPort()
+                        .withProtocol("TCP")
+                        .withName("client")
+                        .withPort(8008)
+                        .withNodePort(8080)
+                        .withTargetPort(new IntOrString(8080))
+                        .endPort()
+                        .endSpec()
+                        .build();
+        System.out.println(Yaml.dump(svc));
 
 
 
