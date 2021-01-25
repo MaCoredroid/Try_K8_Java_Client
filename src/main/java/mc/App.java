@@ -11,26 +11,29 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import io.kubernetes.client.custom.IntOrString;
-import io.kubernetes.client.monitoring.Monitoring;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.Configuration;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
-import io.kubernetes.client.openapi.models.*;
+import io.kubernetes.client.openapi.models.V1Service;
+import io.kubernetes.client.openapi.models.V1ServiceList;
 import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
-import io.kubernetes.client.util.Yaml;
 import mc.DTO.NodeInfo;
 import mc.DTO.ServiceInfo;
-import org.apache.commons.lang3.RandomStringUtils;
+import mc.Task.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import task.*;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.Timer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple example of how to use the Java API inside a kubernetes cluster
@@ -41,47 +44,53 @@ import java.util.*;
  * <p>From inside $REPO_DIR/examples
  */
 @SpringBootApplication
-public class InClusterClientExample {
+public class App {
     public static void main(String[] args) throws IOException, ApiException {
 
-        SpringApplication.run(InClusterClientExample.class, args);
-        // loading the in-cluster config, including:
-        //   1. service-account CA
-        //   2. service-account bearer-token
-        //   3. service-account namespace
-        //   4. master endpoints(ip, port) from pre-set environment variables
-        String kubeConfigPath = System.getProperty("user.home") + "/.kube/config";
-        ApiClient client =
-                ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
+        ConfigurableApplicationContext run=SpringApplication.run(App.class, args);
+        App app = run.getBean(App.class);
+        app.run();
+        
+    }
+    private void run() {
+        Runnable r1 = () -> {
+            String kubeConfigPath = System.getProperty("user.home") + "/.kube/config";
+            ApiClient client =
+                    ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
 
-        // if you prefer not to refresh service account token, please use:
-        // ApiClient client = ClientBuilder.oldCluster().build();
+            // if you prefer not to refresh service account token, please use:
+            // ApiClient client = ClientBuilder.oldCluster().build();
 
-        // set the global default api-client to the in-cluster one from above
-        Configuration.setDefaultApiClient(client);
+            // set the global default api-client to the in-cluster one from above
+            Configuration.setDefaultApiClient(client);
 
-        // the CoreV1Api loads default api-client from global configuration.
-        CoreV1Api api = new CoreV1Api();
-        HashMap<String,ServiceInfo> serviceNameMap = new HashMap<>();
-        HashMap<String, NodeInfo> nodeMap=new HashMap<>();
+            // the CoreV1Api loads default api-client from global configuration.
+            CoreV1Api api = new CoreV1Api();
+            HashMap<String, ServiceInfo> serviceNameMap = new HashMap<>();
+            HashMap<String, NodeInfo> nodeMap=new HashMap<>();
 //        // invokes the CoreV1Api client
-        Timer t = new Timer();
-        CheckNodeStatus checkNodeStatus =new CheckNodeStatus(api,nodeMap);
-        CheckNodeList checkNodeList=new CheckNodeList(api,nodeMap);
-        CheckPodStatus checkPodStatus=new CheckPodStatus(api,serviceNameMap);
-        CheckPodAndNodeUsage checkPodAndNodeUsage =new CheckPodAndNodeUsage(client,nodeMap,serviceNameMap);
-        Calculate calculate=new Calculate(serviceNameMap, nodeMap);
-        V1ServiceList serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null,null);
-        for (V1Service item : serviceList.getItems()) {
-            if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")&&Objects.equals(Objects.requireNonNull(item.getMetadata()).getName(), "application")) {
-                serviceNameMap.put(item.getMetadata().getName(),new ServiceInfo(item.getMetadata().getName(), Objects.requireNonNull(item.getSpec()).getClusterIP(),new HashMap<>()));
+            Timer t = new Timer();
+            CheckNodeStatus checkNodeStatus =new CheckNodeStatus(api,nodeMap);
+            CheckNodeList checkNodeList=new CheckNodeList(api,nodeMap);
+            CheckPodStatus checkPodStatus=new CheckPodStatus(api,serviceNameMap);
+            CheckPodAndNodeUsage checkPodAndNodeUsage =new CheckPodAndNodeUsage(client,nodeMap,serviceNameMap);
+            Calculate calculate=new Calculate(serviceNameMap, nodeMap);
+            V1ServiceList serviceList = null;
+            try {
+                serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null,null);
+            } catch (ApiException e) {
+                e.printStackTrace();
             }
-        }
-        t.scheduleAtFixedRate(checkNodeStatus, 0, 500);
-        t.scheduleAtFixedRate(checkPodAndNodeUsage, 0, 500);
-        t.scheduleAtFixedRate(checkNodeList, 0, 5000);
-        t.scheduleAtFixedRate(checkPodStatus, 0, 5000);
-        t.scheduleAtFixedRate(calculate, 0, 1000);
+            for (V1Service item : Objects.requireNonNull(serviceList).getItems()) {
+                if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")&&Objects.equals(Objects.requireNonNull(item.getMetadata()).getName(), "application")) {
+                    serviceNameMap.put(item.getMetadata().getName(),new ServiceInfo(item.getMetadata().getName(), Objects.requireNonNull(item.getSpec()).getClusterIP(),new HashMap<>()));
+                }
+            }
+            t.scheduleAtFixedRate(checkNodeStatus, 0, 500);
+            t.scheduleAtFixedRate(checkPodAndNodeUsage, 0, 500);
+            t.scheduleAtFixedRate(checkNodeList, 0, 5000);
+            t.scheduleAtFixedRate(checkPodStatus, 0, 5000);
+            t.scheduleAtFixedRate(calculate, 0, 1000);
 //        V1Pod pod =
 //                new V1PodBuilder()
 //                        .withApiVersion("v1")
@@ -126,10 +135,18 @@ public class InClusterClientExample {
 //                        .build();
 ////        System.out.println(api.createNamespacedService("default",svc,null,null,null));
 ////        System.out.println(Yaml.dump(svc));
+        };
 
+        //Create an executor service with 2 threads (it can be like 50
+        //if you need it to be).  Submit our two tasks to it and they'll
+        //both run to completion (or forever if they don't end).
+        ExecutorService service = Executors.newFixedThreadPool(2);
+        service.submit(r1);
 
-
-
-        
+        //Wait or completion of tasks (or forever).
+        service.shutdown();
+        try { service.awaitTermination(Integer.MAX_VALUE, TimeUnit.DAYS); }
+        catch (InterruptedException e) { e.printStackTrace(); }
     }
+
 }

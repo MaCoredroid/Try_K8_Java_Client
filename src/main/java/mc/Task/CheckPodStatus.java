@@ -1,4 +1,4 @@
-package task;
+package mc.Task;
 
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Pod;

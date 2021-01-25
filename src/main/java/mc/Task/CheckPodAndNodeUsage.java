@@ -1,8 +1,7 @@
-package task;
+package mc.Task;
 
 import io.kubernetes.client.custom.NodeMetrics;
 import io.kubernetes.client.custom.PodMetrics;
-import io.kubernetes.client.custom.PodMetricsList;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.models.V1Node;
 import io.kubernetes.client.openapi.models.V1Pod;
@@ -11,7 +10,6 @@ import mc.DTO.NodeInfo;
 import mc.DTO.PodInfo;
 import mc.DTO.ServiceInfo;
 import org.apache.commons.lang3.tuple.Pair;
-import org.jose4j.json.internal.json_simple.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,10 +1,9 @@
-package task;
+package mc.Task;
 
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Node;
 import io.kubernetes.client.openapi.models.V1NodeList;
 import mc.DTO.NodeInfo;
-import mc.DTO.ServiceInfo;
 
 import java.util.HashMap;
 import java.util.Objects;
