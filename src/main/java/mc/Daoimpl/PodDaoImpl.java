@@ -10,8 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashMap;
+
+import static io.kubernetes.client.extended.kubectl.Kubectl.delete;
 
 @Repository
 public class PodDaoImpl implements PodDao {
@@ -41,6 +42,18 @@ public class PodDaoImpl implements PodDao {
         CoreV1Api api=applicationContext.getBean(KubernetesApiClient.class).getAPI();
         try {
             api.createNamespacedPod("default", pod, null, null, null);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean deletePod(String podName) {
+        try {
+            delete(V1Pod.class).namespace("default").name(podName).execute();
         }catch (Exception e)
         {
             e.printStackTrace();

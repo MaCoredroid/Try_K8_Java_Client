@@ -13,12 +13,10 @@ limitations under the License.
 
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
-import io.kubernetes.client.openapi.Configuration;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Service;
 import io.kubernetes.client.openapi.models.V1ServiceList;
-import io.kubernetes.client.util.ClientBuilder;
-import io.kubernetes.client.util.KubeConfig;
+import lombok.SneakyThrows;
 import mc.Component.KubernetesApiClient;
 import mc.DTO.NodeInfo;
 import mc.DTO.ServiceInfo;
@@ -29,7 +27,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
@@ -57,6 +54,7 @@ public class App {
         app.run();
         
     }
+    @SneakyThrows
     private void run(){
         Runnable r1 = () -> {
             CoreV1Api api=applicationContext.getBean(KubernetesApiClient.class).getAPI();
@@ -86,6 +84,7 @@ public class App {
             t.scheduleAtFixedRate(checkNodeList, 0, 5000);
             t.scheduleAtFixedRate(checkPodStatus, 0, 5000);
             t.scheduleAtFixedRate(calculate, 0, 1000);
+            System.out.println(api.listPodForAllNamespaces(null, null, null, "app=xyz", null, null, null, null, null,null));
         };
 
         //Create an executor service with 2 threads (it can be like 50

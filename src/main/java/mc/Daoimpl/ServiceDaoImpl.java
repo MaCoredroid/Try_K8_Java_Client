@@ -12,6 +12,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.HashMap;
 
+import static io.kubernetes.client.extended.kubectl.Kubectl.delete;
+
 @Repository
 public class ServiceDaoImpl implements ServiceDao {
     @Autowired
@@ -37,6 +39,18 @@ public class ServiceDaoImpl implements ServiceDao {
         CoreV1Api api=applicationContext.getBean(KubernetesApiClient.class).getAPI();
         try {
             api.createNamespacedService("default", svc, null, null, null);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean deleteService(String serviceName) {
+        try {
+            delete(V1Service.class).namespace("default").name(serviceName).execute();
         }catch (Exception e)
         {
             e.printStackTrace();

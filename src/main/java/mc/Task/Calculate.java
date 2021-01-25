@@ -35,7 +35,7 @@ public class Calculate extends TimerTask {
 //                System.out.println("NowNode  "+nodeInfo.getCpu_idle_percent()+"\n");
             }
         }
-        Execution execution=new Execution(nodeMap,executionDTO);
-        execution.run();
+//        Execution execution=new Execution(nodeMap,executionDTO);
+//        execution.run();
     }
 }
