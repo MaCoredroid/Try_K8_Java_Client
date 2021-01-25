@@ -79,6 +79,8 @@ public class InClusterClientExample {
 //        t.scheduleAtFixedRate(calculate, 0, 1000);
         V1Pod pod =
                 new V1PodBuilder()
+                        .withApiVersion("v1")
+                        .withKind("Pod")
                         .withNewMetadata()
                         .withLabels(new HashMap<String,String>(){{put("app","application");}})
                         .endMetadata()
