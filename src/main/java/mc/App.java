@@ -19,12 +19,15 @@ import io.kubernetes.client.openapi.models.V1Service;
 import io.kubernetes.client.openapi.models.V1ServiceList;
 import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
+import mc.Component.KubernetesApiClient;
 import mc.DTO.NodeInfo;
 import mc.DTO.ServiceInfo;
 import mc.Task.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -45,6 +48,8 @@ import java.util.concurrent.TimeUnit;
  */
 @SpringBootApplication
 public class App {
+    @Autowired
+    WebApplicationContext applicationContext;
     public static void main(String[] args) throws IOException, ApiException {
 
         ConfigurableApplicationContext run=SpringApplication.run(App.class, args);
@@ -54,23 +59,8 @@ public class App {
     }
     private void run(){
         Runnable r1 = () -> {
-            String kubeConfigPath = System.getProperty("user.home") + "/.kube/config";
-            ApiClient client =
-                    null;
-            try {
-                client = ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            // if you prefer not to refresh service account token, please use:
-            // ApiClient client = ClientBuilder.oldCluster().build();
-
-            // set the global default api-client to the in-cluster one from above
-            Configuration.setDefaultApiClient(client);
-
-            // the CoreV1Api loads default api-client from global configuration.
-            CoreV1Api api = new CoreV1Api();
+            CoreV1Api api=applicationContext.getBean(KubernetesApiClient.class).getAPI();
+            ApiClient client=applicationContext.getBean(KubernetesApiClient.class).getClient();
             HashMap<String, ServiceInfo> serviceNameMap = new HashMap<>();
             HashMap<String, NodeInfo> nodeMap=new HashMap<>();
 //        // invokes the CoreV1Api client
