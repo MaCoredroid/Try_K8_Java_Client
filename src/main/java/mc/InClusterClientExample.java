@@ -56,7 +56,7 @@ public class InClusterClientExample {
         Configuration.setDefaultApiClient(client);
 
         // the CoreV1Api loads default api-client from global configuration.
-//        CoreV1Api api = new CoreV1Api();
+        CoreV1Api api = new CoreV1Api();
 //        HashMap<String,ServiceInfo> serviceNameMap = new HashMap<>();
 //        HashMap<String, NodeInfo> nodeMap=new HashMap<>();
 //        // invokes the CoreV1Api client
@@ -95,21 +95,23 @@ public class InClusterClientExample {
                         .build();
         System.out.println(Yaml.dump(pod));
 
-        V1Service svc =
-                new V1ServiceBuilder()
-                        .withNewMetadata()
-                        .withName("application")
-                        .withLabels(new HashMap<String,String>(){{put("app","application");}})
-                        .endMetadata()
-                        .withNewSpec()
-                        .addNewPort()
-                        .withName("http")
-                        .withPort(8008)
-                        .endPort()
-                        .withSelector(new HashMap<String,String>(){{put("app","application");}})
-                        .endSpec()
-                        .build();
-        System.out.println(Yaml.dump(svc));
+        V1Pod createResult = api.createNamespacedPod("default", pod, null, null, null);
+        System.out.println(createResult);
+//        V1Service svc =
+//                new V1ServiceBuilder()
+//                        .withNewMetadata()
+//                        .withName("application")
+//                        .withLabels(new HashMap<String,String>(){{put("app","application");}})
+//                        .endMetadata()
+//                        .withNewSpec()
+//                        .addNewPort()
+//                        .withName("http")
+//                        .withPort(8080)
+//                        .endPort()
+//                        .withSelector(new HashMap<String,String>(){{put("app","application");}})
+//                        .endSpec()
+//                        .build();
+//        System.out.println(Yaml.dump(svc));
 
 
 
