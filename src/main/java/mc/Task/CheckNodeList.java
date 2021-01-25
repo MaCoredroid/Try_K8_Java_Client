@@ -12,9 +12,11 @@ import java.util.TimerTask;
 public class CheckNodeList extends TimerTask {
     CoreV1Api api = new CoreV1Api();
     HashMap<String, NodeInfo> nodeMap=new HashMap<>();
-    public CheckNodeList(CoreV1Api api, HashMap<String, NodeInfo> nodeMap){
+    HashMap<String, String> nodeNameToIP=new HashMap<>();
+    public CheckNodeList(CoreV1Api api, HashMap<String, NodeInfo> nodeMap,HashMap<String, String> nodeNameToIP){
         this.api=api;
         this.nodeMap=nodeMap;
+        this.nodeNameToIP=nodeNameToIP;
     }
     @Override
     public void run() {
@@ -33,6 +35,7 @@ public class CheckNodeList extends TimerTask {
             nodeInfo.setNodeName(nodeName);
             nodeInfo.setNode_cpu_total(Objects.requireNonNull(Objects.requireNonNull(node.getStatus()).getCapacity()).get("cpu").getNumber().doubleValue());
             nodeMap.put(nodeIP,nodeInfo);
+            nodeNameToIP.put(nodeName,nodeIP);
         }
     }
 }

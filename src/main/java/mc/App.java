@@ -59,10 +59,11 @@ public class App {
             ApiClient client=applicationContext.getBean(KubernetesApiClient.class).getClient();
             HashMap<String, ServiceInfo> serviceNameMap = new HashMap<>();
             HashMap<String, NodeInfo> nodeMap=new HashMap<>();
+            HashMap<String, String> nodeNameToIP=new HashMap<>();
 //        // invokes the CoreV1Api client
             Timer t = new Timer();
             CheckNodeStatus checkNodeStatus =new CheckNodeStatus(api,nodeMap);
-            CheckNodeList checkNodeList=new CheckNodeList(api,nodeMap);
+            CheckNodeList checkNodeList=new CheckNodeList(api,nodeMap,nodeNameToIP);
             CheckPodStatus checkPodStatus=new CheckPodStatus(api,serviceNameMap);
             CheckPodAndNodeUsage checkPodAndNodeUsage =new CheckPodAndNodeUsage(client,nodeMap,serviceNameMap);
             Calculate calculate=new Calculate(serviceNameMap, nodeMap);
