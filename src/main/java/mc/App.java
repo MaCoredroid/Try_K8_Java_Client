@@ -82,11 +82,6 @@ public class App {
             t.scheduleAtFixedRate(checkNodeList, 0, 5000);
             t.scheduleAtFixedRate(checkPodStatus, 0, 5000);
             t.scheduleAtFixedRate(calculate, 0, 1000);
-            try {
-                System.out.println(api.listPodForAllNamespaces(null, null, null, "app=xyz", null, null, null, null, null,null));
-            } catch (ApiException e) {
-                e.printStackTrace();
-            }
         };
 
         //Create an executor service with 2 threads (it can be like 50

@@ -2,6 +2,7 @@ package mc.Serviceimpl;
 
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
+import io.kubernetes.client.openapi.models.V1Pod;
 import io.kubernetes.client.openapi.models.V1PodList;
 import mc.Component.KubernetesApiClient;
 import mc.Dao.PodDao;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Objects;
 
 @Service
 public class DeployServiceImpl implements DeployService {
@@ -47,6 +50,10 @@ public class DeployServiceImpl implements DeployService {
         V1PodList list;
         try {
             list = api.listPodForAllNamespaces(null, null, null, "app=xyz", null, null, null, null, null,null);
+            for(V1Pod v1Pod:list.getItems())
+            {
+                podDao.deletePod(Objects.requireNonNull(v1Pod.getMetadata()).getName());
+            }
         } catch (ApiException e) {
             e.printStackTrace();
             return new ResponseEntity<>("DELETE POD ERROR", HttpStatus.SERVICE_UNAVAILABLE);
