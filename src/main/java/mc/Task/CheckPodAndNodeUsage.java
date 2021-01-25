@@ -54,6 +54,6 @@ public class CheckPodAndNodeUsage extends TimerTask {
             }
 
         }
-        System.out.println(serviceNameMap);
+//        System.out.println(serviceNameMap);
     }
 }
