@@ -23,6 +23,7 @@ import io.kubernetes.client.util.KubeConfig;
 import io.kubernetes.client.util.Yaml;
 import mc.DTO.NodeInfo;
 import mc.DTO.ServiceInfo;
+import org.apache.commons.lang3.RandomStringUtils;
 import task.*;
 
 import java.io.FileReader;
@@ -82,7 +83,7 @@ public class InClusterClientExample {
                         .withApiVersion("v1")
                         .withKind("Pod")
                         .withNewMetadata()
-                        .withName("application-pod1")
+                        .withName("application-"+ RandomStringUtils.random(9, true, true))
                         .withLabels(new HashMap<String,String>(){{put("app","application");}})
                         .endMetadata()
                         .withNewSpec()
@@ -96,24 +97,27 @@ public class InClusterClientExample {
                         .endContainer()
                         .endSpec()
                         .build();
-        System.out.println(Yaml.dump(pod));
+//        System.out.println(Yaml.dump(pod));
 
-        V1Pod createResult = api.createNamespacedPod("default", pod, null, null, null);
-        System.out.println(createResult);
-//        V1Service svc =
-//                new V1ServiceBuilder()
-//                        .withNewMetadata()
-//                        .withName("application")
-//                        .withLabels(new HashMap<String,String>(){{put("app","application");}})
-//                        .endMetadata()
-//                        .withNewSpec()
-//                        .addNewPort()
-//                        .withName("http")
-//                        .withPort(8080)
-//                        .endPort()
-//                        .withSelector(new HashMap<String,String>(){{put("app","application");}})
-//                        .endSpec()
-//                        .build();
+        System.out.println(api.createNamespacedPod("default", pod, null, null, null));
+
+        V1Service svc =
+                new V1ServiceBuilder()
+                        .withApiVersion("v1")
+                        .withKind("Service")
+                        .withNewMetadata()
+                        .withName("application")
+                        .withLabels(new HashMap<String,String>(){{put("app","application");}})
+                        .endMetadata()
+                        .withNewSpec()
+                        .addNewPort()
+                        .withName("http")
+                        .withPort(8080)
+                        .endPort()
+                        .withSelector(new HashMap<String,String>(){{put("app","application");}})
+                        .endSpec()
+                        .build();
+        System.out.println(api.createNamespacedService("default",svc,null,null,null));
 //        System.out.println(Yaml.dump(svc));
 
 
