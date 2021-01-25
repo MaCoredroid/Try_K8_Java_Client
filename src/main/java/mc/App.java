@@ -65,7 +65,7 @@ public class App {
             CheckNodeStatus checkNodeStatus =new CheckNodeStatus(api,nodeMap);
             CheckNodeList checkNodeList=new CheckNodeList(api,nodeMap,nodeNameToIP);
             CheckPodStatus checkPodStatus=new CheckPodStatus(api,serviceNameMap);
-            CheckPodAndNodeUsage checkPodAndNodeUsage =new CheckPodAndNodeUsage(client,nodeMap,serviceNameMap);
+            CheckPodAndNodeUsage checkPodAndNodeUsage =new CheckPodAndNodeUsage(client,nodeMap,serviceNameMap,nodeNameToIP);
             Calculate calculate=new Calculate(serviceNameMap, nodeMap);
             V1ServiceList serviceList = null;
             try {
