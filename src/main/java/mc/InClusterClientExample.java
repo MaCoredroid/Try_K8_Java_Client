@@ -24,6 +24,8 @@ import io.kubernetes.client.util.Yaml;
 import mc.DTO.NodeInfo;
 import mc.DTO.ServiceInfo;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import task.*;
 
 import java.io.FileReader;
@@ -38,9 +40,11 @@ import java.util.*;
  *
  * <p>From inside $REPO_DIR/examples
  */
+@SpringBootApplication
 public class InClusterClientExample {
     public static void main(String[] args) throws IOException, ApiException {
 
+        SpringApplication.run(InClusterClientExample.class, args);
         // loading the in-cluster config, including:
         //   1. service-account CA
         //   2. service-account bearer-token
@@ -58,73 +62,70 @@ public class InClusterClientExample {
 
         // the CoreV1Api loads default api-client from global configuration.
         CoreV1Api api = new CoreV1Api();
-//        HashMap<String,ServiceInfo> serviceNameMap = new HashMap<>();
-//        HashMap<String, NodeInfo> nodeMap=new HashMap<>();
+        HashMap<String,ServiceInfo> serviceNameMap = new HashMap<>();
+        HashMap<String, NodeInfo> nodeMap=new HashMap<>();
 //        // invokes the CoreV1Api client
-//        Timer t = new Timer();
-//        CheckNodeStatus checkNodeStatus =new CheckNodeStatus(api,nodeMap);
-//        CheckNodeList checkNodeList=new CheckNodeList(api,nodeMap);
-//        CheckPodStatus checkPodStatus=new CheckPodStatus(api,serviceNameMap);
-//        CheckPodAndNodeUsage checkPodAndNodeUsage =new CheckPodAndNodeUsage(client,nodeMap,serviceNameMap);
-//        Calculate calculate=new Calculate(serviceNameMap, nodeMap);
-//        V1ServiceList serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null);
-//        for (V1Service item : serviceList.getItems()) {
-//            if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")&&Objects.equals(Objects.requireNonNull(item.getMetadata()).getName(), "application")) {
-//                serviceNameMap.put(item.getMetadata().getName(),new ServiceInfo(item.getMetadata().getName(), Objects.requireNonNull(item.getSpec()).getClusterIP(),new HashMap<>()));
-//            }
-//        }
-//        t.scheduleAtFixedRate(checkNodeStatus, 0, 500);
-//        t.scheduleAtFixedRate(checkPodAndNodeUsage, 0, 500);
-//        t.scheduleAtFixedRate(checkNodeList, 0, 5000);
-//        t.scheduleAtFixedRate(checkPodStatus, 0, 5000);
-//        t.scheduleAtFixedRate(calculate, 0, 1000);
-        V1Pod pod =
-                new V1PodBuilder()
-                        .withApiVersion("v1")
-                        .withKind("Pod")
-                        .withNewMetadata()
-                        .withName("application-"+ RandomStringUtils.random(10, true, true).toLowerCase()+"-"+RandomStringUtils.random(5, true, true).toLowerCase())
-                        .withLabels(new HashMap<String,String>(){{put("app","application");}})
-                        .endMetadata()
-                        .withNewSpec()
-                        .addNewContainer()
-                        .withName("application")
-                        .withImage("registry.cn-shanghai.aliyuncs.com/macoredroid/perftest:2.3")
-                        .addNewPort()
-                        .withContainerPort(8080)
-                        .endPort()
-                        .withImagePullPolicy("Always")
-                        .endContainer()
-                        .endSpec()
-                        .build();
-//        System.out.println(Yaml.dump(pod));
-
-//        System.out.println(pod);
-        try {
-            api.createNamespacedPod("default", pod, null, null, null);
-        }catch (Exception e)
-        {
-            e.printStackTrace();
+        Timer t = new Timer();
+        CheckNodeStatus checkNodeStatus =new CheckNodeStatus(api,nodeMap);
+        CheckNodeList checkNodeList=new CheckNodeList(api,nodeMap);
+        CheckPodStatus checkPodStatus=new CheckPodStatus(api,serviceNameMap);
+        CheckPodAndNodeUsage checkPodAndNodeUsage =new CheckPodAndNodeUsage(client,nodeMap,serviceNameMap);
+        Calculate calculate=new Calculate(serviceNameMap, nodeMap);
+        V1ServiceList serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null,null);
+        for (V1Service item : serviceList.getItems()) {
+            if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")&&Objects.equals(Objects.requireNonNull(item.getMetadata()).getName(), "application")) {
+                serviceNameMap.put(item.getMetadata().getName(),new ServiceInfo(item.getMetadata().getName(), Objects.requireNonNull(item.getSpec()).getClusterIP(),new HashMap<>()));
+            }
         }
-
-        V1Service svc =
-                new V1ServiceBuilder()
-                        .withApiVersion("v1")
-                        .withKind("Service")
-                        .withNewMetadata()
-                        .withName("application")
-                        .withLabels(new HashMap<String,String>(){{put("app","application");}})
-                        .endMetadata()
-                        .withNewSpec()
-                        .addNewPort()
-                        .withName("http")
-                        .withPort(8080)
-                        .endPort()
-                        .withSelector(new HashMap<String,String>(){{put("app","application");}})
-                        .endSpec()
-                        .build();
-//        System.out.println(api.createNamespacedService("default",svc,null,null,null));
-//        System.out.println(Yaml.dump(svc));
+        t.scheduleAtFixedRate(checkNodeStatus, 0, 500);
+        t.scheduleAtFixedRate(checkPodAndNodeUsage, 0, 500);
+        t.scheduleAtFixedRate(checkNodeList, 0, 5000);
+        t.scheduleAtFixedRate(checkPodStatus, 0, 5000);
+        t.scheduleAtFixedRate(calculate, 0, 1000);
+//        V1Pod pod =
+//                new V1PodBuilder()
+//                        .withApiVersion("v1")
+//                        .withKind("Pod")
+//                        .withNewMetadata()
+//                        .withName("application-"+ RandomStringUtils.random(10, true, true).toLowerCase()+"-"+RandomStringUtils.random(5, true, true).toLowerCase())
+//                        .withLabels(new HashMap<String,String>(){{put("app","application");}})
+//                        .endMetadata()
+//                        .withNewSpec()
+//                        .addNewContainer()
+//                        .withName("application")
+//                        .withImage("registry.cn-shanghai.aliyuncs.com/macoredroid/perftest:2.3")
+//                        .addNewPort()
+//                        .withContainerPort(8080)
+//                        .endPort()
+//                        .withImagePullPolicy("Always")
+//                        .endContainer()
+//                        .endSpec()
+//                        .build();
+//        try {
+//            api.createNamespacedPod("default", pod, null, null, null);
+//        }catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//
+//        V1Service svc =
+//                new V1ServiceBuilder()
+//                        .withApiVersion("v1")
+//                        .withKind("Service")
+//                        .withNewMetadata()
+//                        .withName("application")
+//                        .withLabels(new HashMap<String,String>(){{put("app","application");}})
+//                        .endMetadata()
+//                        .withNewSpec()
+//                        .addNewPort()
+//                        .withName("http")
+//                        .withPort(8080)
+//                        .endPort()
+//                        .withSelector(new HashMap<String,String>(){{put("app","application");}})
+//                        .endSpec()
+//                        .build();
+////        System.out.println(api.createNamespacedService("default",svc,null,null,null));
+////        System.out.println(Yaml.dump(svc));
 
 
 
