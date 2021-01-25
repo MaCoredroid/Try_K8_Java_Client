@@ -64,17 +64,19 @@ public class InClusterClientExample {
         CheckPodStatus checkPodStatus=new CheckPodStatus(api,serviceNameMap);
         CheckPodAndNodeUsage checkPodAndNodeUsage =new CheckPodAndNodeUsage(client,nodeMap,serviceNameMap);
         Calculate calculate=new Calculate(serviceNameMap, nodeMap);
+        MetricsExample metricsExample=new MetricsExample(client);
         V1ServiceList serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null);
         for (V1Service item : serviceList.getItems()) {
             if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")&&Objects.equals(Objects.requireNonNull(item.getMetadata()).getName(), "application")) {
                 serviceNameMap.put(item.getMetadata().getName(),new ServiceInfo(item.getMetadata().getName(), Objects.requireNonNull(item.getSpec()).getClusterIP(),new HashMap<>()));
             }
         }
-        t.scheduleAtFixedRate(checkNodeStatus, 0, 500);
-        t.scheduleAtFixedRate(checkPodAndNodeUsage, 0, 500);
-        t.scheduleAtFixedRate(checkNodeList, 0, 5000);
-        t.scheduleAtFixedRate(checkPodStatus, 0, 5000);
-        t.scheduleAtFixedRate(calculate, 0, 1000);
+//        t.scheduleAtFixedRate(checkNodeStatus, 0, 500);
+//        t.scheduleAtFixedRate(checkPodAndNodeUsage, 0, 500);
+//        t.scheduleAtFixedRate(checkNodeList, 0, 5000);
+//        t.scheduleAtFixedRate(checkPodStatus, 0, 5000);
+//        t.scheduleAtFixedRate(calculate, 0, 1000);
+        metricsExample.run();
 
 
 
