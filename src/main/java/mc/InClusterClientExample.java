@@ -83,7 +83,7 @@ public class InClusterClientExample {
                         .withApiVersion("v1")
                         .withKind("Pod")
                         .withNewMetadata()
-                        .withName("application-"+ RandomStringUtils.random(9, true, true))
+                        .withName("application-"+ RandomStringUtils.random(9, true, true).toLowerCase())
                         .withLabels(new HashMap<String,String>(){{put("app","application");}})
                         .endMetadata()
                         .withNewSpec()
