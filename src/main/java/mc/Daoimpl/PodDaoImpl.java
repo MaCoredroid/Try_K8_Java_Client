@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashMap;
 
 @Repository
@@ -31,7 +32,7 @@ public class PodDaoImpl implements PodDao {
                         .withName(serviceName)
                         .withImage(image)
                         .addNewPort()
-                        .withContainerPort(8080)
+                        .withContainerPort(Integer.parseInt(port))
                         .endPort()
                         .withImagePullPolicy("Always")
                         .endContainer()

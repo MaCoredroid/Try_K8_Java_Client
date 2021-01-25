@@ -86,50 +86,6 @@ public class App {
             t.scheduleAtFixedRate(checkNodeList, 0, 5000);
             t.scheduleAtFixedRate(checkPodStatus, 0, 5000);
             t.scheduleAtFixedRate(calculate, 0, 1000);
-//        V1Pod pod =
-//                new V1PodBuilder()
-//                        .withApiVersion("v1")
-//                        .withKind("Pod")
-//                        .withNewMetadata()
-//                        .withName("application-"+ RandomStringUtils.random(10, true, true).toLowerCase()+"-"+RandomStringUtils.random(5, true, true).toLowerCase())
-//                        .withLabels(new HashMap<String,String>(){{put("app","application");}})
-//                        .endMetadata()
-//                        .withNewSpec()
-//                        .addNewContainer()
-//                        .withName("application")
-//                        .withImage("registry.cn-shanghai.aliyuncs.com/macoredroid/perftest:2.3")
-//                        .addNewPort()
-//                        .withContainerPort(8080)
-//                        .endPort()
-//                        .withImagePullPolicy("Always")
-//                        .endContainer()
-//                        .endSpec()
-//                        .build();
-//        try {
-//            api.createNamespacedPod("default", pod, null, null, null);
-//        }catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//
-//        V1Service svc =
-//                new V1ServiceBuilder()
-//                        .withApiVersion("v1")
-//                        .withKind("Service")
-//                        .withNewMetadata()
-//                        .withName("application")
-//                        .withLabels(new HashMap<String,String>(){{put("app","application");}})
-//                        .endMetadata()
-//                        .withNewSpec()
-//                        .addNewPort()
-//                        .withName("http")
-//                        .withPort(8080)
-//                        .endPort()
-//                        .withSelector(new HashMap<String,String>(){{put("app","application");}})
-//                        .endSpec()
-//                        .build();
-////        System.out.println(api.createNamespacedService("default",svc,null,null,null));
-////        System.out.println(Yaml.dump(svc));
         };
 
         //Create an executor service with 2 threads (it can be like 50
