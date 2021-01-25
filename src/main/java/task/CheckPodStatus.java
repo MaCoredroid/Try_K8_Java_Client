@@ -21,7 +21,7 @@ public class CheckPodStatus extends TimerTask {
     public void run() {
         V1PodList list = null;
         try {
-            list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
+            list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null,null);
         }catch (Exception e)
         {
             e.printStackTrace();
