@@ -99,6 +99,7 @@ public class InClusterClientExample {
                         .build();
 //        System.out.println(Yaml.dump(pod));
 
+        System.out.println(pod);
         System.out.println(api.createNamespacedPod("default", pod, null, null, null));
 
         V1Service svc =
