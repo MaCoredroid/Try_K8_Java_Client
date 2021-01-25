@@ -11,6 +11,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import io.kubernetes.client.monitoring.Monitoring;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.Configuration;
@@ -52,31 +53,51 @@ public class InClusterClientExample {
         // set the global default api-client to the in-cluster one from above
         Configuration.setDefaultApiClient(client);
 
+        Monitoring.installMetrics(client);
 
         // the CoreV1Api loads default api-client from global configuration.
         CoreV1Api api = new CoreV1Api();
         HashMap<String,ServiceInfo> serviceNameMap = new HashMap<>();
         HashMap<String, NodeInfo> nodeMap=new HashMap<>();
         // invokes the CoreV1Api client
-        Timer t = new Timer();
-        CheckNodeStatus checkNodeStatus =new CheckNodeStatus(api,nodeMap);
-        CheckNodeList checkNodeList=new CheckNodeList(api,nodeMap);
-        CheckPodStatus checkPodStatus=new CheckPodStatus(api,serviceNameMap);
-        CheckPodAndNodeUsage checkPodAndNodeUsage =new CheckPodAndNodeUsage(client,nodeMap,serviceNameMap);
-        Calculate calculate=new Calculate(serviceNameMap, nodeMap);
-        MetricsExample metricsExample=new MetricsExample(client);
-        V1ServiceList serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null);
-        for (V1Service item : serviceList.getItems()) {
-            if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")&&Objects.equals(Objects.requireNonNull(item.getMetadata()).getName(), "application")) {
-                serviceNameMap.put(item.getMetadata().getName(),new ServiceInfo(item.getMetadata().getName(), Objects.requireNonNull(item.getSpec()).getClusterIP(),new HashMap<>()));
+
+        while (true) {
+            // A request that should return 200
+            V1PodList list =
+                    api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
+            // A request that should return 404
+            System.out.println(list);
+            try {
+                V1Pod pod = api.readNamespacedPod("foo", "bar", null, null, null);
+            } catch (ApiException ex) {
+                if (ex.getCode() != 404) {
+                    throw ex;
+                }
+            }
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
             }
         }
+//        Timer t = new Timer();
+//        CheckNodeStatus checkNodeStatus =new CheckNodeStatus(api,nodeMap);
+//        CheckNodeList checkNodeList=new CheckNodeList(api,nodeMap);
+//        CheckPodStatus checkPodStatus=new CheckPodStatus(api,serviceNameMap);
+//        CheckPodAndNodeUsage checkPodAndNodeUsage =new CheckPodAndNodeUsage(client,nodeMap,serviceNameMap);
+//        Calculate calculate=new Calculate(serviceNameMap, nodeMap);
+//        V1ServiceList serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null);
+//        for (V1Service item : serviceList.getItems()) {
+//            if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")&&Objects.equals(Objects.requireNonNull(item.getMetadata()).getName(), "application")) {
+//                serviceNameMap.put(item.getMetadata().getName(),new ServiceInfo(item.getMetadata().getName(), Objects.requireNonNull(item.getSpec()).getClusterIP(),new HashMap<>()));
+//            }
+//        }
 //        t.scheduleAtFixedRate(checkNodeStatus, 0, 500);
 //        t.scheduleAtFixedRate(checkPodAndNodeUsage, 0, 500);
 //        t.scheduleAtFixedRate(checkNodeList, 0, 5000);
 //        t.scheduleAtFixedRate(checkPodStatus, 0, 5000);
 //        t.scheduleAtFixedRate(calculate, 0, 1000);
-        metricsExample.run();
+
 
 
 
