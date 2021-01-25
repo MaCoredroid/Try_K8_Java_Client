@@ -52,11 +52,16 @@ public class App {
         app.run();
         
     }
-    private void run() {
+    private void run(){
         Runnable r1 = () -> {
             String kubeConfigPath = System.getProperty("user.home") + "/.kube/config";
             ApiClient client =
-                    ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
+                    null;
+            try {
+                client = ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             // if you prefer not to refresh service account token, please use:
             // ApiClient client = ClientBuilder.oldCluster().build();
