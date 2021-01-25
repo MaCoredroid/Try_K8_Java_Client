@@ -98,18 +98,15 @@ public class InClusterClientExample {
         V1Service svc =
                 new V1ServiceBuilder()
                         .withNewMetadata()
-                        .withName("aservice")
+                        .withName("application")
+                        .withLabels(new HashMap<String,String>(){{put("app","application");}})
                         .endMetadata()
                         .withNewSpec()
-                        .withSessionAffinity("ClientIP")
-                        .withType("NodePort")
                         .addNewPort()
-                        .withProtocol("TCP")
-                        .withName("client")
+                        .withName("http")
                         .withPort(8008)
-                        .withNodePort(8080)
-                        .withTargetPort(new IntOrString(8080))
                         .endPort()
+                        .withSelector(new HashMap<String,String>(){{put("app","application");}})
                         .endSpec()
                         .build();
         System.out.println(Yaml.dump(svc));
