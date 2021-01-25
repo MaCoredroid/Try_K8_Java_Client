@@ -83,7 +83,7 @@ public class InClusterClientExample {
                         .withApiVersion("v1")
                         .withKind("Pod")
                         .withNewMetadata()
-                        .withName("application-"+ RandomStringUtils.random(9, true, true).toLowerCase())
+                        .withName("application-"+ RandomStringUtils.random(10, true, true).toLowerCase()+"-"+RandomStringUtils.random(5, true, true).toLowerCase())
                         .withLabels(new HashMap<String,String>(){{put("app","application");}})
                         .endMetadata()
                         .withNewSpec()
@@ -99,8 +99,13 @@ public class InClusterClientExample {
                         .build();
 //        System.out.println(Yaml.dump(pod));
 
-        System.out.println(pod);
-        System.out.println(api.createNamespacedPod("default", pod, null, null, null));
+//        System.out.println(pod);
+        try {
+            api.createNamespacedPod("default", pod, null, null, null);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
         V1Service svc =
                 new V1ServiceBuilder()
@@ -118,7 +123,7 @@ public class InClusterClientExample {
                         .withSelector(new HashMap<String,String>(){{put("app","application");}})
                         .endSpec()
                         .build();
-        System.out.println(api.createNamespacedService("default",svc,null,null,null));
+//        System.out.println(api.createNamespacedService("default",svc,null,null,null));
 //        System.out.println(Yaml.dump(svc));
 
 
