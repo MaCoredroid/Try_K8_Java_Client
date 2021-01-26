@@ -19,7 +19,7 @@ public class CheckPodStatus{
     @Autowired
     WebApplicationContext applicationContext;
 
-    @Scheduled(fixedDelay=200)
+    @Scheduled(fixedDelay=500)
     public void run() {
         CoreV1Api api =applicationContext.getBean(KubernetesApiClient.class).getAPI();
         ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);

@@ -16,7 +16,7 @@ public class CheckNodeStatus {
     @Autowired
     WebApplicationContext applicationContext;
 
-    @Scheduled(fixedDelay=200)
+    @Scheduled(fixedDelay=500)
     public void run() throws IOException {
         NodeRepository nodeRepository=applicationContext.getBean(NodeRepository.class);
 

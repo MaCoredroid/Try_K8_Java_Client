@@ -17,7 +17,7 @@ public class CheckNodeList  {
     @Autowired
     WebApplicationContext applicationContext;
 
-    @Scheduled(fixedDelay=200)
+    @Scheduled(fixedDelay=1000)
     public void run() {
         CoreV1Api api =applicationContext.getBean(KubernetesApiClient.class).getAPI();
         NodeRepository nodeRepository=applicationContext.getBean(NodeRepository.class);
