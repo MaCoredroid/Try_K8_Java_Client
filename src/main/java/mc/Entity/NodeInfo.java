@@ -3,7 +3,6 @@ package mc.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
@@ -15,7 +14,6 @@ import javax.persistence.Id;
 public class NodeInfo {
     @Id
     String id="";//node name
-    @Indexed
     String nodeIP="";
     Double node_memory_MemTotal_bytes=0.0;
     Double node_memory_MemAvailable_bytes=0.0;
