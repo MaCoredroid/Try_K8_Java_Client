@@ -1,30 +1,32 @@
 package mc.Task;
 
 import io.kubernetes.client.openapi.apis.CoreV1Api;
-import lombok.SneakyThrows;
-import mc.DTO.NodeInfo;
+import mc.Component.KubernetesApiClient;
+import mc.Entity.NodeInfo;
+import mc.Repository.NodeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimerTask;
+import java.util.List;
+@Component
+public class CheckNodeStatus {
+    @Autowired
+    WebApplicationContext applicationContext;
 
-public class CheckNodeStatus extends TimerTask {
-    CoreV1Api api = new CoreV1Api();
-    HashMap<String, NodeInfo> nodeMap=new HashMap<>();
-    public CheckNodeStatus(CoreV1Api api, HashMap<String, NodeInfo> nodeMap)
-    {
-        this.api=api;
-        this.nodeMap=nodeMap;
-    }
-    @SneakyThrows
-    @Override
-    public void run() {
-        for(Map.Entry<String, NodeInfo> entry : nodeMap.entrySet()) {
-            NodeInfo nodeInfo=entry.getValue();
-            String nodeIP=entry.getKey();
+    @Scheduled(cron ="3/1 * * * * *")
+    public void run() throws IOException {
+        CoreV1Api api =applicationContext.getBean(KubernetesApiClient.class).getAPI();
+        NodeRepository nodeRepository=applicationContext.getBean(NodeRepository.class);
+
+        List<NodeInfo> nodeInfos=nodeRepository.findAll();
+
+        for(NodeInfo nodeInfo:nodeInfos) {
+            String nodeIP=nodeInfo.getNodeIP();
             String command="curl http://"+nodeIP+":9100/metrics | grep 'node_memory_MemTotal_bytes\\|node_memory_MemAvailable_bytes\\|node_load1\\|mode=\"idle\"\\|node_time_seconds'";
 
             final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});
@@ -83,7 +85,7 @@ public class CheckNodeStatus extends TimerTask {
             } catch (Exception ignored) {
 
             }
-            nodeMap.put(entry.getKey(),nodeInfo);
+            nodeRepository.save(nodeInfo);
         }
 //        System.out.println(nodeMap);
     }

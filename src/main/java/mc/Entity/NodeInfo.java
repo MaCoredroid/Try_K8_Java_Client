@@ -1,16 +1,22 @@
-package mc.DTO;
+package mc.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.math.BigDecimal;
+import javax.persistence.Id;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Document(collection = "NodeInfo")
 public class NodeInfo {
-    String nodeName="";
+    @Id
+    String id="";//node name
+    @Indexed
+    String nodeIP="";
     Double node_memory_MemTotal_bytes=0.0;
     Double node_memory_MemAvailable_bytes=0.0;
     Double node_memory_percents=0.0;
@@ -23,4 +29,3 @@ public class NodeInfo {
     Double cpu_idle_time=0.0;
     Double cpu_idle_percent=0.0;
 }
-

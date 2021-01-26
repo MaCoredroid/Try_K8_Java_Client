@@ -1,27 +1,30 @@
 package mc.Task;
 
-import lombok.SneakyThrows;
 import mc.DTO.ExecutionDTO;
 import mc.DTO.ExecutionDetailDTO;
-import mc.DTO.NodeInfo;
+import mc.Entity.NodeInfo;
+import mc.Repository.NodeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.List;
+@Component
 public class Execution  {
-    HashMap<String, NodeInfo> nodeMap=new HashMap<>();
-    ExecutionDTO executionDTO=new ExecutionDTO();
-    public Execution(HashMap<String, NodeInfo> nodeMap,ExecutionDTO executionDTO){
-        this.nodeMap=nodeMap;
-        this.executionDTO=executionDTO;
-    }
-    @SneakyThrows
-    public void run() {
-        for(Map.Entry<String, NodeInfo> entry : nodeMap.entrySet()) {
+
+    @Autowired
+    WebApplicationContext applicationContext;
+
+
+    public void run(ExecutionDTO executionDTO) throws IOException {
+        NodeRepository nodeRepository=applicationContext.getBean(NodeRepository.class);
+        List<NodeInfo> nodeInfos=nodeRepository.findAll();
+        for(NodeInfo nodeInfo:nodeInfos) {
             StringBuilder command = new StringBuilder("ssh -t ");
-            command.append(entry.getKey());
+            command.append(nodeInfo.getNodeIP());
             command.append(" \"");
             String ServiceIP=executionDTO.getServiceIP();
             for(ExecutionDetailDTO executionDetailDTO:executionDTO.getExecutionDetailDTOS())

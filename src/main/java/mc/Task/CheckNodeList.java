@@ -3,23 +3,24 @@ package mc.Task;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Node;
 import io.kubernetes.client.openapi.models.V1NodeList;
-import mc.DTO.NodeInfo;
-
-import java.util.HashMap;
+import mc.Component.KubernetesApiClient;
+import mc.Entity.NodeInfo;
+import mc.Repository.NodeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 import java.util.Objects;
-import java.util.TimerTask;
 
-public class CheckNodeList extends TimerTask {
-    CoreV1Api api = new CoreV1Api();
-    HashMap<String, NodeInfo> nodeMap=new HashMap<>();
-    HashMap<String, String> nodeNameToIP=new HashMap<>();
-    public CheckNodeList(CoreV1Api api, HashMap<String, NodeInfo> nodeMap,HashMap<String, String> nodeNameToIP){
-        this.api=api;
-        this.nodeMap=nodeMap;
-        this.nodeNameToIP=nodeNameToIP;
-    }
-    @Override
+@Component
+public class CheckNodeList  {
+    @Autowired
+    WebApplicationContext applicationContext;
+
+    @Scheduled(cron ="3/1 * * * * *")
     public void run() {
+        CoreV1Api api =applicationContext.getBean(KubernetesApiClient.class).getAPI();
+        NodeRepository nodeRepository=applicationContext.getBean(NodeRepository.class);
         V1NodeList nodeList=null;
         try {
             nodeList = api.listNode(null, null, null, null, null, null, null, null, null,null);
@@ -31,11 +32,12 @@ public class CheckNodeList extends TimerTask {
         {
             String nodeIP= Objects.requireNonNull(Objects.requireNonNull(node.getStatus()).getAddresses()).get(0).getAddress();
             String nodeName= Objects.requireNonNull(node.getMetadata()).getName();
-            NodeInfo nodeInfo=nodeMap.getOrDefault(nodeIP, new NodeInfo());
-            nodeInfo.setNodeName(nodeName);
+            assert nodeName != null;
+            NodeInfo nodeInfo=nodeRepository.findById(nodeName).orElseGet(NodeInfo::new);
+            nodeInfo.setId(nodeName);
+            nodeInfo.setNodeIP(nodeIP);
             nodeInfo.setNode_cpu_total(Objects.requireNonNull(Objects.requireNonNull(node.getStatus()).getCapacity()).get("cpu").getNumber().doubleValue());
-            nodeMap.put(nodeIP,nodeInfo);
-            nodeNameToIP.put(nodeName,nodeIP);
+            nodeRepository.save(nodeInfo);
         }
     }
 }
