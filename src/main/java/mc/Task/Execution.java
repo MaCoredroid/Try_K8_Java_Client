@@ -5,6 +5,7 @@ import mc.DTO.ExecutionDetailDTO;
 import mc.Entity.NodeInfo;
 import mc.Repository.NodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -18,7 +19,7 @@ public class Execution  {
     @Autowired
     WebApplicationContext applicationContext;
 
-
+    @Async
     public void run(ExecutionDTO executionDTO) throws IOException {
         NodeRepository nodeRepository=applicationContext.getBean(NodeRepository.class);
         List<NodeInfo> nodeInfos=nodeRepository.findAll();
