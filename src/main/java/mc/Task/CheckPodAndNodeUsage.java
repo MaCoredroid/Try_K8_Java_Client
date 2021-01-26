@@ -25,6 +25,11 @@ public class CheckPodAndNodeUsage{
 
     @Scheduled(cron ="3/1 * * * * *")
     public void run() throws ApiException {
+        try {
+            Thread.sleep((int) (Math.random() * 100));
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        }
         ApiClient client=applicationContext.getBean(KubernetesApiClient.class).getClient();
         ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);
         NodeRepository nodeRepository=applicationContext.getBean(NodeRepository.class);

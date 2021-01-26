@@ -1,7 +1,5 @@
 package mc.Task;
 
-import io.kubernetes.client.openapi.apis.CoreV1Api;
-import mc.Component.KubernetesApiClient;
 import mc.Entity.NodeInfo;
 import mc.Repository.NodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,11 @@ public class CheckNodeStatus {
 
     @Scheduled(cron ="3/1 * * * * *")
     public void run() throws IOException {
-        CoreV1Api api =applicationContext.getBean(KubernetesApiClient.class).getAPI();
+        try {
+            Thread.sleep((int) (Math.random() * 100));
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        }
         NodeRepository nodeRepository=applicationContext.getBean(NodeRepository.class);
 
         List<NodeInfo> nodeInfos=nodeRepository.findAll();
