@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Objects;
-import java.util.Optional;
 
 @Component
 public class CheckServiceList{
@@ -32,13 +31,7 @@ public class CheckServiceList{
         }
         for (V1Service item : Objects.requireNonNull(serviceList).getItems()) {
             if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
-                Optional<ServiceInfo> optionalServiceInfo=serviceRepository.findById(Objects.requireNonNull(item.getMetadata().getName()));
-                ServiceInfo serviceInfo=new ServiceInfo();
-                if(optionalServiceInfo.isPresent())
-                {
-                    serviceInfo=optionalServiceInfo.get();
-                    System.out.println("hhhhhhhhh");
-                }
+                ServiceInfo serviceInfo=serviceRepository.findById(Objects.requireNonNull(item.getMetadata().getName())).orElseGet(ServiceInfo::new);
                 serviceInfo.setId(item.getMetadata().getName());
                 serviceInfo.setClusterIP(Objects.requireNonNull(item.getSpec()).getClusterIP());
                 serviceRepository.save(serviceInfo);

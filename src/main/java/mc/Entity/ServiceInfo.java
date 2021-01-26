@@ -15,7 +15,7 @@ import java.util.HashMap;
 @Document(collection = "ServiceInfo")
 public class ServiceInfo {
     @Id
-    private String Id="";//service name
+    private String id="";//service name
     private String clusterIP="";
     private HashMap<String, PodInfo> pods=new HashMap<>();
 }
