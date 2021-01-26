@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.io.IOException;
 import java.util.Map;
 
 @Component
@@ -43,12 +44,12 @@ public class Calculate {
 
             }
         }
-//        Execution execution=applicationContext.getBean(Execution.class);
-//        try {
-//            execution.run(executionDTO);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        Execution execution=applicationContext.getBean(Execution.class);
+        try {
+            execution.run(executionDTO);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println(System.currentTimeMillis() / 1000L);
     }
 }

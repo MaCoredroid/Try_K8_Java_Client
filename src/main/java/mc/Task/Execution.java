@@ -30,7 +30,7 @@ public class Execution  {
             String ServiceIP=executionDTO.getServiceIP();
             for(ExecutionDetailDTO executionDetailDTO:executionDTO.getExecutionDetailDTOS())
             {
-                command.append("sudo ipvsadm -e -t ").append(ServiceIP).append(":8080 -r ").append(executionDetailDTO.getPodIP()).append(":8080 -m -w 2").append(" && ");
+                command.append("sudo ipvsadm -e -t ").append(ServiceIP).append(":8080 -r ").append(executionDetailDTO.getPodIP()).append(":8080 -m -w ").append(executionDetailDTO.getWeight()).append(" && ");
             }
             String execute=command.substring(0, command.length()-4)+"\"";
             final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", execute});
