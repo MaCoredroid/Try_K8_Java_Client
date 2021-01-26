@@ -14,21 +14,20 @@ limitations under the License.
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
-import io.kubernetes.client.openapi.models.V1Service;
-import io.kubernetes.client.openapi.models.V1ServiceList;
 import mc.Component.KubernetesApiClient;
 import mc.DTO.NodeInfo;
-import mc.DTO.ServiceInfo;
-import mc.Task.*;
+import mc.Task.CheckNodeList;
+import mc.Task.CheckNodeStatus;
+import mc.Task.CheckPodStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -43,6 +42,7 @@ import java.util.concurrent.TimeUnit;
  * <p>From inside $REPO_DIR/examples
  */
 @SpringBootApplication
+@EnableScheduling
 public class App {
     @Autowired
     WebApplicationContext applicationContext;
@@ -57,32 +57,20 @@ public class App {
         Runnable r1 = () -> {
             CoreV1Api api=applicationContext.getBean(KubernetesApiClient.class).getAPI();
             ApiClient client=applicationContext.getBean(KubernetesApiClient.class).getClient();
-            HashMap<String, ServiceInfo> serviceNameMap = new HashMap<>();
             HashMap<String, NodeInfo> nodeMap=new HashMap<>();
             HashMap<String, String> nodeNameToIP=new HashMap<>();
 //        // invokes the CoreV1Api client
             Timer t = new Timer();
             CheckNodeStatus checkNodeStatus =new CheckNodeStatus(api,nodeMap);
             CheckNodeList checkNodeList=new CheckNodeList(api,nodeMap,nodeNameToIP);
-            CheckPodStatus checkPodStatus=new CheckPodStatus(api,serviceNameMap);
-            CheckPodAndNodeUsage checkPodAndNodeUsage =new CheckPodAndNodeUsage(client,nodeMap,serviceNameMap,nodeNameToIP);
-            Calculate calculate=new Calculate(serviceNameMap, nodeMap);
-            V1ServiceList serviceList = null;
-            try {
-                serviceList = api.listServiceForAllNamespaces(null, null, null, null, null, null, null, null, null,null);
-            } catch (ApiException e) {
-                e.printStackTrace();
-            }
-            for (V1Service item : Objects.requireNonNull(serviceList).getItems()) {
-                if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")&&Objects.equals(Objects.requireNonNull(item.getMetadata()).getName(), "application")) {
-                    serviceNameMap.put(item.getMetadata().getName(),new ServiceInfo(item.getMetadata().getName(), Objects.requireNonNull(item.getSpec()).getClusterIP(),new HashMap<>()));
-                }
-            }
-            t.scheduleAtFixedRate(checkNodeStatus, 0, 500);
-            t.scheduleAtFixedRate(checkPodAndNodeUsage, 0, 500);
-            t.scheduleAtFixedRate(checkNodeList, 0, 5000);
-            t.scheduleAtFixedRate(checkPodStatus, 0, 5000);
-            t.scheduleAtFixedRate(calculate, 0, 1000);
+            CheckPodStatus checkPodStatus=new CheckPodStatus();
+//            CheckPodAndNodeUsage checkPodAndNodeUsage =new CheckPodAndNodeUsage(client,nodeMap,serviceNameMap,nodeNameToIP);
+//            Calculate calculate=new Calculate(serviceNameMap, nodeMap);
+//            t.scheduleAtFixedRate(checkNodeStatus, 0, 500);
+//            t.scheduleAtFixedRate(checkPodAndNodeUsage, 0, 500);
+//            t.scheduleAtFixedRate(checkNodeList, 0, 5000);
+//            t.scheduleAtFixedRate(checkPodStatus, 0, 5000);
+//            t.scheduleAtFixedRate(calculate, 0, 1000);
         };
 
         //Create an executor service with 2 threads (it can be like 50

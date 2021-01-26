@@ -3,22 +3,26 @@ package mc.Task;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import io.kubernetes.client.openapi.models.V1Pod;
 import io.kubernetes.client.openapi.models.V1PodList;
+import mc.Component.KubernetesApiClient;
 import mc.DTO.PodInfo;
-import mc.DTO.ServiceInfo;
+import mc.Entity.ServiceInfo;
+import mc.Repository.ServiceRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 
-import java.util.HashMap;
 import java.util.Objects;
-import java.util.TimerTask;
 
-public class CheckPodStatus extends TimerTask {
-    CoreV1Api api = new CoreV1Api();
-    HashMap<String, ServiceInfo> serviceNameMap = new HashMap<>();
-    public CheckPodStatus(CoreV1Api api, HashMap<String, ServiceInfo> serviceNameMap){
-        this.api=api;
-        this.serviceNameMap=serviceNameMap;
-    }
-    @Override
+@Component
+public class CheckPodStatus{
+    @Autowired
+    WebApplicationContext applicationContext;
+
+    @Scheduled(cron ="*/0.5 * * * * *")
     public void run() {
+        CoreV1Api api =applicationContext.getBean(KubernetesApiClient.class).getAPI();
+        ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);
         V1PodList list = null;
         try {
             list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null,null);
@@ -30,16 +34,18 @@ public class CheckPodStatus extends TimerTask {
             if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
                 String[] arrOfStr = Objects.requireNonNull(Objects.requireNonNull(item.getMetadata()).getName()).split("-", 2);
                 String serviceName=arrOfStr[0];
-                if(!serviceNameMap.containsKey(serviceName))
+                if(!serviceRepository.findById(serviceName).isPresent())
                 {
                     continue;
                 }
                 String podName=Objects.requireNonNull(item.getMetadata()).getName();
-                PodInfo podInfo=serviceNameMap.get(serviceName).getPods().getOrDefault(podName, new PodInfo());
+                ServiceInfo serviceInfo=serviceRepository.findById(serviceName).get();
+                PodInfo podInfo=serviceInfo.getPods().getOrDefault(podName, new PodInfo());
                 podInfo.setPodName(podName);
                 podInfo.setNodeIP(Objects.requireNonNull(item.getStatus()).getHostIP());
                 podInfo.setPodIP(Objects.requireNonNull(item.getStatus()).getPodIP());
-                serviceNameMap.get(serviceName).getPods().put(podName,podInfo);
+                serviceInfo.getPods().put(podName,podInfo);
+                serviceRepository.save(serviceInfo);
             }
 
         }

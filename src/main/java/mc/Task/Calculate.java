@@ -5,7 +5,6 @@ import mc.DTO.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimerTask;
-
 public class Calculate extends TimerTask {
     HashMap<String, ServiceInfo> serviceNameMap = new HashMap<>();
     HashMap<String, NodeInfo> nodeMap=new HashMap<>();
