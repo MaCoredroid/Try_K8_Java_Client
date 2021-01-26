@@ -51,6 +51,39 @@ public class PodDaoImpl implements PodDao {
     }
 
     @Override
+    public boolean createPodWithSelectedNode(String serviceName, String image, String port,String nodeName) {
+        V1Pod pod =
+                new V1PodBuilder()
+                        .withApiVersion("v1")
+                        .withKind("Pod")
+                        .withNewMetadata()
+                        .withName(serviceName+"-"+ RandomStringUtils.random(10, true, true).toLowerCase()+"-"+RandomStringUtils.random(5, true, true).toLowerCase())
+                        .withLabels(new HashMap<String,String>(){{put("app",serviceName);}})
+                        .endMetadata()
+                        .withNewSpec()
+                        .addNewContainer()
+                        .withName(serviceName)
+                        .withImage(image)
+                        .addNewPort()
+                        .withContainerPort(Integer.parseInt(port))
+                        .endPort()
+                        .withImagePullPolicy("Always")
+                        .endContainer()
+                        .withNodeSelector(new HashMap<String,String>(){{put("kubernetes.io/hostname",nodeName);}})
+                        .endSpec()
+                        .build();
+        CoreV1Api api=applicationContext.getBean(KubernetesApiClient.class).getAPI();
+        try {
+            api.createNamespacedPod("default", pod, null, null, null);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public boolean deletePod(String podName) {
         try {
             delete(V1Pod.class).namespace("default").name(podName).execute();
