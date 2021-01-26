@@ -43,6 +43,10 @@ public class CheckPodAndNodeUsage{
         for (PodMetrics item : metrics.getPodMetrics("default").getItems()) {
             String podName=item.getMetadata().getName();
             String serviceName= Objects.requireNonNull(item.getMetadata().getName()).split("-", 2)[0];
+            if(!serviceRepository.findById(serviceName).isPresent())
+            {
+                continue;
+            }
             ServiceInfo serviceInfo=serviceRepository.findById(serviceName).orElseGet(ServiceInfo::new);
             if(serviceInfo.getPods().containsKey(podName))
             {
