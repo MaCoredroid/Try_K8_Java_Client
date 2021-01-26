@@ -46,6 +46,7 @@ public class Calculate {
                 System.out.println("NowNode  "+nodeInfo.getNode_top_cpu_percents()+"  ");
                 System.out.println("NowNode  "+nodeInfo.getNode_load_cpu_percents()+"  ");
                 System.out.println("NowNode  "+nodeInfo.getCpu_idle_percent()+"\n");
+                System.out.println(System.currentTimeMillis() / 1000L);
             }
         }
         Execution execution=applicationContext.getBean(Execution.class);
