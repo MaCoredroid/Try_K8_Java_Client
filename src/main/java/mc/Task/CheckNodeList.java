@@ -17,13 +17,8 @@ public class CheckNodeList  {
     @Autowired
     WebApplicationContext applicationContext;
 
-    @Scheduled(cron ="3/1 * * * * *")
+    @Scheduled(fixedDelay=200)
     public void run() {
-        try {
-            Thread.sleep((int) (Math.random() * 100));
-        } catch (InterruptedException ie) {
-            Thread.currentThread().interrupt();
-        }
         CoreV1Api api =applicationContext.getBean(KubernetesApiClient.class).getAPI();
         NodeRepository nodeRepository=applicationContext.getBean(NodeRepository.class);
         V1NodeList nodeList=null;

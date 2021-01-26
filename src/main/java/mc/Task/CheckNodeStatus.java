@@ -16,13 +16,8 @@ public class CheckNodeStatus {
     @Autowired
     WebApplicationContext applicationContext;
 
-    @Scheduled(cron ="3/1 * * * * *")
+    @Scheduled(fixedDelay=200)
     public void run() throws IOException {
-        try {
-            Thread.sleep((int) (Math.random() * 100));
-        } catch (InterruptedException ie) {
-            Thread.currentThread().interrupt();
-        }
         NodeRepository nodeRepository=applicationContext.getBean(NodeRepository.class);
 
         List<NodeInfo> nodeInfos=nodeRepository.findAll();
