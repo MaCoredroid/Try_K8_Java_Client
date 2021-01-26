@@ -32,8 +32,8 @@ public class CheckPodAndNodeUsage{
         Metrics metrics = new Metrics(client);
         NodeMetricsList list = metrics.getNodeMetrics();
         for (NodeMetrics item : list.getItems()) {
-            if(nodeRepository.findByNodeIP(item.getMetadata().getName()).isPresent()) {
-                NodeInfo nodeInfo = nodeRepository.findByNodeIP(item.getMetadata().getName()).get();
+            if(nodeRepository.findById(Objects.requireNonNull(item.getMetadata().getName())).isPresent()) {
+                NodeInfo nodeInfo = nodeRepository.findById(Objects.requireNonNull(item.getMetadata().getName())).get();
                 nodeInfo.setNode_top_cpu_value(item.getUsage().get("cpu").getNumber().doubleValue());
                 nodeInfo.setNode_top_cpu_percents(item.getUsage().get("cpu").getNumber().doubleValue() / nodeInfo.getNode_cpu_total());
                 nodeRepository.save(nodeInfo);
