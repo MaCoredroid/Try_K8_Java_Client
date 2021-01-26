@@ -11,12 +11,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.web.context.WebApplicationContext;
 
 /**
  * A simple example of how to use the Java API inside a kubernetes cluster
@@ -28,9 +27,8 @@ import org.springframework.web.context.WebApplicationContext;
  */
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
 @EnableScheduling
+@EnableAsync
 public class App {
-    @Autowired
-    WebApplicationContext applicationContext;
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
     }
