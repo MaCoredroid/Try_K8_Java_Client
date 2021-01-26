@@ -32,7 +32,7 @@ public class CheckServiceList{
         for (V1Service item : Objects.requireNonNull(serviceList).getItems()) {
             if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
                 ServiceInfo serviceInfo=serviceRepository.findById(Objects.requireNonNull(item.getMetadata().getName())).orElseGet(ServiceInfo::new);
-                serviceInfo.setServiceName(item.getMetadata().getName());
+                serviceInfo.setId(item.getMetadata().getName());
                 serviceInfo.setClusterIP(Objects.requireNonNull(item.getSpec()).getClusterIP());
                 serviceRepository.save(serviceInfo);
             }
