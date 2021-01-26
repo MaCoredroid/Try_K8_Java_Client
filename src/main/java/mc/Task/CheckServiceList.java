@@ -19,7 +19,7 @@ public class CheckServiceList{
     @Autowired
     WebApplicationContext applicationContext;
 
-    @Scheduled(cron ="*/0.5 * * * * *")
+    @Scheduled(cron ="5/* * * * * *")
     public void run() {
         CoreV1Api api =applicationContext.getBean(KubernetesApiClient.class).getAPI();
         ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);
