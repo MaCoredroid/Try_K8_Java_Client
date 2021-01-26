@@ -15,6 +15,7 @@ import io.kubernetes.client.openapi.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -28,7 +29,7 @@ import java.io.IOException;
  *
  * <p>From inside $REPO_DIR/examples
  */
-@SpringBootApplication
+@SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
 @EnableScheduling
 public class App {
     @Autowired
