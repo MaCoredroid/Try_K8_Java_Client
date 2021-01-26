@@ -19,7 +19,7 @@ public class Calculate {
     @Autowired
     WebApplicationContext applicationContext;
 
-    @Scheduled(fixedDelay=500)
+    @Scheduled(fixedDelay=200)
     public void run() {
         ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);
         NodeRepository nodeRepository=applicationContext.getBean(NodeRepository.class);
