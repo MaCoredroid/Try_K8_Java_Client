@@ -20,7 +20,7 @@ public class Calculate {
     @Autowired
     WebApplicationContext applicationContext;
 
-    @Scheduled(cron ="*/1 * * * * *")
+    @Scheduled(cron ="5/1 * * * * *")
     public void run() {
         try {
             Thread.sleep((int) (Math.random() * 100));
