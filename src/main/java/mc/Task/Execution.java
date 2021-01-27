@@ -33,6 +33,7 @@ public class Execution  {
                 command.append("sudo ipvsadm -e -t ").append(ServiceIP).append(":8080 -r ").append(executionDetailDTO.getPodIP()).append(":8080 -m -w ").append(executionDetailDTO.getWeight()).append(" && ");
             }
             String execute=command.substring(0, command.length()-4)+"\"";
+            System.out.println(execute);
             final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", execute});
             new Thread(() -> {
                 BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
