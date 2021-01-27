@@ -47,7 +47,7 @@ public class CheckPodAndNodeUsage{
             {
                 continue;
             }
-            ServiceInfo serviceInfo=serviceRepository.findById(serviceName).orElseGet(ServiceInfo::new);
+            ServiceInfo serviceInfo=serviceRepository.findById(serviceName).get();
             if(serviceInfo.getPods().containsKey(podName))
             {
 
@@ -62,6 +62,5 @@ public class CheckPodAndNodeUsage{
             serviceRepository.save(serviceInfo);
 
         }
-        System.out.println(serviceRepository.findAll());
     }
 }
