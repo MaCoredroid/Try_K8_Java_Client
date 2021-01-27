@@ -39,22 +39,23 @@ public class CheckPodStatus{
                 if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
                     if (Objects.requireNonNull(Objects.requireNonNull(item.getStatus()).getContainerStatuses()).get(0).getReady()) {
                         String podName = Objects.requireNonNull(item.getMetadata()).getName();
-                        PodInfo podInfo = serviceInfo.getPods().getOrDefault(podName, new PodInfo());
-                        podInfo.setPodName(podName);
                         podNameSet.remove(podName);
-                        podInfo.setNodeIP(Objects.requireNonNull(item.getStatus()).getHostIP());
-                        podInfo.setPodIP(Objects.requireNonNull(item.getStatus()).getPodIP());
-                        serviceInfo.getPods().put(podName, podInfo);
+                        if(!serviceInfo.getPods().containsKey(podName)) {
+                            System.out.println("CREASTINNNNNNNNNNNNN");
+                            PodInfo podInfo = new PodInfo();
+                            podInfo.setPodName(podName);
+                            podInfo.setNodeIP(Objects.requireNonNull(item.getStatus()).getHostIP());
+                            podInfo.setPodIP(Objects.requireNonNull(item.getStatus()).getPodIP());
+                            serviceInfo.getPods().put(podName, podInfo);
+                        }
                     }
                 }
             }
             for(String podName:podNameSet)
             {
                 serviceInfo.getPods().remove(podName);
-                System.out.println("YESSSSSSSSS");
             }
             serviceRepository.save(serviceInfo);
         }
-        System.out.println(serviceRepository.findAll());
     }
 }
