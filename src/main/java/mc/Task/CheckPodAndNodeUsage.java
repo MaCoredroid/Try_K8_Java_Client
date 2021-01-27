@@ -57,10 +57,11 @@ public class CheckPodAndNodeUsage{
                 PodInfo podInfo=serviceInfo.getPods().get(podName);
                 podInfo.setCpu(item.getContainers().get(0).getUsage().get("cpu").getNumber().doubleValue());
                 podInfo.setMemory(item.getContainers().get(0).getUsage().get("memory").getNumber().doubleValue());
-                System.out.println(podInfo);
+
             }
             serviceRepository.save(serviceInfo);
 
         }
+        System.out.println(serviceRepository.findAll());
     }
 }

@@ -41,7 +41,6 @@ public class CheckPodStatus{
                         String podName = Objects.requireNonNull(item.getMetadata()).getName();
                         podNameSet.remove(podName);
                         if(!serviceInfo.getPods().containsKey(podName)) {
-                            System.out.println("CREASTINNNNNNNNNNNNN");
                             PodInfo podInfo = new PodInfo();
                             podInfo.setPodName(podName);
                             podInfo.setNodeIP(Objects.requireNonNull(item.getStatus()).getHostIP());
