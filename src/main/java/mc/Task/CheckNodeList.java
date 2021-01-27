@@ -33,14 +33,11 @@ public class CheckNodeList  {
             String nodeIP= Objects.requireNonNull(Objects.requireNonNull(node.getStatus()).getAddresses()).get(0).getAddress();
             String nodeName= Objects.requireNonNull(node.getMetadata()).getName();
             assert nodeName != null;
-            if(nodeName.equals("master1")||nodeName.equals("super"))
-            {
-                continue;
-            }
             NodeInfo nodeInfo=nodeRepository.findById(nodeName).orElseGet(NodeInfo::new);
             nodeInfo.setId(nodeName);
             nodeInfo.setNodeIP(nodeIP);
             nodeInfo.setNode_cpu_total(Objects.requireNonNull(Objects.requireNonNull(node.getStatus()).getCapacity()).get("cpu").getNumber().doubleValue());
+            nodeInfo.setApplicable(!nodeName.equals("master1") && !nodeName.equals("super"));
             nodeRepository.save(nodeInfo);
         }
     }

@@ -14,6 +14,7 @@ import javax.persistence.Id;
 public class NodeInfo {
     @Id
     String id="";//node name
+    Boolean applicable=true;//can be scheduled
     String nodeIP="";
     Double node_memory_MemTotal_bytes=0.0;
     Double node_memory_MemAvailable_bytes=0.0;
