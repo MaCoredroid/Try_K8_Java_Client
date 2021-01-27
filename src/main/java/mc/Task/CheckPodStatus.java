@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -27,7 +28,7 @@ public class CheckPodStatus{
         ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);
         List<ServiceInfo> serviceInfos=serviceRepository.findAll();
         for(ServiceInfo serviceInfo:serviceInfos) {
-            Set<String> podNameSet=serviceInfo.getPods().keySet();
+            Set<String> podNameSet=new HashSet<>(serviceInfo.getPods().keySet());
             V1PodList list = null;
             try {
                 list = api.listPodForAllNamespaces(null, null, null, "app="+serviceInfo.getId(), null, null, null, null, null, null);
