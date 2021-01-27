@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -23,34 +24,30 @@ public class CheckPodStatus{
     public void run() {
         CoreV1Api api =applicationContext.getBean(KubernetesApiClient.class).getAPI();
         ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);
-        V1PodList list = null;
-        try {
-            list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null,null);
-        }catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        for (V1Pod item : Objects.requireNonNull(list).getItems()) {
-            if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
-                String[] arrOfStr = Objects.requireNonNull(Objects.requireNonNull(item.getMetadata()).getName()).split("-", 2);
-                String serviceName=arrOfStr[0];
-                if(!serviceRepository.findById(serviceName).isPresent())
-                {
-                    continue;
-                }
-                if(Objects.requireNonNull(Objects.requireNonNull(item.getStatus()).getContainerStatuses()).get(0).getReady()) {
-                    String podName = Objects.requireNonNull(item.getMetadata()).getName();
-                    ServiceInfo serviceInfo = serviceRepository.findById(serviceName).get();
-                    PodInfo podInfo = serviceInfo.getPods().getOrDefault(podName, new PodInfo());
-                    podInfo.setPodName(podName);
-                    podInfo.setNodeIP(Objects.requireNonNull(item.getStatus()).getHostIP());
-                    podInfo.setPodIP(Objects.requireNonNull(item.getStatus()).getPodIP());
-                    serviceInfo.getPods().put(podName, podInfo);
-                    serviceRepository.save(serviceInfo);
-                }
+        List<ServiceInfo> serviceInfos=serviceRepository.findAll();
+        for(ServiceInfo serviceInfo:serviceInfos) {
+            serviceInfo.getPods().clear();
+            V1PodList list = null;
+            try {
+                list = api.listPodForAllNamespaces(null, null, null, "app="+serviceInfo.getId(), null, null, null, null, null, null);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            for (V1Pod item : Objects.requireNonNull(list).getItems()) {
+                if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
+                    if (Objects.requireNonNull(Objects.requireNonNull(item.getStatus()).getContainerStatuses()).get(0).getReady()) {
+                        String podName = Objects.requireNonNull(item.getMetadata()).getName();
+                        PodInfo podInfo = serviceInfo.getPods().getOrDefault(podName, new PodInfo());
+                        podInfo.setPodName(podName);
+                        podInfo.setNodeIP(Objects.requireNonNull(item.getStatus()).getHostIP());
+                        podInfo.setPodIP(Objects.requireNonNull(item.getStatus()).getPodIP());
+                        serviceInfo.getPods().put(podName, podInfo);
+                        serviceRepository.save(serviceInfo);
+                    }
+                }
 
+            }
         }
-//        System.out.println(serviceRepository.findAll());
+        System.out.println(serviceRepository.findAll());
     }
 }

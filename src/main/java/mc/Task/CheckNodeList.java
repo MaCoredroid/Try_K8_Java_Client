@@ -21,6 +21,7 @@ public class CheckNodeList  {
     public void run() {
         CoreV1Api api =applicationContext.getBean(KubernetesApiClient.class).getAPI();
         NodeRepository nodeRepository=applicationContext.getBean(NodeRepository.class);
+        nodeRepository.deleteAll();
         V1NodeList nodeList=null;
         try {
             nodeList = api.listNode(null, null, null, null, null, null, null, null, null,null);
