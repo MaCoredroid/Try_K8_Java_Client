@@ -5,11 +5,14 @@ import io.kubernetes.client.openapi.models.V1Pod;
 import io.kubernetes.client.openapi.models.V1PodBuilder;
 import mc.Component.KubernetesApiClient;
 import mc.Dao.PodDao;
+import mc.Entity.ServiceInfo;
+import mc.Repository.ServiceRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.Instant;
 import java.util.HashMap;
 
 import static io.kubernetes.client.extended.kubectl.Kubectl.delete;
@@ -84,13 +87,34 @@ public class PodDaoImpl implements PodDao {
     }
 
     @Override
-    public boolean deletePod(String podName) {
+    public void deletePod(String podName) {
         try {
             delete(V1Pod.class).namespace("default").name(podName).execute();
         }catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+        }
+    }
+
+    @Override
+    public boolean migratePod(String podName, String serviceName) {
+        ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);
+        if(serviceRepository.findById(serviceName).isPresent())
+        {
+            ServiceInfo serviceInfo=serviceRepository.findById(serviceName).get();
+            if(!serviceInfo.getPods().containsKey(podName))
+            {
+                return false;
+            }
+            if(!createPod(serviceName,serviceInfo.getImage(),serviceInfo.getPort()))
+            {
+                return false;
+            }
+            serviceInfo.setDesiredReplicaNum(serviceInfo.getDesiredReplicaNum()+1);
+            serviceInfo.setTimestamp(Instant.now().toEpochMilli());
+            serviceInfo.setMigrationFlag(true);
+            serviceInfo.getPods().get(podName).setDeprecatedFlag(true);
+            serviceRepository.save(serviceInfo);
         }
         return true;
     }

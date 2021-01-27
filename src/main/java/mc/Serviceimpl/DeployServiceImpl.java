@@ -49,7 +49,7 @@ public class DeployServiceImpl implements DeployService {
         CoreV1Api api=applicationContext.getBean(KubernetesApiClient.class).getAPI();
         V1PodList list;
         try {
-            list = api.listPodForAllNamespaces(null, null, null, "app=xyz", null, null, null, null, null,null);
+            list = api.listPodForAllNamespaces(null, null, null, "app="+serviceName, null, null, null, null, null,null);
             for(V1Pod v1Pod:list.getItems())
             {
                 podDao.deletePod(Objects.requireNonNull(v1Pod.getMetadata()).getName());

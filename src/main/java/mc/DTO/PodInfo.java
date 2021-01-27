@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Objects;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,4 +13,5 @@ public class PodInfo {
     private String nodeIP="";
     private Double cpu=0.0;
     private Double memory=0.0;
+    private Boolean deprecatedFlag=false;
 }

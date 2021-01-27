@@ -18,6 +18,7 @@ public class ServiceInfo {
     private String id="";//service name
     private String clusterIP="";
     private Integer desiredReplicaNum=0;
+    private Boolean migrationFlag=false;
     private String image="";
     private String port="";
     private Long timestamp=0L;
