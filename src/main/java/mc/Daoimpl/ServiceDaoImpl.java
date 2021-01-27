@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.Instant;
 import java.util.HashMap;
 
 import static io.kubernetes.client.extended.kubectl.Kubectl.delete;
@@ -51,6 +52,7 @@ public class ServiceDaoImpl implements ServiceDao {
         serviceInfo.setId(serviceName);
         serviceInfo.setImage(image);
         serviceInfo.setPort(port);
+        serviceInfo.setTimestamp(Instant.now().toEpochMilli());
         serviceInfo.setDesiredReplicaNum(desiredReplicaNum);
         serviceRepository.save(serviceInfo);
         return true;

@@ -20,5 +20,6 @@ public class ServiceInfo {
     private Integer desiredReplicaNum=0;
     private String image="";
     private String port="";
+    private Long timestamp=0L;
     private HashMap<String, PodInfo> pods=new HashMap<>();
 }

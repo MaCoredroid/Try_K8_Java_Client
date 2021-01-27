@@ -38,14 +38,16 @@ public class CheckPodStatus{
                 {
                     continue;
                 }
-                String podName=Objects.requireNonNull(item.getMetadata()).getName();
-                ServiceInfo serviceInfo=serviceRepository.findById(serviceName).get();
-                PodInfo podInfo=serviceInfo.getPods().getOrDefault(podName, new PodInfo());
-                podInfo.setPodName(podName);
-                podInfo.setNodeIP(Objects.requireNonNull(item.getStatus()).getHostIP());
-                podInfo.setPodIP(Objects.requireNonNull(item.getStatus()).getPodIP());
-                serviceInfo.getPods().put(podName,podInfo);
-                serviceRepository.save(serviceInfo);
+                if(Objects.requireNonNull(Objects.requireNonNull(item.getStatus()).getContainerStatuses()).get(0).getReady()) {
+                    String podName = Objects.requireNonNull(item.getMetadata()).getName();
+                    ServiceInfo serviceInfo = serviceRepository.findById(serviceName).get();
+                    PodInfo podInfo = serviceInfo.getPods().getOrDefault(podName, new PodInfo());
+                    podInfo.setPodName(podName);
+                    podInfo.setNodeIP(Objects.requireNonNull(item.getStatus()).getHostIP());
+                    podInfo.setPodIP(Objects.requireNonNull(item.getStatus()).getPodIP());
+                    serviceInfo.getPods().put(podName, podInfo);
+                    serviceRepository.save(serviceInfo);
+                }
             }
 
         }
