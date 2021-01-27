@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Component
 public class CheckNodeList  {
@@ -21,7 +24,11 @@ public class CheckNodeList  {
     public void run() {
         CoreV1Api api =applicationContext.getBean(KubernetesApiClient.class).getAPI();
         NodeRepository nodeRepository=applicationContext.getBean(NodeRepository.class);
-        nodeRepository.deleteAll();
+        Set<String> nodeNameSet=new HashSet<>();
+        for(NodeInfo nodeInfo: nodeRepository.findAll())
+        {
+            nodeNameSet.add(nodeInfo.getId());
+        }
         V1NodeList nodeList=null;
         try {
             nodeList = api.listNode(null, null, null, null, null, null, null, null, null,null);
@@ -36,10 +43,15 @@ public class CheckNodeList  {
             assert nodeName != null;
             NodeInfo nodeInfo=nodeRepository.findById(nodeName).orElseGet(NodeInfo::new);
             nodeInfo.setId(nodeName);
+            nodeNameSet.remove(nodeName);
             nodeInfo.setNodeIP(nodeIP);
             nodeInfo.setNode_cpu_total(Objects.requireNonNull(Objects.requireNonNull(node.getStatus()).getCapacity()).get("cpu").getNumber().doubleValue());
             nodeInfo.setApplicable(!nodeName.equals("master1") && !nodeName.equals("super"));
             nodeRepository.save(nodeInfo);
+        }
+        for(String nodeName:nodeNameSet)
+        {
+            nodeRepository.deleteById(nodeName);
         }
     }
 }

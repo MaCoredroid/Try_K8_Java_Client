@@ -14,6 +14,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Component
 public class CheckPodStatus{
@@ -26,7 +27,7 @@ public class CheckPodStatus{
         ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);
         List<ServiceInfo> serviceInfos=serviceRepository.findAll();
         for(ServiceInfo serviceInfo:serviceInfos) {
-            serviceInfo.getPods().clear();
+            Set<String> podNameSet=serviceInfo.getPods().keySet();
             V1PodList list = null;
             try {
                 list = api.listPodForAllNamespaces(null, null, null, "app="+serviceInfo.getId(), null, null, null, null, null, null);
@@ -39,14 +40,18 @@ public class CheckPodStatus{
                         String podName = Objects.requireNonNull(item.getMetadata()).getName();
                         PodInfo podInfo = serviceInfo.getPods().getOrDefault(podName, new PodInfo());
                         podInfo.setPodName(podName);
+                        podNameSet.remove(podName);
                         podInfo.setNodeIP(Objects.requireNonNull(item.getStatus()).getHostIP());
                         podInfo.setPodIP(Objects.requireNonNull(item.getStatus()).getPodIP());
                         serviceInfo.getPods().put(podName, podInfo);
-                        serviceRepository.save(serviceInfo);
                     }
                 }
-
             }
+            for(String podName:podNameSet)
+            {
+                serviceInfo.getPods().remove(podName);
+            }
+            serviceRepository.save(serviceInfo);
         }
         System.out.println(serviceRepository.findAll());
     }
