@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
@@ -33,33 +32,6 @@ public class Calculate {
         for(ServiceInfo serviceInfo:serviceInfos) {
             ExecutionDTO executionDTO=new ExecutionDTO();
             executionDTO.setServiceIP(serviceInfo.getClusterIP());
-            if(Instant.now().toEpochMilli()-serviceInfo.getTimestamp()> 10000L *serviceInfo.getDesiredReplicaNum()) {
-                System.out.println(serviceInfo.getId()+"     Reconciling!!!!");
-                if (serviceInfo.getPods().size() != serviceInfo.getDesiredReplicaNum()) {
-                    int diff = serviceInfo.getDesiredReplicaNum() - serviceInfo.getPods().size();
-                    if (diff > 0) {
-                        for (int i = 0; i < diff; i++) {
-                            podDao.createPod(serviceInfo.getId(), serviceInfo.getImage(), serviceInfo.getPort());
-                        }
-                    } else {
-                        diff *= -1;
-                        for (Map.Entry<String, PodInfo> entry : serviceInfo.getPods().entrySet()) {
-                            if (diff > 0) {
-                                podDao.deletePod(entry.getValue().getPodName());
-                                diff--;
-                            } else {
-                                break;
-                            }
-                        }
-                    }
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException ex) {
-                        Thread.currentThread().interrupt();
-                    }
-                    break;
-                }
-            }
             for (Map.Entry<String, PodInfo> entry : serviceInfo.getPods().entrySet()) {
                 String nodeIP = entry.getValue().getNodeIP();
                 if (nodeRepository.findByNodeIP(nodeIP).isPresent()) {
