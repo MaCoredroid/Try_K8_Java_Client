@@ -49,7 +49,9 @@ public class Calculate {
         }
         Execution execution=applicationContext.getBean(Execution.class);
         try {
-            execution.run(executionDTO);
+            if(executionDTO.getExecutionDetailDTOS().size()!=0) {
+                execution.run(executionDTO);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
