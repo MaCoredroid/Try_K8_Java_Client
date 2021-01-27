@@ -50,7 +50,7 @@ public class ServiceDaoImpl implements ServiceDao {
         ServiceInfo serviceInfo=new ServiceInfo();
         serviceInfo.setId(serviceName);
         serviceInfo.setImage(image);
-        serviceInfo.setPods(port);
+        serviceInfo.setPort(port);
         serviceInfo.setDesiredReplicaNum(desiredReplicaNum);
         serviceRepository.save(serviceInfo);
         return true;
