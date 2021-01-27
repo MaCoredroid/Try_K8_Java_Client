@@ -24,7 +24,7 @@ public class DeployServiceImpl implements DeployService {
     public ResponseEntity<?> createPodAndService(String serviceName, String image, String port, Integer replicaNum) {
         ServiceDao serviceDao=applicationContext.getBean(ServiceDao.class);
         PodDao podDao=applicationContext.getBean(PodDao.class);
-        if(!serviceDao.createService(serviceName, port))
+        if(!serviceDao.createService(serviceName, port,replicaNum,image))
         {
             return new ResponseEntity<>("SERVICE ERROR", HttpStatus.SERVICE_UNAVAILABLE);
         }

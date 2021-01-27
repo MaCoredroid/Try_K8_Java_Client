@@ -17,5 +17,8 @@ public class ServiceInfo {
     @Id
     private String id="";//service name
     private String clusterIP="";
+    private Integer desiredReplicaNum=0;
+    private String image="";
+    private String port="";
     private HashMap<String, PodInfo> pods=new HashMap<>();
 }

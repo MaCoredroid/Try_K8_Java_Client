@@ -3,6 +3,7 @@ package mc.Task;
 import mc.DTO.ExecutionDTO;
 import mc.DTO.ExecutionDetailDTO;
 import mc.DTO.PodInfo;
+import mc.Dao.PodDao;
 import mc.Entity.NodeInfo;
 import mc.Entity.ServiceInfo;
 import mc.Repository.NodeRepository;
@@ -25,12 +26,45 @@ public class Calculate {
     public void run() {
         ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);
         NodeRepository nodeRepository=applicationContext.getBean(NodeRepository.class);
-        ExecutionDTO executionDTO=new ExecutionDTO();
+        PodDao podDao=applicationContext.getBean(PodDao.class);
+        Execution execution=applicationContext.getBean(Execution.class);
         List<ServiceInfo> serviceInfos=serviceRepository.findAll();
         for(ServiceInfo serviceInfo:serviceInfos) {
-
+            ExecutionDTO executionDTO=new ExecutionDTO();
             executionDTO.setServiceIP(serviceInfo.getClusterIP());
-
+            if(serviceInfo.getPods().size()!=serviceInfo.getDesiredReplicaNum())
+            {
+                int diff=serviceInfo.getDesiredReplicaNum()-serviceInfo.getPods().size();
+                if(diff>0)
+                {
+                    for(int i=0;i<diff;i++)
+                    {
+                        podDao.createPod(serviceInfo.getId(), serviceInfo.getImage(), serviceInfo.getPort());
+                    }
+                }
+                else
+                {
+                    diff*=-1;
+                    for (Map.Entry<String, PodInfo> entry : serviceInfo.getPods().entrySet()) {
+                        if(diff>0) {
+                            podDao.deletePod(entry.getValue().getPodName());
+                            diff--;
+                        }
+                        else{
+                            break;
+                        }
+                    }
+                }
+                try
+                {
+                    Thread.sleep(2000);
+                }
+                catch(InterruptedException ex)
+                {
+                    Thread.currentThread().interrupt();
+                }
+                break;
+            }
             for (Map.Entry<String, PodInfo> entry : serviceInfo.getPods().entrySet()) {
                 String nodeIP = entry.getValue().getNodeIP();
                 if (nodeRepository.findByNodeIP(nodeIP).isPresent()) {
@@ -46,14 +80,14 @@ public class Calculate {
 
                 }
             }
-        }
-        Execution execution=applicationContext.getBean(Execution.class);
-        try {
-            if(executionDTO.getExecutionDetailDTOS().size()!=0) {
-                execution.run(executionDTO);
+            try {
+                if(executionDTO.getExecutionDetailDTOS().size()!=0) {
+                    execution.run(executionDTO);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
     }
 }

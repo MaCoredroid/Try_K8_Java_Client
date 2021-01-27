@@ -21,7 +21,7 @@ public class ServiceDaoImpl implements ServiceDao {
     @Autowired
     WebApplicationContext applicationContext;
     @Override
-    public boolean createService(String serviceName, String port) {
+    public boolean createService(String serviceName, String port,Integer desiredReplicaNum,String image) {
         V1Service svc =
         new V1ServiceBuilder()
                 .withApiVersion("v1")
@@ -49,6 +49,9 @@ public class ServiceDaoImpl implements ServiceDao {
         ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);
         ServiceInfo serviceInfo=new ServiceInfo();
         serviceInfo.setId(serviceName);
+        serviceInfo.setImage(image);
+        serviceInfo.setPods(port);
+        serviceInfo.setDesiredReplicaNum(desiredReplicaNum);
         serviceRepository.save(serviceInfo);
         return true;
     }
