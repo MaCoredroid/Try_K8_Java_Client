@@ -7,7 +7,6 @@ import io.kubernetes.client.openapi.models.V1PodList;
 import mc.Component.KubernetesApiClient;
 import mc.Dao.PodDao;
 import mc.Dao.ServiceDao;
-import mc.Repository.ServiceRepository;
 import mc.Service.DeployService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,12 +42,10 @@ public class DeployServiceImpl implements DeployService {
     public ResponseEntity<?> deletePodAndService(String serviceName) {
         ServiceDao serviceDao=applicationContext.getBean(ServiceDao.class);
         PodDao podDao=applicationContext.getBean(PodDao.class);
-        ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);
         if(!serviceDao.deleteService(serviceName))
         {
             return new ResponseEntity<>("DELETE SERVICE ERROR", HttpStatus.SERVICE_UNAVAILABLE);
         }
-        serviceRepository.deleteById(serviceName);
         CoreV1Api api=applicationContext.getBean(KubernetesApiClient.class).getAPI();
         V1PodList list;
         try {

@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -36,22 +35,22 @@ public class Calculate {
                 if (nodeRepository.findByNodeIP(nodeIP).isPresent()) {
                     NodeInfo nodeInfo = nodeRepository.findByNodeIP(nodeIP).get();
                     executionDTO.getExecutionDetailDTOS().add(new ExecutionDetailDTO(entry.getValue().getPodIP(), 4));
-                    System.out.println(serviceInfo.getId());
-                    System.out.println("Node " + nodeInfo.getId());
-                    System.out.println("Percents  " + entry.getValue().getCpu() / nodeInfo.getNode_top_cpu_value() + "  ");
-                    System.out.println("Estimate  " + (nodeInfo.getNode_cpu_total() - nodeInfo.getNode_top_cpu_value()) / entry.getValue().getCpu() + "  ");
-                    System.out.println("NowNode  " + nodeInfo.getNode_top_cpu_percents() + "  ");
-                    System.out.println("NowNode  " + nodeInfo.getNode_load_cpu_percents() + "  ");
-                    System.out.println("NowNode  " + nodeInfo.getCpu_idle_percent() + "\n");
+//                    System.out.println(serviceInfo.getId());
+//                    System.out.println("Node " + nodeInfo.getId());
+//                    System.out.println("Percents  " + entry.getValue().getCpu() / nodeInfo.getNode_top_cpu_value() + "  ");
+//                    System.out.println("Estimate  " + (nodeInfo.getNode_cpu_total() - nodeInfo.getNode_top_cpu_value()) / entry.getValue().getCpu() + "  ");
+//                    System.out.println("NowNode  " + nodeInfo.getNode_top_cpu_percents() + "  ");
+//                    System.out.println("NowNode  " + nodeInfo.getNode_load_cpu_percents() + "  ");
+//                    System.out.println("NowNode  " + nodeInfo.getCpu_idle_percent() + "\n");
 
                 }
             }
         }
-        Execution execution=applicationContext.getBean(Execution.class);
-        try {
-            execution.run(executionDTO);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        Execution execution=applicationContext.getBean(Execution.class);
+//        try {
+//            execution.run(executionDTO);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }

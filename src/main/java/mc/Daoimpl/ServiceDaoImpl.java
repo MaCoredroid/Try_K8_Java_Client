@@ -6,6 +6,8 @@ import io.kubernetes.client.openapi.models.V1Service;
 import io.kubernetes.client.openapi.models.V1ServiceBuilder;
 import mc.Component.KubernetesApiClient;
 import mc.Dao.ServiceDao;
+import mc.Entity.ServiceInfo;
+import mc.Repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.context.WebApplicationContext;
@@ -44,6 +46,10 @@ public class ServiceDaoImpl implements ServiceDao {
             e.printStackTrace();
             return false;
         }
+        ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);
+        ServiceInfo serviceInfo=new ServiceInfo();
+        serviceInfo.setId(serviceName);
+        serviceRepository.save(serviceInfo);
         return true;
     }
 
@@ -56,6 +62,8 @@ public class ServiceDaoImpl implements ServiceDao {
             e.printStackTrace();
             return false;
         }
+        ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);
+        serviceRepository.deleteById(serviceName);
         return true;
     }
 }
