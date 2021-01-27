@@ -51,6 +51,7 @@ public class CheckPodStatus{
             for(String podName:podNameSet)
             {
                 serviceInfo.getPods().remove(podName);
+                System.out.println("YESSSSSSSSS");
             }
             serviceRepository.save(serviceInfo);
         }

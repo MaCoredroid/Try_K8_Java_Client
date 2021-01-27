@@ -23,7 +23,7 @@ public class CheckPodAndNodeUsage{
     @Autowired
     WebApplicationContext applicationContext;
 
-    @Scheduled(fixedDelay=1000)
+    @Scheduled(fixedDelay=200)
     public void run() throws ApiException {
         ApiClient client=applicationContext.getBean(KubernetesApiClient.class).getClient();
         ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);
