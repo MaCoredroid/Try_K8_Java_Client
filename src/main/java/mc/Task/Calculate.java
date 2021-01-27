@@ -12,6 +12,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -24,31 +26,32 @@ public class Calculate {
         ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);
         NodeRepository nodeRepository=applicationContext.getBean(NodeRepository.class);
         ExecutionDTO executionDTO=new ExecutionDTO();
-        ServiceInfo serviceInfo=serviceRepository.findById("application").orElseGet(ServiceInfo::new);
-        executionDTO.setServiceIP(serviceInfo.getClusterIP());
+        List<ServiceInfo> serviceInfos=serviceRepository.findAll();
+        for(ServiceInfo serviceInfo:serviceInfos) {
 
-        for(Map.Entry<String, PodInfo> entry:serviceInfo.getPods().entrySet())
-        {
-            String nodeIP=entry.getValue().getNodeIP();
-            if(nodeRepository.findByNodeIP(nodeIP).isPresent())
-            {
-                NodeInfo nodeInfo=nodeRepository.findByNodeIP(nodeIP).get();
-                executionDTO.getExecutionDetailDTOS().add(new ExecutionDetailDTO(entry.getValue().getPodIP(),4));
-                System.out.println("Node "+nodeInfo.getId());
-                System.out.println("Percents  "+entry.getValue().getCpu()/nodeInfo.getNode_top_cpu_value()+"  ");
-                System.out.println("Estimate  "+(nodeInfo.getNode_cpu_total()-nodeInfo.getNode_top_cpu_value())/entry.getValue().getCpu()+"  ");
-                System.out.println("NowNode  "+nodeInfo.getNode_top_cpu_percents()+"  ");
-                System.out.println("NowNode  "+nodeInfo.getNode_load_cpu_percents()+"  ");
-                System.out.println("NowNode  "+nodeInfo.getCpu_idle_percent()+"\n");
+            executionDTO.setServiceIP(serviceInfo.getClusterIP());
 
+            for (Map.Entry<String, PodInfo> entry : serviceInfo.getPods().entrySet()) {
+                String nodeIP = entry.getValue().getNodeIP();
+                if (nodeRepository.findByNodeIP(nodeIP).isPresent()) {
+                    NodeInfo nodeInfo = nodeRepository.findByNodeIP(nodeIP).get();
+                    executionDTO.getExecutionDetailDTOS().add(new ExecutionDetailDTO(entry.getValue().getPodIP(), 4));
+                    System.out.println(serviceInfo.getId());
+                    System.out.println("Node " + nodeInfo.getId());
+                    System.out.println("Percents  " + entry.getValue().getCpu() / nodeInfo.getNode_top_cpu_value() + "  ");
+                    System.out.println("Estimate  " + (nodeInfo.getNode_cpu_total() - nodeInfo.getNode_top_cpu_value()) / entry.getValue().getCpu() + "  ");
+                    System.out.println("NowNode  " + nodeInfo.getNode_top_cpu_percents() + "  ");
+                    System.out.println("NowNode  " + nodeInfo.getNode_load_cpu_percents() + "  ");
+                    System.out.println("NowNode  " + nodeInfo.getCpu_idle_percent() + "\n");
+
+                }
             }
         }
         Execution execution=applicationContext.getBean(Execution.class);
-//        try {
-//            execution.run(executionDTO);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        System.out.println(System.currentTimeMillis() / 1000L);
+        try {
+            execution.run(executionDTO);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
