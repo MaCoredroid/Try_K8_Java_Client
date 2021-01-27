@@ -49,6 +49,6 @@ public class CheckPodStatus{
             }
 
         }
-//        System.out.println(serviceNameMap);
+        System.out.println(serviceRepository.findAll());
     }
 }
