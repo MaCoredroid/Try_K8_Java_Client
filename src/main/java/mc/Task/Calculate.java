@@ -63,6 +63,10 @@ public class Calculate {
                     }
                 }
             }
+            if(count==0)
+            {
+                continue;
+            }
             int rest=100;
             int origin=100/count;
             for(WeightDTO weightDTO:busyWeightDTOS)
