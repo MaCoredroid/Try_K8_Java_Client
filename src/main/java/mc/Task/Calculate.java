@@ -1,6 +1,7 @@
 package mc.Task;
 
 import mc.DTO.ExecutionDTO;
+import mc.DTO.ExecutionDetailDTO;
 import mc.DTO.PodInfo;
 import mc.DTO.WeightDTO;
 import mc.Dao.PodDao;
@@ -76,12 +77,13 @@ public class Calculate {
                 if(weightDTO.getDeprecated())
                 {
                     weightDTO.setWeight(weight);
-
+                    executionDTO.getExecutionDetailDTOS().add(new ExecutionDetailDTO(weightDTO.getPodIP(),weightDTO.getWeight()));
                 }
                 else
                 {
                     weight=(int)Math.round(origin/Math.sqrt(weightDTO.getNowNodeLoad()));
                     weightDTO.setWeight(weight);
+                    executionDTO.getExecutionDetailDTOS().add(new ExecutionDetailDTO(weightDTO.getPodIP(),weightDTO.getWeight()));
                     rest-=weight;
                 }
             }
@@ -89,8 +91,9 @@ public class Calculate {
             for(WeightDTO weightDTO:idleWeightDTOS)
             {
                 weightDTO.setWeight(origin);
+                executionDTO.getExecutionDetailDTOS().add(new ExecutionDetailDTO(weightDTO.getPodIP(),weightDTO.getWeight()));
             }
-
+            System.out.println(executionDTO);
 //            try {
 //                if(executionDTO.getExecutionDetailDTOS().size()!=0) {
 //                    execution.run(executionDTO);
