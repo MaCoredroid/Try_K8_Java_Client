@@ -37,10 +37,13 @@ public class Calculate {
             ExecutionDTO executionDTO=new ExecutionDTO();
             executionDTO.setServiceIP(serviceInfo.getClusterIP());
             for (Map.Entry<String, PodInfo> entry : serviceInfo.getPods().entrySet()) {
+                if(entry.getValue()==null)
+                {
+                    continue;
+                }
                 String nodeIP = entry.getValue().getNodeIP();
                 if (nodeRepository.findByNodeIP(nodeIP).isPresent()) {
                     NodeInfo nodeInfo = nodeRepository.findByNodeIP(nodeIP).get();
-                    System.out.println(serviceInfo.getId());
                     WeightDTO weightDTO=new WeightDTO();
                     weightDTO.setNode(nodeInfo.getId());
                     weightDTO.setPodIP(entry.getValue().getPodIP());
@@ -87,11 +90,12 @@ public class Calculate {
                     rest-=weight;
                 }
             }
-            origin=rest/count;
-            for(WeightDTO weightDTO:idleWeightDTOS)
-            {
-                weightDTO.setWeight(origin);
-                executionDTO.getExecutionDetailDTOS().add(new ExecutionDetailDTO(weightDTO.getPodIP(),weightDTO.getWeight()));
+            if(count!=0) {
+                origin = rest / count;
+                for (WeightDTO weightDTO : idleWeightDTOS) {
+                    weightDTO.setWeight(origin);
+                    executionDTO.getExecutionDetailDTOS().add(new ExecutionDetailDTO(weightDTO.getPodIP(), weightDTO.getWeight()));
+                }
             }
             System.out.println(executionDTO);
 //            try {
