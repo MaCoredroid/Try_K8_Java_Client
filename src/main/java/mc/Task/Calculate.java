@@ -57,7 +57,7 @@ public class Calculate {
                     {
                         count++;
                     }
-                    if(nodeInfo.getCpu_idle_percent()>0.95)
+                    if(weightDTO.getNowNodeLoad()>=1.0)
                     {
                         busyWeightDTOS.add(weightDTO);
                     }
