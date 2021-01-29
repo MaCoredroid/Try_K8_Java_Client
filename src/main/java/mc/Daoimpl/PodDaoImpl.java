@@ -61,7 +61,7 @@ public class PodDaoImpl implements PodDao {
                         .withKind("Pod")
                         .withNewMetadata()
                         .withName(serviceName+"-"+ RandomStringUtils.random(10, true, true).toLowerCase()+"-"+RandomStringUtils.random(5, true, true).toLowerCase())
-                        .withLabels(new HashMap<String,String>(){{put("app",serviceName);put("app.kubernetes.io/name","eztype");put("prometheus.io/scheme","http");put("prometheus.io/port","8080");put("prometheus.io/path","/actuator/prometheus");put("prometheus.io/scrape","true");}})
+                        .withLabels(new HashMap<String,String>(){{put("app",serviceName);put("app.kubernetes.io/name","eztype");}})
                         .endMetadata()
                         .withNewSpec()
                         .addNewContainer()
