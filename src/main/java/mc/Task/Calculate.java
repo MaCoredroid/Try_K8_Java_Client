@@ -76,7 +76,6 @@ public class Calculate {
             for(WeightDTO weightDTO:busyWeightDTOS)
             {
                 int weight=0;
-                count--;
                 if(weightDTO.getDeprecated())
                 {
                     weightDTO.setWeight(weight);
@@ -84,6 +83,7 @@ public class Calculate {
                 }
                 else
                 {
+                    count--;
                     weight=(int)Math.round(origin/Math.sqrt(weightDTO.getNowNodeLoad()));
                     weightDTO.setWeight(weight);
                     executionDTO.getExecutionDetailDTOS().add(new ExecutionDetailDTO(weightDTO.getPodIP(),weightDTO.getWeight()));
