@@ -29,7 +29,7 @@ public class ServiceDaoImpl implements ServiceDao {
                 .withKind("Service")
                 .withNewMetadata()
                 .withName(serviceName)
-                .withLabels(new HashMap<String,String>(){{put("app",serviceName);put("app.kubernetes.io/name","eztype");}})
+                .withLabels(new HashMap<String,String>(){{put("app",serviceName);}})
                 .endMetadata()
                 .withNewSpec()
                 .addNewPort()
