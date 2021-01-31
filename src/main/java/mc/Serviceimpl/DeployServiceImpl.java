@@ -36,12 +36,6 @@ public class DeployServiceImpl implements DeployService {
         {
             return new ResponseEntity<>("SERVICE ERROR", HttpStatus.SERVICE_UNAVAILABLE);
         }
-        try {
-            Thread.sleep(10000);
-        }catch (Exception ignored)
-        {
-
-        }
         for(int i=0;i<replicaNum;i++)
         {
             if(!podDao.createPod(serviceName, image, port))
