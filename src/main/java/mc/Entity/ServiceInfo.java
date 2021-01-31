@@ -22,5 +22,6 @@ public class ServiceInfo {
     private String image="";
     private String port="";
     private Long timestamp=0L;
+    private Integer actualSize=0;
     private HashMap<String, PodInfo> pods=new HashMap<>();
 }

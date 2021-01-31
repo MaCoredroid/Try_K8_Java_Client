@@ -27,6 +27,10 @@ public class Reconciler {
             if(Instant.now().toEpochMilli()-serviceInfo.getTimestamp()> 10000L *serviceInfo.getDesiredReplicaNum()) {
                 if (serviceInfo.getPods().size() != serviceInfo.getDesiredReplicaNum()) {
                     System.out.println(serviceInfo.getId()+"     Reconciling!!!!");
+                    if(serviceInfo.getActualSize()>serviceInfo.getDesiredReplicaNum())
+                    {
+                        continue;
+                    }
                     int diff = serviceInfo.getDesiredReplicaNum() - serviceInfo.getPods().size();
                     if (diff > 0) {
                         for (int i = 0; i < diff; i++) {

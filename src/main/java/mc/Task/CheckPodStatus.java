@@ -58,6 +58,7 @@ public class CheckPodStatus{
             {
                 serviceInfo.getPods().remove(podName);
             }
+            serviceInfo.setActualSize(list.getItems().size());
             serviceRepository.save(serviceInfo);
         }
     }
