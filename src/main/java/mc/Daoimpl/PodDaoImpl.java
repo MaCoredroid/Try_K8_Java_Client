@@ -24,12 +24,10 @@ public class PodDaoImpl implements PodDao {
     @Override
     public boolean createPod(String serviceName, String image, String port) {
         String podName=serviceName+"-"+ RandomStringUtils.random(10, true, true).toLowerCase()+"-"+RandomStringUtils.random(5, true, true).toLowerCase();
-        V1EnvVar env=new V1EnvVar();
         V1EnvVarSource source=new V1EnvVarSource();
         V1ObjectFieldSelector fieldSelector=new V1ObjectFieldSelector();
         fieldSelector.setFieldPath("metadata.name");
         source.setFieldRef(fieldSelector);
-        env.setValueFrom(source);
         V1Pod pod =
         new V1PodBuilder()
                         .withApiVersion("v1")
@@ -45,7 +43,7 @@ public class PodDaoImpl implements PodDao {
                         .addNewPort()
                         .withContainerPort(Integer.parseInt(port))
                         .endPort()
-                        .withImagePullPolicy("Always")
+                        .withImagePullPolicy("Never")
                         .addNewEnv()
                         .withName("Pod_Name")
                         .withValueFrom(source)
@@ -67,12 +65,17 @@ public class PodDaoImpl implements PodDao {
 
     @Override
     public boolean createPodWithSelectedNode(String serviceName, String image, String port,String nodeName) {
+        String podName=serviceName+"-"+ RandomStringUtils.random(10, true, true).toLowerCase()+"-"+RandomStringUtils.random(5, true, true).toLowerCase();
+        V1EnvVarSource source=new V1EnvVarSource();
+        V1ObjectFieldSelector fieldSelector=new V1ObjectFieldSelector();
+        fieldSelector.setFieldPath("metadata.name");
+        source.setFieldRef(fieldSelector);
         V1Pod pod =
                 new V1PodBuilder()
                         .withApiVersion("v1")
                         .withKind("Pod")
                         .withNewMetadata()
-                        .withName(serviceName+"-"+ RandomStringUtils.random(10, true, true).toLowerCase()+"-"+RandomStringUtils.random(5, true, true).toLowerCase())
+                        .withName(podName)
                         .withLabels(new HashMap<String,String>(){{put("app",serviceName);}})
                         .endMetadata()
                         .withNewSpec()
@@ -82,7 +85,11 @@ public class PodDaoImpl implements PodDao {
                         .addNewPort()
                         .withContainerPort(Integer.parseInt(port))
                         .endPort()
-                        .withImagePullPolicy("Always")
+                        .withImagePullPolicy("Never")
+                        .addNewEnv()
+                        .withName("Pod_Name")
+                        .withValueFrom(source)
+                        .endEnv()
                         .endContainer()
                         .withNodeSelector(new HashMap<String,String>(){{put("kubernetes.io/hostname",nodeName);}})
                         .endSpec()
