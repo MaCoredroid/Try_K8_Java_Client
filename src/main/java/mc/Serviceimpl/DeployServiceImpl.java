@@ -26,12 +26,12 @@ public class DeployServiceImpl implements DeployService {
         ServiceDao serviceDao=applicationContext.getBean(ServiceDao.class);
         PodDao podDao=applicationContext.getBean(PodDao.class);
         PullImage pullImage=applicationContext.getBean(PullImage.class);
-        try {
-            pullImage.run(image);
-        }catch (Exception e)
-        {
-            return new ResponseEntity<>("PULL IMAGE ERROR", HttpStatus.SERVICE_UNAVAILABLE);
-        }
+//        try {
+//            pullImage.run(image);
+//        }catch (Exception e)
+//        {
+//            return new ResponseEntity<>("PULL IMAGE ERROR", HttpStatus.SERVICE_UNAVAILABLE);
+//        }
         if(!serviceDao.createService(serviceName, port,replicaNum,image))
         {
             return new ResponseEntity<>("SERVICE ERROR", HttpStatus.SERVICE_UNAVAILABLE);
