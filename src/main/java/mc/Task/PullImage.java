@@ -25,7 +25,7 @@ public class PullImage {
 
             String command = "ssh -t " + nodeInfo.getNodeIP() +
                     " \"" +
-                    "sudo docker pull " + image;
+                    "sudo docker pull " + image+"\"";
             final Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", command});
             new Thread(() -> {
                 BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
