@@ -1,8 +1,7 @@
 package mc.Daoimpl;
 
 import io.kubernetes.client.openapi.apis.CoreV1Api;
-import io.kubernetes.client.openapi.models.V1Pod;
-import io.kubernetes.client.openapi.models.V1PodBuilder;
+import io.kubernetes.client.openapi.models.*;
 import mc.Component.KubernetesApiClient;
 import mc.Dao.PodDao;
 import mc.Entity.ServiceInfo;
@@ -23,12 +22,19 @@ public class PodDaoImpl implements PodDao {
     WebApplicationContext applicationContext;
     @Override
     public boolean createPod(String serviceName, String image, String port) {
+        String podName=serviceName+"-"+ RandomStringUtils.random(10, true, true).toLowerCase()+"-"+RandomStringUtils.random(5, true, true).toLowerCase();
+        V1EnvVar env=new V1EnvVar();
+        V1EnvVarSource source=new V1EnvVarSource();
+        V1ObjectFieldSelector fieldSelector=new V1ObjectFieldSelector();
+        fieldSelector.setFieldPath("metadata.name");
+        source.setFieldRef(fieldSelector);
+        env.setValueFrom(source);
         V1Pod pod =
         new V1PodBuilder()
                         .withApiVersion("v1")
                         .withKind("Pod")
                         .withNewMetadata()
-                        .withName(serviceName+"-"+ RandomStringUtils.random(10, true, true).toLowerCase()+"-"+RandomStringUtils.random(5, true, true).toLowerCase())
+                        .withName(podName)
                         .withLabels(new HashMap<String,String>(){{put("app",serviceName);}})
                         .endMetadata()
                         .withNewSpec()
@@ -39,6 +45,7 @@ public class PodDaoImpl implements PodDao {
                         .withContainerPort(Integer.parseInt(port))
                         .endPort()
                         .withImagePullPolicy("Always")
+                        .withEnv(env)
                         .endContainer()
                         .endSpec()
                         .build();
