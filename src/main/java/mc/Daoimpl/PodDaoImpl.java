@@ -46,7 +46,10 @@ public class PodDaoImpl implements PodDao {
                         .withContainerPort(Integer.parseInt(port))
                         .endPort()
                         .withImagePullPolicy("Always")
-                        .withEnv(env)
+                        .addNewEnv()
+                        .withName("Pod_Name")
+                        .withValueFrom(source)
+                        .endEnv()
                         .endContainer()
                         .endSpec()
                         .build();
