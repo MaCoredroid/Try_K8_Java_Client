@@ -8,6 +8,7 @@ import mc.Component.KubernetesApiClient;
 import mc.Dao.PodDao;
 import mc.Dao.ServiceDao;
 import mc.Service.DeployService;
+import mc.Task.PullImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,13 @@ public class DeployServiceImpl implements DeployService {
     public ResponseEntity<?> createPodAndService(String serviceName, String image, String port, Integer replicaNum) {
         ServiceDao serviceDao=applicationContext.getBean(ServiceDao.class);
         PodDao podDao=applicationContext.getBean(PodDao.class);
+        PullImage pullImage=applicationContext.getBean(PullImage.class);
+        try {
+            pullImage.run(image);
+        }catch (Exception e)
+        {
+            return new ResponseEntity<>("PULL IMAGE ERROR", HttpStatus.SERVICE_UNAVAILABLE);
+        }
         if(!serviceDao.createService(serviceName, port,replicaNum,image))
         {
             return new ResponseEntity<>("SERVICE ERROR", HttpStatus.SERVICE_UNAVAILABLE);
