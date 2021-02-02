@@ -72,8 +72,8 @@ public class Calculate {
             {
                 continue;
             }
-            int rest=100;
-            int origin=100/count;
+            int rest=1000;
+            int origin=1000/count;
             for(WeightDTO weightDTO:busyWeightDTOS)
             {
                 int weight=0;
@@ -85,7 +85,7 @@ public class Calculate {
                 else
                 {
                     count--;
-                    weight=(int)Math.round(origin/Math.sqrt(weightDTO.getNowNodeLoad()));
+                    weight=(int)Math.round((origin/Math.sqrt(weightDTO.getNowNodeLoad()))*weightDTO.getPercents());
                     weightDTO.setWeight(weight);
                     executionDTO.getExecutionDetailDTOS().add(new ExecutionDetailDTO(weightDTO.getPodIP(),weightDTO.getWeight()));
                     rest-=weight;
