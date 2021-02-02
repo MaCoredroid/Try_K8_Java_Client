@@ -14,7 +14,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -99,13 +98,13 @@ public class Calculate {
                 }
             }
             System.out.println(executionDTO);
-            try {
-                if(executionDTO.getExecutionDetailDTOS().size()!=0) {
-                    execution.run(executionDTO);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                if(executionDTO.getExecutionDetailDTOS().size()!=0) {
+//                    execution.run(executionDTO);
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
 
     }
