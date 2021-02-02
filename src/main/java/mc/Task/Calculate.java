@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ public class Calculate {
     @Autowired
     WebApplicationContext applicationContext;
 
-    @Scheduled(fixedDelay=1000)
+    @Scheduled(fixedDelay=3000)
     public void run() {
         ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);
         NodeRepository nodeRepository=applicationContext.getBean(NodeRepository.class);
@@ -98,13 +99,13 @@ public class Calculate {
                 }
             }
             System.out.println(executionDTO);
-//            try {
-//                if(executionDTO.getExecutionDetailDTOS().size()!=0) {
-//                    execution.run(executionDTO);
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            try {
+                if(executionDTO.getExecutionDetailDTOS().size()!=0) {
+                    execution.run(executionDTO);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
