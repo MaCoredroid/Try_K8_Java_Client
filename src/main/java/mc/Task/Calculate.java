@@ -64,7 +64,7 @@ public class Calculate {
                     {
                         count++;
                     }
-                    if(weightDTO.getNowNodeLoad()>=1.0)
+                    if(weightDTO.getNowNodeLoad()>=2.0)
                     {
                         busyWeightDTOS.add(weightDTO);
                     }
@@ -109,7 +109,6 @@ public class Calculate {
                         break;
                     }
                     migrationNum--;
-                    System.out.println(entry.getKey());
                 }
             }
             //assign weight
