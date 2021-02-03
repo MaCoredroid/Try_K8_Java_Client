@@ -14,9 +14,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 @Component
 public class Calculate {
@@ -30,12 +29,19 @@ public class Calculate {
         PodDao podDao=applicationContext.getBean(PodDao.class);
         Execution execution=applicationContext.getBean(Execution.class);
         List<ServiceInfo> serviceInfos=serviceRepository.findAll();
+
         for(ServiceInfo serviceInfo:serviceInfos) {
             List<WeightDTO> idleWeightDTOS=new ArrayList<>();
             List<WeightDTO> busyWeightDTOS=new ArrayList<>();
             int count=0;
             ExecutionDTO executionDTO=new ExecutionDTO();
             executionDTO.setServiceIP(serviceInfo.getClusterIP());
+            List<NodeInfo> nodeInfos=nodeRepository.findAll();
+            List<String> IdList=new ArrayList<>();
+            for(NodeInfo nodeInfo:nodeInfos)
+            {
+                IdList.add(nodeInfo.getId());
+            }
             for (Map.Entry<String, PodInfo> entry : serviceInfo.getPods().entrySet()) {
                 if(entry.getValue()==null)
                 {
@@ -46,6 +52,7 @@ public class Calculate {
                     NodeInfo nodeInfo = nodeRepository.findByNodeIP(nodeIP).get();
                     WeightDTO weightDTO=new WeightDTO();
                     weightDTO.setNode(nodeInfo.getId());
+                    IdList.remove(nodeInfo.getId());
                     weightDTO.setPodIP(entry.getValue().getPodIP());
                     weightDTO.setPercents(entry.getValue().getCpu() / nodeInfo.getNode_top_cpu_value());
                     weightDTO.setEstimate(nodeInfo.getNode_cpu_total() - nodeInfo.getNode_top_cpu_value()/ entry.getValue().getCpu());
@@ -73,6 +80,37 @@ public class Calculate {
             }
             int rest=1000;
             int origin=1000/count;
+            //Calculate available idle nodes
+            List<String> fakeIdList=new ArrayList<>(IdList);
+            for(String nodeId:fakeIdList)
+            {
+                NodeInfo nodeInfo = nodeRepository.findById(nodeId).get();
+                if(nodeInfo.getNode_load_cpu_percents()>=1.0)
+                {
+                    IdList.remove(nodeId);
+                }
+            }
+            //decide to migrate
+            int migrationNum=Math.max(busyWeightDTOS.size(),IdList.size());
+            if(migrationNum!=0) {
+                //Sort By weightDTO Now Node Load
+                SortedMap<Double, WeightDTO> map = new TreeMap<>();
+                for (WeightDTO weightDTO : busyWeightDTOS) {
+                    map.put(weightDTO.getNowNodeLoad(), weightDTO);
+                }
+                System.out.println(migrationNum);
+                System.out.println(map);
+                for(Map.Entry<Double, WeightDTO> entry:map.entrySet())
+                {
+                    if(migrationNum==0)
+                    {
+                        break;
+                    }
+                    migrationNum--;
+                    System.out.println(entry.getKey());
+                }
+            }
+            //assign weight
             for(WeightDTO weightDTO:busyWeightDTOS)
             {
                 int weight=0;
@@ -98,13 +136,13 @@ public class Calculate {
                 }
             }
             System.out.println(executionDTO);
-//            try {
-//                if(executionDTO.getExecutionDetailDTOS().size()!=0) {
-//                    execution.run(executionDTO);
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            try {
+                if(executionDTO.getExecutionDetailDTOS().size()!=0) {
+                    execution.run(executionDTO);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
