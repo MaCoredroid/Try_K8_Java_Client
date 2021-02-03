@@ -91,7 +91,7 @@ public class Calculate {
                 }
             }
             //decide to migrate
-            int migrationNum=Math.max(busyWeightDTOS.size(),IdList.size());
+            int migrationNum=Math.min(busyWeightDTOS.size(),IdList.size());
             if(migrationNum!=0) {
                 //Sort By weightDTO Now Node Load
                 SortedMap<Double, WeightDTO> map = new TreeMap<>();
