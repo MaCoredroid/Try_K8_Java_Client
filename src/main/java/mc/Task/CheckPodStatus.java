@@ -37,6 +37,10 @@ public class CheckPodStatus{
                 e.printStackTrace();
             }
             for (V1Pod item : Objects.requireNonNull(list).getItems()) {
+                if(item.getMetadata()==null)
+                {
+                    continue;
+                }
                 if (Objects.equals(Objects.requireNonNull(item.getMetadata()).getNamespace(), "default")) {
                     if(Objects.requireNonNull(Objects.requireNonNull(item.getStatus()).getContainerStatuses()).size()==0)
                     {

@@ -44,8 +44,11 @@ public class Calculate {
                 IdList.add(nodeInfo.getId());
             }
             for (Map.Entry<String, PodInfo> entry : serviceInfo.getPods().entrySet()) {
-                //TODO: do not pose workload on pod too early!!!
                 if(entry.getValue()==null)
+                {
+                    continue;
+                }
+                if(ZonedDateTime.now().toInstant().toEpochMilli()-entry.getValue().getStartTimestamp()<=12000)
                 {
                     continue;
                 }
