@@ -52,7 +52,6 @@ public class Calculate {
                     NodeInfo nodeInfo = nodeRepository.findByNodeIP(nodeIP).get();
                     WeightDTO weightDTO=new WeightDTO();
                     weightDTO.setNode(nodeInfo.getId());
-                    IdList.remove(nodeInfo.getId());
                     weightDTO.setPodIP(entry.getValue().getPodIP());
                     weightDTO.setPodName(entry.getValue().getPodName());
                     weightDTO.setPercents(entry.getValue().getCpu() / nodeInfo.getNode_top_cpu_value());
@@ -64,8 +63,9 @@ public class Calculate {
                     if(!entry.getValue().getDeprecatedFlag())
                     {
                         count++;
+                        IdList.remove(nodeInfo.getId());
                     }
-                    if(weightDTO.getNowNodeTop()>0.8)
+                    if(weightDTO.getNowNodeLoad()>2.0)
                     {
                         busyWeightDTOS.add(weightDTO);
                     }
