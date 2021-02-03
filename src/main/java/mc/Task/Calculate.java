@@ -99,6 +99,7 @@ public class Calculate {
                 }
                 if(!nodeInfo.getApplicable())
                 {
+                    System.out.println("REMOVED");
                     IdList.remove(nodeId);
                 }
             }
@@ -126,6 +127,7 @@ public class Calculate {
                     NodeInfo nodeInfo = nodeRepository.findById(IdList.get(numberOfMigration)).get();
                     nodeInfo.setApplicable(false);
                     nodeRepository.save(nodeInfo);
+                    System.out.println(nodeInfo);
                     numberOfMigration++;
                     serviceInfo.getPods().get(entry.getValue().getPodName()).setDeprecatedFlag(true);
                     serviceInfo.getPods().get(entry.getValue().getPodName()).setDeprecatedTimestamp(ZonedDateTime.now().toInstant().toEpochMilli());
