@@ -1,8 +1,10 @@
 package mc.Daoimpl;
 
 import io.kubernetes.client.openapi.apis.CoreV1Api;
-import io.kubernetes.client.openapi.models.*;
-import io.kubernetes.client.util.Yaml;
+import io.kubernetes.client.openapi.models.V1EnvVarSource;
+import io.kubernetes.client.openapi.models.V1ObjectFieldSelector;
+import io.kubernetes.client.openapi.models.V1Pod;
+import io.kubernetes.client.openapi.models.V1PodBuilder;
 import mc.Component.KubernetesApiClient;
 import mc.Dao.PodDao;
 import mc.Entity.ServiceInfo;
@@ -52,7 +54,7 @@ public class PodDaoImpl implements PodDao {
                         .endSpec()
                         .build();
         CoreV1Api api=applicationContext.getBean(KubernetesApiClient.class).getAPI();
-        System.out.println(Yaml.dump(pod));
+//        System.out.println(Yaml.dump(pod));
         try {
             api.createNamespacedPod("default", pod, null, null, null);
         }catch (Exception e)
