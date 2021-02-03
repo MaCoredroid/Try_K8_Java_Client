@@ -104,6 +104,7 @@ public class Calculate {
             }
             IdList.remove("master1");
             IdList.remove("super");
+            System.out.println(IdList);
             //decide to migrate
             int migrationNum=Math.min(busyWeightDTOS.size(),IdList.size());
             if(migrationNum!=0) {
@@ -113,10 +114,8 @@ public class Calculate {
                     map.put(weightDTO.getNowNodeLoad(), weightDTO);
                 }
                 NavigableMap<Double, WeightDTO> reversedTreeMap = map.descendingMap();
-                System.out.println(migrationNum);
-                System.out.println(reversedTreeMap);
                 int numberOfMigration=0;
-                for(Map.Entry<Double, WeightDTO> entry:map.entrySet())
+                for(Map.Entry<Double, WeightDTO> entry:reversedTreeMap.entrySet())
                 {
                     if(numberOfMigration==migrationNum)
                     {
