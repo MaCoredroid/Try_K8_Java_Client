@@ -46,7 +46,6 @@ public class CheckNodeList  {
             nodeNameSet.remove(nodeName);
             nodeInfo.setNodeIP(nodeIP);
             nodeInfo.setNode_cpu_total(Objects.requireNonNull(Objects.requireNonNull(node.getStatus()).getCapacity()).get("cpu").getNumber().doubleValue());
-            nodeInfo.setApplicable(!nodeName.equals("master1") && !nodeName.equals("super"));
             nodeRepository.save(nodeInfo);
         }
         for(String nodeName:nodeNameSet)
