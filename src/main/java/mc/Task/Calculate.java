@@ -65,7 +65,7 @@ public class Calculate {
                     {
                         count++;
                     }
-                    if(weightDTO.getNowNodeTop()>0.5)
+                    if(weightDTO.getNowNodeTop()>0.8)
                     {
                         busyWeightDTOS.add(weightDTO);
                     }
