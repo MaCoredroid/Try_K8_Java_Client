@@ -112,9 +112,9 @@ public class Calculate {
                         break;
                     }
                     System.out.println(entry.getValue());
-//                    podDao.createPodWithSelectedNode(serviceInfo.getId(), serviceInfo.getImage(), serviceInfo.getPort(),IdList.get(numberOfMigration));
+                    podDao.createPodWithSelectedNode(serviceInfo.getId(), serviceInfo.getImage(), serviceInfo.getPort(),IdList.get(numberOfMigration));
                     numberOfMigration++;
-//                    serviceInfo.getPods().get(entry.getValue().getPodName()).setDeprecatedFlag(true);
+                    serviceInfo.getPods().get(entry.getValue().getPodName()).setDeprecatedFlag(true);
                 }
             }
             //assign weight
