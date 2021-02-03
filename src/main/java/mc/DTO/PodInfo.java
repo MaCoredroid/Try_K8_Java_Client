@@ -14,4 +14,6 @@ public class PodInfo {
     private Double cpu=0.0;
     private Double memory=0.0;
     private Boolean deprecatedFlag=false;
+    private Long deprecatedTimestamp=0L;
+    private Long startTimestamp=0L;
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @Component
@@ -60,13 +61,14 @@ public class Calculate {
                     weightDTO.setNowNodeTop(nodeInfo.getNode_top_cpu_percents());
                     weightDTO.setNowNodeLoad(nodeInfo.getNode_load_cpu_percents());
                     weightDTO.setNowNodePercents(nodeInfo.getCpu_idle_percent());
-                    //TODO: don't do that immediately
-                    weightDTO.setDeprecated(entry.getValue().getDeprecatedFlag());
-                    if(!entry.getValue().getDeprecatedFlag())
+                    if(entry.getValue().getDeprecatedFlag()&&ZonedDateTime.now().toInstant().toEpochMilli()-entry.getValue().getDeprecatedTimestamp()>=12000) {
+                        weightDTO.setDeprecated(true);
+                    }
+                    if(!weightDTO.getDeprecated())
                     {
                         count++;
-                        IdList.remove(nodeInfo.getId());
                     }
+                    IdList.remove(nodeInfo.getId());
                     if(weightDTO.getNowNodeLoad()>2.0&&!weightDTO.getDeprecated())
                     {
                         busyWeightDTOS.add(weightDTO);
@@ -91,7 +93,10 @@ public class Calculate {
                 if(nodeInfo.getNode_load_cpu_percents()>=2.0)
                 {
                     IdList.remove(nodeId);
-                    //TODO: avoid reschedule to one node two times
+                }
+                if(!nodeInfo.getApplicable())
+                {
+                    IdList.remove(nodeId);
                 }
             }
             IdList.remove("master1");
@@ -117,7 +122,11 @@ public class Calculate {
                     System.out.println(entry.getValue());
                     podDao.createPodWithSelectedNode(serviceInfo.getId(), serviceInfo.getImage(), serviceInfo.getPort(),IdList.get(numberOfMigration));
                     numberOfMigration++;
+                    NodeInfo nodeInfo = nodeRepository.findById(IdList.get(numberOfMigration)).get();
+                    nodeInfo.setApplicable(false);
+                    nodeRepository.save(nodeInfo);
                     serviceInfo.getPods().get(entry.getValue().getPodName()).setDeprecatedFlag(true);
+                    serviceInfo.getPods().get(entry.getValue().getPodName()).setDeprecatedTimestamp(ZonedDateTime.now().toInstant().toEpochMilli());
                     serviceRepository.save(serviceInfo);
                 }
             }

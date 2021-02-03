@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -46,6 +47,7 @@ public class CheckPodStatus{
                         podNameSet.remove(podName);
                         if(!serviceInfo.getPods().containsKey(podName)) {
                             PodInfo podInfo = new PodInfo();
+                            podInfo.setStartTimestamp(ZonedDateTime.now().toInstant().toEpochMilli());
                             podInfo.setPodName(podName);
                             podInfo.setNodeIP(Objects.requireNonNull(item.getStatus()).getHostIP());
                             podInfo.setPodIP(Objects.requireNonNull(item.getStatus()).getPodIP());
