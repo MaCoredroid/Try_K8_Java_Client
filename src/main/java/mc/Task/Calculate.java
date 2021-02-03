@@ -65,7 +65,7 @@ public class Calculate {
                     {
                         count++;
                     }
-                    if(weightDTO.getNowNodeLoad()>=2.0)
+                    if(weightDTO.getPercents()>0.9)
                     {
                         busyWeightDTOS.add(weightDTO);
                     }
@@ -97,12 +97,13 @@ public class Calculate {
             int migrationNum=Math.min(busyWeightDTOS.size(),IdList.size());
             if(migrationNum!=0) {
                 //Sort By weightDTO Now Node Load
-                SortedMap<Double, WeightDTO> map = new TreeMap<>();
+                NavigableMap<Double, WeightDTO> map = new TreeMap<>();
                 for (WeightDTO weightDTO : busyWeightDTOS) {
                     map.put(weightDTO.getNowNodeLoad(), weightDTO);
                 }
+                NavigableMap<Double, WeightDTO> reversedTreeMap = map.descendingMap();
                 System.out.println(migrationNum);
-                System.out.println(map);
+                System.out.println(reversedTreeMap);
                 int numberOfMigration=0;
                 for(Map.Entry<Double, WeightDTO> entry:map.entrySet())
                 {
@@ -110,9 +111,10 @@ public class Calculate {
                     {
                         break;
                     }
-                    podDao.createPodWithSelectedNode(serviceInfo.getId(), serviceInfo.getImage(), serviceInfo.getPort(),IdList.get(numberOfMigration));
+                    System.out.println(entry.getValue());
+//                    podDao.createPodWithSelectedNode(serviceInfo.getId(), serviceInfo.getImage(), serviceInfo.getPort(),IdList.get(numberOfMigration));
                     numberOfMigration++;
-                    serviceInfo.getPods().get(entry.getValue().getPodName()).setDeprecatedFlag(true);
+//                    serviceInfo.getPods().get(entry.getValue().getPodName()).setDeprecatedFlag(true);
                 }
             }
             //assign weight
