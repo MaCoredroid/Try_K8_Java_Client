@@ -124,10 +124,10 @@ public class Calculate {
                     }
                     System.out.println(entry.getValue());
                     podDao.createPodWithSelectedNode(serviceInfo.getId(), serviceInfo.getImage(), serviceInfo.getPort(),IdList.get(numberOfMigration));
-                    numberOfMigration++;
                     NodeInfo nodeInfo = nodeRepository.findById(IdList.get(numberOfMigration)).get();
                     nodeInfo.setApplicable(false);
                     nodeRepository.save(nodeInfo);
+                    numberOfMigration++;
                     serviceInfo.getPods().get(entry.getValue().getPodName()).setDeprecatedFlag(true);
                     serviceInfo.getPods().get(entry.getValue().getPodName()).setDeprecatedTimestamp(ZonedDateTime.now().toInstant().toEpochMilli());
                     serviceRepository.save(serviceInfo);
