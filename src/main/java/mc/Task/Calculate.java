@@ -43,6 +43,7 @@ public class Calculate {
                 IdList.add(nodeInfo.getId());
             }
             for (Map.Entry<String, PodInfo> entry : serviceInfo.getPods().entrySet()) {
+                //TODO: do not pose workload on pod too early!!!
                 if(entry.getValue()==null)
                 {
                     continue;
@@ -59,6 +60,7 @@ public class Calculate {
                     weightDTO.setNowNodeTop(nodeInfo.getNode_top_cpu_percents());
                     weightDTO.setNowNodeLoad(nodeInfo.getNode_load_cpu_percents());
                     weightDTO.setNowNodePercents(nodeInfo.getCpu_idle_percent());
+                    //TODO: don't do that immediately
                     weightDTO.setDeprecated(entry.getValue().getDeprecatedFlag());
                     if(!entry.getValue().getDeprecatedFlag())
                     {
@@ -86,9 +88,10 @@ public class Calculate {
             for(String nodeId:fakeIdList)
             {
                 NodeInfo nodeInfo = nodeRepository.findById(nodeId).get();
-                if(nodeInfo.getNode_load_cpu_percents()>=1.0)
+                if(nodeInfo.getNode_load_cpu_percents()>=2.0)
                 {
                     IdList.remove(nodeId);
+                    //TODO: avoid reschedule to one node two times
                 }
             }
             IdList.remove("master1");
