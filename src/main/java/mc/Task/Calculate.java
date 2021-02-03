@@ -90,6 +90,8 @@ public class Calculate {
                     IdList.remove(nodeId);
                 }
             }
+            IdList.remove("master1");
+            IdList.remove("super");
             //decide to migrate
             int migrationNum=Math.min(busyWeightDTOS.size(),IdList.size());
             if(migrationNum!=0) {
