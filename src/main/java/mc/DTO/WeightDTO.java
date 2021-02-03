@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WeightDTO {
     public String Node="";
+    private String PodName="";
     private String PodIP="";
     private Double Percents=0.0;
     private Double Estimate=0.0;

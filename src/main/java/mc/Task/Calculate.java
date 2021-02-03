@@ -54,6 +54,7 @@ public class Calculate {
                     weightDTO.setNode(nodeInfo.getId());
                     IdList.remove(nodeInfo.getId());
                     weightDTO.setPodIP(entry.getValue().getPodIP());
+                    weightDTO.setPodName(entry.getValue().getPodName());
                     weightDTO.setPercents(entry.getValue().getCpu() / nodeInfo.getNode_top_cpu_value());
                     weightDTO.setEstimate(nodeInfo.getNode_cpu_total() - nodeInfo.getNode_top_cpu_value()/ entry.getValue().getCpu());
                     weightDTO.setNowNodeTop(nodeInfo.getNode_top_cpu_percents());
@@ -102,13 +103,16 @@ public class Calculate {
                 }
                 System.out.println(migrationNum);
                 System.out.println(map);
+                int numberOfMigration=0;
                 for(Map.Entry<Double, WeightDTO> entry:map.entrySet())
                 {
-                    if(migrationNum==0)
+                    if(numberOfMigration==migrationNum)
                     {
                         break;
                     }
-                    migrationNum--;
+                    podDao.createPodWithSelectedNode(serviceInfo.getId(), serviceInfo.getImage(), serviceInfo.getPort(),IdList.get(numberOfMigration));
+                    numberOfMigration++;
+                    serviceInfo.getPods().get(entry.getValue().getPodName()).setDeprecatedFlag(true);
                 }
             }
             //assign weight
