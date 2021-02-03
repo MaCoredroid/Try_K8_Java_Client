@@ -55,8 +55,10 @@ public class CheckPodAndNodeUsage{
                     continue;
                 }
                 PodInfo podInfo=serviceInfo.getPods().get(podName);
-                podInfo.setCpu(item.getContainers().get(0).getUsage().get("cpu").getNumber().doubleValue());
-                podInfo.setMemory(item.getContainers().get(0).getUsage().get("memory").getNumber().doubleValue());
+                if(item.getContainers().size()!=0) {
+                    podInfo.setCpu(item.getContainers().get(0).getUsage().get("cpu").getNumber().doubleValue());
+                    podInfo.setMemory(item.getContainers().get(0).getUsage().get("memory").getNumber().doubleValue());
+                }
 
             }
             serviceRepository.save(serviceInfo);
