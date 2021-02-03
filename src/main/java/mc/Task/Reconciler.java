@@ -18,7 +18,7 @@ public class Reconciler {
     @Autowired
     WebApplicationContext applicationContext;
 
-    @Scheduled(fixedDelay=1000)
+    @Scheduled(fixedDelay=5000)
     public void run() {
         ServiceRepository serviceRepository=applicationContext.getBean(ServiceRepository.class);
         PodDao podDao=applicationContext.getBean(PodDao.class);
