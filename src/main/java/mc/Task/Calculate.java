@@ -65,11 +65,11 @@ public class Calculate {
                         count++;
                         IdList.remove(nodeInfo.getId());
                     }
-                    if(weightDTO.getNowNodeLoad()>2.0)
+                    if(weightDTO.getNowNodeLoad()>2.0&&!weightDTO.getDeprecated())
                     {
                         busyWeightDTOS.add(weightDTO);
                     }
-                    else
+                    else if(!weightDTO.getDeprecated())
                     {
                         idleWeightDTOS.add(weightDTO);
                     }
@@ -115,6 +115,7 @@ public class Calculate {
                     podDao.createPodWithSelectedNode(serviceInfo.getId(), serviceInfo.getImage(), serviceInfo.getPort(),IdList.get(numberOfMigration));
                     numberOfMigration++;
                     serviceInfo.getPods().get(entry.getValue().getPodName()).setDeprecatedFlag(true);
+                    serviceRepository.save(serviceInfo);
                 }
             }
             //assign weight
