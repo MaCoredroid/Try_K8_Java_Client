@@ -34,6 +34,7 @@ public class Calculate {
         for(ServiceInfo serviceInfo:serviceInfos) {
             List<WeightDTO> idleWeightDTOS=new ArrayList<>();
             List<WeightDTO> busyWeightDTOS=new ArrayList<>();
+            List<WeightDTO> newWeightDTOs=new ArrayList<>();
             int count=0;
             ExecutionDTO executionDTO=new ExecutionDTO();
             executionDTO.setServiceIP(serviceInfo.getClusterIP());
@@ -72,13 +73,17 @@ public class Calculate {
                         count++;
                     }
                     IdList.remove(nodeInfo.getId());
-                    if(weightDTO.getNowNodeLoad()>2.0)
+                    if(ZonedDateTime.now().toInstant().toEpochMilli()-entry.getValue().getStartTimestamp()<=300000)
                     {
-                        busyWeightDTOS.add(weightDTO);
+                        newWeightDTOs.add(weightDTO);
                     }
                     else
                     {
-                        idleWeightDTOS.add(weightDTO);
+                        if (weightDTO.getNowNodeLoad() > 2.0) {
+                            busyWeightDTOS.add(weightDTO);
+                        } else {
+                            idleWeightDTOS.add(weightDTO);
+                        }
                     }
                 }
             }
@@ -135,6 +140,9 @@ public class Calculate {
                 }
             }
             //assign weight
+            int mean=0;
+            int weightSum=0;
+            int weightNum=0;
             for(WeightDTO weightDTO:busyWeightDTOS)
             {
                 int weight=0;
@@ -150,8 +158,24 @@ public class Calculate {
                     weightDTO.setWeight(weight);
                     executionDTO.getExecutionDetailDTOS().add(new ExecutionDetailDTO(weightDTO.getPodIP(),weightDTO.getWeight()));
                     rest-=weight;
+                    weightNum++;
+                    weightSum+=weight;
                 }
             }
+            if(weightNum==0)
+            {
+                mean=origin;
+            }
+            else {
+                mean = weightSum / weightNum;
+            }
+            for (WeightDTO weightDTO : newWeightDTOs) {
+                count--;
+                weightDTO.setWeight(mean);
+                executionDTO.getExecutionDetailDTOS().add(new ExecutionDetailDTO(weightDTO.getPodIP(), weightDTO.getWeight()));
+                rest -= mean;
+            }
+
             if(count!=0) {
                 origin = rest / count;
                 for (WeightDTO weightDTO : idleWeightDTOS) {
