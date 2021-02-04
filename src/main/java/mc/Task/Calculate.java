@@ -153,8 +153,15 @@ public class Calculate {
             if(count!=0) {
                 origin = rest / count;
                 for (WeightDTO weightDTO : idleWeightDTOS) {
-                    weightDTO.setWeight(origin);
-                    executionDTO.getExecutionDetailDTOS().add(new ExecutionDetailDTO(weightDTO.getPodIP(), weightDTO.getWeight()));
+                    if(weightDTO.getDeprecated())
+                    {
+                        weightDTO.setWeight(0);
+                    }
+                    else
+                    {
+                        weightDTO.setWeight(origin);
+                    }
+                    executionDTO.getExecutionDetailDTOS().add(new ExecutionDetailDTO(weightDTO.getPodIP(),weightDTO.getWeight()));
                 }
             }
             System.out.println(executionDTO);
