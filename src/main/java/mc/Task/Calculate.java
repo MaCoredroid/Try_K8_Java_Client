@@ -75,6 +75,7 @@ public class Calculate {
                     IdList.remove(nodeInfo.getId());
                     if(ZonedDateTime.now().toInstant().toEpochMilli()-entry.getValue().getStartTimestamp()<=300000)
                     {
+                        System.out.println(entry.getKey());
                         newWeightDTOs.add(weightDTO);
                     }
                     else
@@ -172,6 +173,7 @@ public class Calculate {
             for (WeightDTO weightDTO : newWeightDTOs) {
                 count--;
                 weightDTO.setWeight(mean);
+                System.out.println(mean);
                 executionDTO.getExecutionDetailDTOS().add(new ExecutionDetailDTO(weightDTO.getPodIP(), weightDTO.getWeight()));
                 rest -= mean;
             }
