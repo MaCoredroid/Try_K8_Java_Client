@@ -72,11 +72,11 @@ public class Calculate {
                         count++;
                     }
                     IdList.remove(nodeInfo.getId());
-                    if(weightDTO.getNowNodeLoad()>2.0&&!weightDTO.getDeprecated())
+                    if(weightDTO.getNowNodeLoad()>2.0)
                     {
                         busyWeightDTOS.add(weightDTO);
                     }
-                    else if(!weightDTO.getDeprecated())
+                    else
                     {
                         idleWeightDTOS.add(weightDTO);
                     }
@@ -111,7 +111,9 @@ public class Calculate {
                 //Sort By weightDTO Now Node Load
                 NavigableMap<Double, WeightDTO> map = new TreeMap<>();
                 for (WeightDTO weightDTO : busyWeightDTOS) {
-                    map.put(weightDTO.getNowNodeLoad(), weightDTO);
+                    if(!weightDTO.getDeprecated()) {
+                        map.put(weightDTO.getNowNodeLoad(), weightDTO);
+                    }
                 }
                 NavigableMap<Double, WeightDTO> reversedTreeMap = map.descendingMap();
                 int numberOfMigration=0;
